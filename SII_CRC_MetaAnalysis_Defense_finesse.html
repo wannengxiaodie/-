@@ -17,17 +17,35 @@
     --bg-grad:  linear-gradient(165deg, #0C0A12 0%, #16121E 42%, #08070D 100%);
     --surface:  rgba(237,231,216,.045);
     --surface-solid: #16121E;
-    --ink:      #EDE7D8;   /* Warm white — never pure #fff */
-    --ink-soft: #C9C2B0;   /* secondary heading ink */
-    --muted:    #8A8378;   /* muted body / captions */
-    --dim:      #4A4540;   /* hairlines, faint rules */
-    --accent:   #C83048;   /* Brightened oxblood — risk direction / HR>1, owns the page */
-    --accent2:  #5A9E97;   /* Brightened teal — protective/reference, sparing use */
+    --ink:      #EDE7D8;
+    --ink-soft: #C9C2B0;
+    --muted:    #8A8378;
+    --dim:      #4A4540;
+    --accent:   #C83048;
+    --accent2:  #5A9E97;
     --border:   rgba(237,231,216,.10);
     --border-strong: rgba(237,231,216,.22);
   }
 
+  [data-theme="light"] {
+    --bg:       #FDFCFB;
+    --bg-grad:  linear-gradient(165deg, #FDFCFB 0%, #F5F3EF 42%, #FAFAF9 100%);
+    --surface:  rgba(0,0,0,.035);
+    --surface-solid: #F2F0EB;
+    --ink:      #1A161F;
+    --ink-soft: #5A5550;
+    --muted:    #9A948A;
+    --dim:      #D4D0C8;
+    --accent:   #A82038;
+    --accent2:  #4A8E87;
+    --border:   rgba(0,0,0,.06);
+    --border-strong: rgba(0,0,0,.14);
+  }
+
   html { scroll-behavior: smooth; }
+  html, body, * {
+    transition: background-color .35s ease, color .35s ease, border-color .35s ease;
+  }
   html, body {
     background: var(--bg-grad);
     background-attachment: fixed;
@@ -123,6 +141,19 @@
     color: var(--muted);
   }
   .nav .meta b { color: var(--ink); font-weight: 500; }
+
+  .theme-toggle {
+    background: none; border: 1px solid var(--border-strong);
+    padding: 6px 10px; border-radius: 4px;
+    cursor: pointer; transition: all .25s ease;
+    display: flex; align-items: center; gap: 6px;
+    color: var(--ink-soft);
+  }
+  .theme-toggle:hover {
+    border-color: var(--accent); color: var(--accent);
+    background: var(--surface);
+  }
+  .theme-toggle svg { width: 14px; height: 14px; }
 
   /* Section progress dots — right rail */
   .dots {
@@ -272,6 +303,18 @@
     color: var(--muted); margin-top: 10px;
   }
   .metric .zh { font-size: 12px; margin-top: 3px; display: block; }
+  .metric { transition: background-color .25s ease, transform .25s ease; }
+  .metric:hover { background: var(--surface); transform: translateY(-2px); cursor: pointer; }
+
+  .expandable { cursor: pointer; position: relative; padding-right: 24px; }
+  .expandable::after {
+    content: '▼'; position: absolute; right: 0; top: 4px;
+    font-size: 10px; color: var(--muted);
+    transition: transform .25s ease;
+  }
+  .expandable.expanded::after { transform: rotate(180deg); }
+  .expand-content { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .expandable.expanded + .expand-content { display: block; }
 
   /* Two-column body */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
@@ -353,6 +396,14 @@
   table tbody tr.overall td .count { font-weight: 600; }
   table tbody td.hr { color: var(--accent); }
   table tbody td .ci { color: var(--muted); font-size: 13px; }
+  table tbody tr { transition: background-color .2s ease; }
+  table tbody tr:hover:not(.section):not(.overall) { background: var(--surface); }
+
+  .mech-cell { transition: all .25s ease; }
+  .mech-cell:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+
+  .lim { transition: all .25s ease; }
+  .lim:hover { transform: translateX(4px); }
 
   /* Forest plot */
   .forest-wrap { margin: 16px 0 8px; }
@@ -487,13 +538,60 @@
     .lim { border-right: none; padding-right: 0; }
     .cover h1 { font-size: clamp(38px, 11vw, 64px); }
   }
+
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+    section { padding: 80px 4vw 50px; }
+    .nav { padding: 10px 16px; }
+    .nav .brand { font-size: 15px; }
+    .dots { right: 10px; }
+    .dots a { width: 5px; height: 5px; }
+    .hint { left: 16px; bottom: 12px; font-size: 8px; gap: 12px; }
+    .sec-head { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 32px; }
+    .sec-num { padding-top: 0; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .metric { padding: 20px 16px; }
+    .metric .num { font-size: clamp(24px, 6vw, 40px); }
+    .formula { padding: 20px; }
+    .result-callout { grid-template-columns: 1fr; gap: 16px; padding: 20px 24px; }
+    .result-callout .big { font-size: clamp(36px, 8vw, 64px); }
+    .tbl-wrap { margin: 0 -8px; padding: 0 8px; overflow-x: auto; }
+    table { min-width: 500px; }
+    .prisma-svg { max-width: 100%; }
+    .mech-grid { border: none; }
+    .mech-cell { border-right: none; border-bottom: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 24px; margin-bottom: 8px; }
+    .lim-grid { border-top: none; }
+    .lim { padding: 20px 0; border-right: none; border-bottom: 1px solid var(--border); }
+    .lim .n { font-size: 32px; }
+    .conc-split { gap: 24px; }
+    footer { padding: 40px 4vw 30px; flex-direction: column; align-items: flex-start; }
+    .cover-inner { padding: 60px 4vw 40px; }
+    .cover h1 { font-size: clamp(32px, 9vw, 56px); }
+    .cover .deck { font-size: clamp(16px, 3vw, 22px); }
+    .cover .bottom { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    .nav .meta { display: none; }
+    .theme-toggle { padding: 4px 8px; }
+    .theme-toggle svg { width: 12px; height: 12px; }
+    .metric .num { font-size: clamp(20px, 7vw, 36px); }
+    .metric .lbl { font-size: 10px; }
+    .sec-title .zh { font-size: 14px; }
+  }
 </style>
 </head>
 <body>
 
 <nav class="nav" id="nav">
   <div class="brand">SII <span>×</span> CRC</div>
-  <div class="meta"><b>Frontiers in Oncology</b> &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; DOI 10.3389/fonc.2026.1616016</div>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <div class="meta"><b>Frontiers in Oncology</b> &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; DOI 10.3389/fonc.2026.1616016</div>
+  </div>
 </nav>
 
 <nav class="dots" id="dots" aria-label="Section navigation"></nav>
@@ -1048,6 +1146,29 @@
       </div>
 
       <div class="col reveal">
+        <div class="formula" style="border-left-color:var(--accent2);margin-top:0;">
+          <div class="label">Funnel Plot · OS (Visualization)</div>
+          <svg viewBox="0 0 300 200" style="width:100%;margin-top:12px;">
+            <path d="M40 180 L40 60 Q150 10 260 60 L260 180 Z" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1"/>
+            <line x1="150" y1="40" x2="150" y2="180" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 4"/>
+            <circle cx="150" cy="50" r="4" fill="var(--ink)"/>
+            <circle cx="135" cy="65" r="5" fill="var(--ink)"/>
+            <circle cx="165" cy="65" r="5" fill="var(--ink)"/>
+            <circle cx="125" cy="80" r="6" fill="var(--ink)"/>
+            <circle cx="175" cy="80" r="6" fill="var(--ink)"/>
+            <circle cx="115" cy="95" r="7" fill="var(--ink)"/>
+            <circle cx="185" cy="95" r="7" fill="var(--ink)"/>
+            <circle cx="105" cy="110" r="8" fill="var(--ink)"/>
+            <circle cx="195" cy="110" r="8" fill="var(--ink)"/>
+            <circle cx="95" cy="130" r="9" fill="var(--ink)"/>
+            <circle cx="205" cy="130" r="9" fill="var(--ink)"/>
+            <circle cx="85" cy="150" r="10" fill="var(--ink)"/>
+            <circle cx="215" cy="150" r="10" fill="var(--ink)"/>
+            <text x="150" y="195" text-anchor="middle" fill="var(--muted)" font-size="10">Log(HR) = 0</text>
+            <text x="10" y="100" fill="var(--muted)" font-size="10" transform="rotate(-90 10 100)">Standard Error</text>
+          </svg>
+          <p style="font-size:13px;color:var(--muted);margin-top:10px;">Symmetric distribution indicates no significant publication bias.</p>
+        </div>
         <h3>Meta-Regression · SII Cut-off as Moderator</h3>
         <p style="margin-bottom:18px;">Despite wide cut-off variation (340–1,505), the cut-off value was <strong>not</strong> a significant source of heterogeneity. This is the key methodological finding: heterogeneity is driven by clinical context (stage, treatment, timing), not by arbitrary threshold choice.</p>
         <div class="tbl-wrap">
@@ -1313,6 +1434,37 @@
 </footer>
 
 <script>
+  const themeToggle = document.getElementById('themeToggle');
+  const sunIcon = themeToggle.querySelector('svg:first-child');
+  const moonIcon = themeToggle.querySelector('svg:last-child');
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    if (theme === 'light') {
+      sunIcon.style.display = 'none';
+      moonIcon.style.display = 'block';
+    } else {
+      sunIcon.style.display = 'block';
+      moonIcon.style.display = 'none';
+    }
+  }
+
+  const savedTheme = localStorage.getItem('theme');
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  setTheme(savedTheme || (prefersLight ? 'light' : 'dark'));
+
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setTheme(currentTheme === 'light' ? 'dark' : 'light');
+  });
+
+  document.querySelectorAll('.expandable').forEach(el => {
+    el.addEventListener('click', () => {
+      el.classList.toggle('expanded');
+    });
+  });
+
   const SECTIONS = Array.from(document.querySelectorAll('main > section'));
   const TOTAL = SECTIONS.length;
   let current = 0;
