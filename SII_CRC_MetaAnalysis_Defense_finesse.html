@@ -1,0 +1,1427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SII in CRC: A Meta-Analysis | Frontiers in Oncology 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --bg:       #0C0A12;
+    --bg-grad:  linear-gradient(165deg, #0C0A12 0%, #16121E 42%, #08070D 100%);
+    --surface:  rgba(237,231,216,.045);
+    --surface-solid: #16121E;
+    --ink:      #EDE7D8;   /* Warm white — never pure #fff */
+    --ink-soft: #C9C2B0;   /* secondary heading ink */
+    --muted:    #8A8378;   /* muted body / captions */
+    --dim:      #4A4540;   /* hairlines, faint rules */
+    --accent:   #C83048;   /* Brightened oxblood — risk direction / HR>1, owns the page */
+    --accent2:  #5A9E97;   /* Brightened teal — protective/reference, sparing use */
+    --border:   rgba(237,231,216,.10);
+    --border-strong: rgba(237,231,216,.22);
+  }
+
+  html { scroll-behavior: smooth; }
+  html, body {
+    background: var(--bg-grad);
+    background-attachment: fixed;
+    color: var(--ink);
+  }
+  body {
+    font-family: 'Spectral', Georgia, serif;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Grain — mandatory substrate */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    opacity: .028;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .content { position: relative; z-index: 5; }
+
+  /* Typography tension */
+  h1, h2, h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 800;
+    letter-spacing: -.025em;
+    line-height: .92;
+    color: var(--ink);
+  }
+  h1 { font-size: clamp(40px, 6.4vw, 104px); font-weight: 900; letter-spacing: -.035em; line-height: .88; }
+  h2 { font-size: clamp(32px, 4.6vw, 68px); letter-spacing: -.028em; }
+  h3 { font-size: clamp(22px, 2.4vw, 32px); font-weight: 700; letter-spacing: -.015em; line-height: 1.1; }
+
+  p { font-weight: 300; }
+  em { font-style: italic; }
+  strong { font-weight: 500; color: var(--ink); }
+
+  .label {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .label-accent { color: var(--accent); }
+
+  .count {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.02em;
+  }
+
+  .zh {
+    font-family: 'Spectral', 'Songti SC', 'Noto Serif SC', serif;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+  a:hover { border-bottom-color: var(--accent); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* Nav */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 40px;
+    background: rgba(12,10,18,.72);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    border-bottom: 1px solid var(--border);
+    transition: transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .nav .brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-style: italic;
+    font-size: 17px; letter-spacing: -.01em;
+    color: var(--ink);
+  }
+  .nav .brand span { color: var(--accent); }
+  .nav .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .08em;
+    color: var(--muted);
+  }
+  .nav .meta b { color: var(--ink); font-weight: 500; }
+
+  /* Section progress dots — right rail */
+  .dots {
+    position: fixed; right: 28px; top: 50%; transform: translateY(-50%);
+    z-index: 40; display: flex; flex-direction: column; gap: 11px;
+  }
+  .dots a {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--dim); border: none; padding: 0;
+    transition: all .35s cubic-bezier(.16,1,.3,1);
+    display: block;
+  }
+  .dots a.active { background: var(--accent); transform: scale(1.5); }
+  .dots a:hover { background: var(--ink-soft); }
+
+  /* Page hint — bottom left */
+  .hint {
+    position: fixed; left: 40px; bottom: 24px; z-index: 40;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; letter-spacing: .14em;
+    color: var(--muted); text-transform: uppercase;
+    display: flex; gap: 18px; align-items: center;
+  }
+  .hint kbd {
+    font-family: inherit; font-size: 10px;
+    border: 1px solid var(--border-strong); padding: 2px 6px;
+    border-radius: 3px; color: var(--ink);
+  }
+
+  /* Sections — scroll-snap, adaptive height (safe center = center when short, flex-start when overflowing) */
+  main { position: relative; }
+  section {
+    min-height: 100vh; min-height: 100dvh;
+    scroll-snap-align: start;
+    padding: clamp(96px, 12vh, 140px) clamp(40px, 7vw, 96px) clamp(72px, 9vh, 110px);
+    display: flex; flex-direction: column;
+    justify-content: safe center;
+    position: relative;
+    border-top: 1px solid var(--border);
+  }
+  section:first-of-type { border-top: none; }
+  html { scroll-snap-type: y proximity; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; width: 100%; }
+
+  /* Section header (number + bilingual title) */
+  .sec-head { display: flex; align-items: baseline; gap: 22px; margin-bottom: 48px; flex-wrap: wrap; }
+  .sec-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 500;
+    color: var(--accent); letter-spacing: .04em;
+    padding-top: 8px;
+  }
+  .sec-title { flex: 1; }
+  .sec-title h2 { display: inline-block; }
+  .sec-title .zh { display: block; font-size: 16px; margin-top: 8px; letter-spacing: .04em; }
+
+  /* COVER */
+  .cover {
+    min-height: 100vh; min-height: 100dvh;
+    padding: 0;
+    justify-content: flex-start;
+    border-top: none;
+  }
+  .cover-inner {
+    position: relative; width: 100%; height: 100vh; height: 100dvh;
+    display: grid; grid-template-rows: auto 1fr auto;
+    padding: 80px 7vw 60px;
+  }
+  .cover .topline {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 14px;
+  }
+  .cover .topline .journal {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-weight: 400; font-size: 17px; color: var(--ink);
+  }
+  .cover .topline .journal b { font-style: normal; font-weight: 700; }
+  .cover .topline .vol {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: .16em; color: var(--muted); text-transform: uppercase;
+  }
+  .cover .center {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 40px 0;
+  }
+  .cover .kicker {
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    letter-spacing: .3em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 26px;
+  }
+  .cover h1 {
+    font-size: clamp(46px, 7.2vw, 124px);
+    font-weight: 900; letter-spacing: -.04em; line-height: .86;
+    margin-bottom: 24px; max-width: 14ch;
+  }
+  .cover h1 em {
+    font-style: italic; font-weight: 400; color: var(--accent);
+  }
+  .cover .deck {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-weight: 400; font-size: clamp(20px, 2.2vw, 28px);
+    color: var(--ink-soft); max-width: 30ch; line-height: 1.3;
+  }
+  .cover .deck .zh { display: block; font-style: normal; margin-top: 6px; }
+  .cover .gold-rule {
+    width: 64px; height: 2px; background: var(--accent);
+    margin: 30px 0;
+  }
+  .cover .bottom {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    border-top: 1px solid var(--border-strong); padding-top: 18px;
+    gap: 40px; flex-wrap: wrap;
+  }
+  .cover .authors {
+    font-family: 'Spectral', serif; font-size: 16px; color: var(--ink);
+  }
+  .cover .authors b { font-weight: 500; }
+  .cover .authors .aff { color: var(--muted); font-size: 13px; display: block; margin-top: 4px; font-style: italic; }
+  .cover .doi {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted); text-align: right; letter-spacing: .04em;
+  }
+  .cover .doi b { color: var(--ink); display: block; font-weight: 500; margin-bottom: 4px; }
+
+  .cover-vig {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 68% 52% at 26% 44%, rgba(200,48,72,.10) 0%, transparent 56%),
+      radial-gradient(ellipse 92% 80% at 50% 52%, transparent 48%, rgba(8,7,13,.70) 100%);
+  }
+
+  /* Big metric blocks */
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); margin: 36px 0; }
+  .metric { padding: 26px 24px; border-right: 1px solid var(--border); }
+  .metric:last-child { border-right: none; }
+  .metric .num {
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: clamp(32px, 4vw, 56px); letter-spacing: -.03em;
+    color: var(--ink); line-height: 1;
+  }
+  .metric .num small { font-size: .42em; color: var(--muted); font-weight: 400; letter-spacing: 0; margin-left: 4px; }
+  .metric .lbl {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); margin-top: 10px;
+  }
+  .metric .zh { font-size: 12px; margin-top: 3px; display: block; }
+
+  /* Two-column body */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+  .two-col.lean { grid-template-columns: 1.3fr 1fr; gap: 64px; }
+  .col h3 { margin-bottom: 16px; }
+  .col p { margin-bottom: 14px; }
+  .col p:last-child { margin-bottom: 0; }
+  .col ul { list-style: none; }
+  .col ul li {
+    padding: 10px 0 10px 22px; position: relative;
+    border-bottom: 1px solid var(--border); font-size: 16px;
+  }
+  .col ul li:last-child { border-bottom: none; }
+  .col ul li::before {
+    content: ''; position: absolute; left: 0; top: 19px;
+    width: 8px; height: 1px; background: var(--accent);
+  }
+
+  /* SII formula block */
+  .formula {
+    background: var(--surface);
+    padding: 28px 30px;
+    border-left: 3px solid var(--accent);
+    margin: 8px 0 20px;
+  }
+  .formula .label { margin-bottom: 14px; }
+  .formula .eq {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 500; color: var(--ink);
+    line-height: 1.5; letter-spacing: -.01em;
+  }
+  .formula .eq .frac { display: inline-block; vertical-align: middle; text-align: center; margin: 0 4px; }
+  .formula .eq .frac .num { display: block; border-bottom: 1px solid var(--ink); padding: 0 8px 2px; }
+  .formula .eq .frac .den { display: block; padding: 2px 8px 0; }
+  .formula .eq .x { color: var(--accent); }
+
+  /* PRISMA flow */
+  .prisma { display: grid; grid-template-columns: 1fr 1.1fr; gap: 52px; align-items: center; }
+  .prisma-svg { width: 100%; max-width: 520px; height: auto; display: block; margin: 0 auto; }
+  .prisma-svg text { font-family: 'JetBrains Mono', monospace; font-size: 12px; fill: var(--ink); }
+  .prisma-svg .box { fill: var(--surface-solid); stroke: var(--border-strong); stroke-width: 1; }
+  .prisma-svg .box-final { fill: var(--accent); stroke: none; }
+  .prisma-svg .box-final text { fill: #0C0A12; }
+  .prisma-svg .arrow { stroke: var(--ink-soft); stroke-width: 1; fill: none; }
+  .prisma-svg .excl { fill: none; stroke: var(--muted); stroke-dasharray: 3 3; }
+  .prisma-svg .stage { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; fill: var(--muted); }
+
+  .crit-list { font-size: 15px; }
+  .crit-list li { padding: 8px 0 8px 22px; }
+
+  /* Tables */
+  .tbl-wrap { overflow-x: auto; margin: 8px 0; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'Spectral', serif; font-size: 15px;
+  }
+  table thead th {
+    font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--muted); text-align: left;
+    padding: 14px 16px 14px 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  table thead th.r, table tbody td.r { text-align: right; }
+  table tbody td {
+    padding: 13px 16px 13px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink); font-weight: 300;
+    vertical-align: top;
+  }
+  table tbody td .count { font-size: 14px; }
+  table tbody tr.section td {
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); padding-top: 22px; border-bottom: none;
+  }
+  table tbody tr.overall td { font-weight: 500; color: var(--ink); border-bottom: 1px solid var(--ink-soft); }
+  table tbody tr.overall td .count { font-weight: 600; }
+  table tbody td.hr { color: var(--accent); }
+  table tbody td .ci { color: var(--muted); font-size: 13px; }
+
+  /* Forest plot */
+  .forest-wrap { margin: 16px 0 8px; }
+  .forest { width: 100%; height: auto; display: block; }
+  .forest .axis { stroke: var(--ink-soft); stroke-width: 1; }
+  .forest .null-line { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 2 3; }
+  .forest .study-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--ink); }
+  .forest .ci-line { stroke: var(--ink-soft); stroke-width: 1.4; }
+  .forest .square { fill: var(--ink); }
+  .forest .diamond { fill: var(--accent); stroke: none; }
+  .forest .axis-tick { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: var(--muted); }
+  .forest .axis-title { font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; fill: var(--muted); }
+  .forest .hr-anno { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--accent); font-weight: 500; }
+
+  .forest-caption {
+    font-family: 'Spectral', serif; font-style: italic; font-size: 14px;
+    color: var(--muted); margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;
+  }
+
+  /* Key result callout */
+  .result-callout {
+    display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;
+    background: var(--surface); padding: 30px 36px;
+    border-left: 3px solid var(--accent); margin: 12px 0 28px;
+  }
+  .result-callout .big {
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: clamp(48px, 6vw, 88px); letter-spacing: -.04em;
+    color: var(--accent); line-height: .9;
+  }
+  .result-callout .big small { font-size: .28em; color: var(--muted); font-weight: 400; display: block; margin-top: 6px; letter-spacing: .16em; text-transform: uppercase; }
+  .result-callout .desc { font-size: 16px; }
+  .result-callout .desc b { font-weight: 500; }
+  .result-callout .desc .ci-line { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; display: block; margin-top: 6px; }
+
+  /* Mechanism three-column */
+  .mech-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--border-strong); }
+  .mech-cell { padding: 32px 28px; border-right: 1px solid var(--border); position: relative; }
+  .mech-cell:last-child { border-right: none; }
+  .mech-cell .ico {
+    width: 36px; height: 36px; margin-bottom: 18px;
+  }
+  .mech-cell h3 { margin-bottom: 14px; font-size: 22px; }
+  .mech-cell .zh { font-size: 13px; display: block; margin-bottom: 18px; }
+  .mech-cell ul { list-style: none; }
+  .mech-cell ul li { font-size: 14px; padding: 6px 0 6px 16px; position: relative; border-bottom: 1px solid var(--border); }
+  .mech-cell ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 1px; background: var(--accent); }
+  .mech-cell ul li:last-child { border-bottom: none; }
+
+  .mech-summary {
+    margin-top: 28px; padding: 26px 30px;
+    background: var(--surface); border-left: 3px solid var(--accent2);
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(18px, 1.8vw, 22px); line-height: 1.4; color: var(--ink-soft);
+  }
+  .mech-summary .zh { display: block; font-style: normal; font-family: 'Spectral', serif; font-size: 14px; margin-top: 8px; color: var(--muted); }
+
+  /* Limitations grid */
+  .lim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1px solid var(--border-strong); }
+  .lim {
+    padding: 28px 28px 28px 0; border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 40px 1fr; gap: 20px;
+    border-right: 1px solid var(--border); padding-right: 28px;
+  }
+  .lim:nth-child(2n) { border-right: none; padding-right: 0; }
+  .lim .n {
+    font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+    font-size: 40px; color: var(--accent); line-height: 1;
+  }
+  .lim h3 { font-size: 18px; margin-bottom: 8px; line-height: 1.2; }
+  .lim .zh { font-size: 13px; display: block; margin-bottom: 10px; }
+  .lim p { font-size: 14px; line-height: 1.5; }
+
+  /* Conclusion split */
+  .conc-split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  .conc-block h3 { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
+  .conc-block ul { list-style: none; }
+  .conc-block ul li { padding: 14px 0 14px 26px; position: relative; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.5; }
+  .conc-block ul li::before {
+    content: ''; position: absolute; left: 0; top: 22px;
+    width: 12px; height: 1px; background: var(--accent);
+  }
+  .conc-block ul li b { font-weight: 500; color: var(--ink); }
+  .conc-block ul li .count { color: var(--accent); font-weight: 500; }
+
+  /* Comparison table (This vs Tan) */
+  .vs-tbl th, .vs-tbl td { text-align: center; }
+  .vs-tbl th:first-child, .vs-tbl td:first-child { text-align: left; }
+  .vs-tbl .ours { color: var(--accent); font-weight: 500; }
+
+  /* Footer */
+  footer {
+    padding: 60px 7vw 50px; border-top: 1px solid var(--ink);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 40px; flex-wrap: wrap;
+  }
+  footer .left { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; }
+  footer .left .zh { display: block; font-style: normal; font-family: 'Spectral', serif; font-size: 13px; margin-top: 4px; }
+  footer .right { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; letter-spacing: .06em; }
+  footer .right b { color: var(--ink); display: block; font-weight: 500; }
+
+  /* GSAP reveal initial state */
+  .reveal { opacity: 0; transform: translateY(28px); }
+  .reveal-stagger > * { opacity: 0; transform: translateY(24px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; scroll-snap-type: none; }
+    .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+    * { animation: none !important; transition: none !important; }
+  }
+
+  @media (max-width: 1024px) {
+    .prisma { grid-template-columns: 1fr; gap: 36px; }
+    .prisma-svg { max-width: 460px; }
+  }
+
+  @media (max-width: 880px) {
+    body { font-size: 16px; }
+    html, body { background-attachment: scroll; }
+    section { padding: 90px 6vw 60px; }
+    .nav { padding: 12px 20px; }
+    .nav .meta { display: none; }
+    .dots { right: 14px; }
+    .hint { left: 20px; bottom: 16px; font-size: 9px; }
+    .two-col, .two-col.lean, .prisma, .conc-split { grid-template-columns: 1fr; gap: 32px; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .metric:nth-child(2) { border-right: none; }
+    .metric:nth-child(1), .metric:nth-child(2) { border-bottom: 1px solid var(--border); }
+    .mech-grid { grid-template-columns: 1fr; }
+    .mech-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .lim-grid { grid-template-columns: 1fr; }
+    .lim { border-right: none; padding-right: 0; }
+    .cover h1 { font-size: clamp(38px, 11vw, 64px); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="brand">SII <span>×</span> CRC</div>
+  <div class="meta"><b>Frontiers in Oncology</b> &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; DOI 10.3389/fonc.2026.1616016</div>
+</nav>
+
+<nav class="dots" id="dots" aria-label="Section navigation"></nav>
+
+<div class="hint">
+  <span><kbd>←</kbd> <kbd>→</kbd> navigate</span>
+  <span id="pgcounter">01 / 15</span>
+</div>
+
+<main class="content">
+
+<!-- 01 COVER -->
+<section id="s1" class="cover" data-title="Cover">
+  <div class="cover-inner">
+    <div class="cover-vig"></div>
+    <div class="topline">
+      <div class="journal"><b>Frontiers in Oncology</b> &nbsp;·&nbsp; Meta-Analysis</div>
+      <div class="vol">Vol. 16 &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Oncology</div>
+    </div>
+    <div class="center">
+      <div class="kicker reveal">A Systematic Review &amp; Meta-Analysis</div>
+      <h1 class="reveal">Prognostic Value of the Systemic <em>Immune-Inflammation Index</em> for Colorectal Cancer.</h1>
+      <div class="gold-rule reveal"></div>
+      <p class="deck reveal">A pooled analysis of 35 studies and 26,812 patients clarifies where SII predicts survival, and where it does not.
+        <span class="zh">系统免疫炎症指数对结直肠癌预后价值的系统综述与 Meta 分析</span>
+      </p>
+    </div>
+    <div class="bottom reveal">
+      <div class="authors">
+        <b>Pengfei Wang</b>* &nbsp;·&nbsp; Huiying Jiang
+        <span class="aff">Clinical Laboratory, Beijing Jingmei Group General Hospital, Beijing, China</span>
+      </div>
+      <div class="doi">
+        <b>DOI</b>
+        10.3389/fonc.2026.1616016<br>
+        PROSPERO CRD420251010606
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 BACKGROUND -->
+<section id="s2" data-title="Background">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">01</div>
+      <div class="sec-title reveal">
+        <h2>The Clinical Challenge.</h2>
+        <span class="zh">临床问题与知识缺口</span>
+      </div>
+    </div>
+
+    <div class="two-col lean">
+      <div class="col reveal">
+        <p>Colorectal cancer remains a leading cause of cancer-related mortality worldwide. TNM staging alone cannot account for the wide inter-individual variability in prognosis, and systemic inflammation is now understood to drive tumor progression, metastasis, and treatment resistance.</p>
+        <p>Existing inflammatory markers such as NLR and PLR show promise but capture only part of the inflammatory-immune axis. The Systemic Immune-Inflammation Index (SII) combines three compartments into a single composite read. Prior SII studies in CRC, however, report inconsistent findings due to methodological heterogeneity and undefined cut-off values.</p>
+
+        <div class="formula">
+          <div class="label label-accent">SII · Composite Index</div>
+          <div class="eq">
+            SII <span class="x">=</span>
+            <span class="frac">
+              <span class="num">Platelet <span class="x">×</span> Neutrophil</span>
+              <span class="den">Lymphocyte</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col reveal">
+        <h3>Knowledge Gap <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">知识缺口</span></h3>
+        <ul>
+          <li>Optimal SII cut-off values remain undefined across the literature.</li>
+          <li>Prognostic value varies by treatment modality, TNM stage, and tumor location.</li>
+          <li>No comprehensive meta-analysis with sufficient subgroup granularity exists.</li>
+          <li>The most recent prior analysis (Tan et al., 2025) was limited to 27 studies, searched to March 2024.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 OBJECTIVES -->
+<section id="s3" data-title="Objectives">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">02</div>
+      <div class="sec-title reveal">
+        <h2>Study Objectives.</h2>
+        <span class="zh">研究目标与设计</span>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="col reveal">
+        <h3>Primary Objective</h3>
+        <p>To clarify the prognostic value of SII for overall survival (OS) and progression-free survival (PFS) in colorectal cancer through a comprehensive meta-analysis.</p>
+        <h3 style="margin-top:28px;">Secondary Objectives</h3>
+        <ul>
+          <li>Explore heterogeneity sources via subgroup analyses: TNM stage, tumor location, treatment, geography, timing of SII measurement.</li>
+          <li>Assess whether variability in SII cut-off value moderates prognostic estimates via meta-regression.</li>
+          <li>Compare findings with previous meta-analyses and provide updated evidence through November 2025.</li>
+        </ul>
+      </div>
+      <div class="col reveal">
+        <div class="label label-accent" style="margin-bottom:18px;">Key Features · This Meta-Analysis</div>
+        <div class="metrics">
+          <div class="metric">
+            <div class="num">35</div>
+            <div class="lbl">Studies</div>
+            <span class="zh">纳入研究</span>
+          </div>
+          <div class="metric">
+            <div class="num">26,812</div>
+            <div class="lbl">Patients</div>
+            <span class="zh">总患者数</span>
+          </div>
+          <div class="metric">
+            <div class="num">Nov<small>2025</small></div>
+            <div class="lbl">Search Updated</div>
+            <span class="zh">检索截止</span>
+          </div>
+          <div class="metric">
+            <div class="num">6</div>
+            <div class="lbl">Subgroup Strata</div>
+            <span class="zh">亚组维度</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 METHODS / PRISMA -->
+<section id="s4" data-title="Methods">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">03</div>
+      <div class="sec-title reveal">
+        <h2>Methods &amp; Search.</h2>
+        <span class="zh">研究设计与文献检索 · PRISMA 2020</span>
+      </div>
+    </div>
+
+    <div class="prisma">
+      <div class="reveal">
+        <div class="label" style="margin-bottom:14px;">Protocol &amp; Registration</div>
+        <p style="margin-bottom:20px;"><strong>PRISMA 2020</strong> guidelines. PROSPERO registration <span class="count">CRD420251010606</span>. Databases: PubMed, Embase, Cochrane Library, Web of Science. Search deadline: November 2025.</p>
+        <div class="label" style="margin-bottom:10px;">Inclusion Criteria</div>
+        <ul class="crit-list">
+          <li>Pathologically confirmed CRC.</li>
+          <li>Surgery, chemotherapy, or combined treatment.</li>
+          <li>SII evaluated for OS or PFS.</li>
+          <li>Hazard ratio with 95% CI available or derivable.</li>
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <svg class="prisma-svg" viewBox="0 0 480 440" role="img" aria-label="PRISMA 2020 flow diagram">
+          <!-- Identification -->
+          <text class="stage" x="20" y="14">Identification</text>
+          <rect class="box" x="20" y="22" width="220" height="80" rx="2"/>
+          <text x="32" y="46">Records identified</text>
+          <text x="32" y="74" style="font-size:20px;font-weight:500">349</text>
+          <text x="32" y="92" style="font-size:10px;fill:#8A8378">PubMed 142 · Embase 105</text>
+          <text x="32" y="104" style="font-size:10px;fill:#8A8378">Cochrane 8 · WoS 94</text>
+
+          <!-- duplicates -->
+          <rect class="box" x="270" y="22" width="190" height="80" rx="2"/>
+          <text x="282" y="46">After duplicate removal</text>
+          <text x="282" y="74" style="font-size:20px;font-weight:500">198</text>
+
+          <path class="arrow" d="M240,62 L270,62"/>
+          <polygon points="270,62 262,59 262,65" fill="#C9C2B0"/>
+
+          <!-- Screening -->
+          <text class="stage" x="20" y="128">Screening</text>
+          <rect class="box" x="20" y="136" width="220" height="64" rx="2"/>
+          <text x="32" y="160">Full-text assessed</text>
+          <text x="32" y="188" style="font-size:20px;font-weight:500">67</text>
+
+          <!-- excluded n=131 -->
+          <rect class="excl" x="270" y="136" width="190" height="64" rx="2"/>
+          <text x="282" y="158" style="fill:#8A8378">Excluded (n=131)</text>
+          <text x="282" y="174" style="font-size:10px;fill:#8A8378">117 unrelated</text>
+          <text x="282" y="186" style="font-size:10px;fill:#8A8378">10 abstracts · 4 reviews</text>
+
+          <!-- main downward arrow: Identification → Screening -->
+          <path class="arrow" d="M130,102 L130,136"/>
+          <polygon points="130,136 127,130 133,130" fill="#C9C2B0"/>
+          <path class="arrow" d="M240,168 L270,168" stroke-dasharray="3 3"/>
+          <polygon points="270,168 262,165 262,171" fill="#8A8378"/>
+
+          <!-- Eligibility second exclusion -->
+          <text class="stage" x="20" y="228">Eligibility</text>
+          <rect class="excl" x="270" y="236" width="190" height="64" rx="2"/>
+          <text x="282" y="258" style="fill:#8A8378">Excluded (n=32)</text>
+          <text x="282" y="274" style="font-size:10px;fill:#8A8378">12 unavailable</text>
+          <text x="282" y="286" style="font-size:10px;fill:#8A8378">20 insufficient data</text>
+
+          <!-- Included -->
+          <text class="stage" x="20" y="326">Included</text>
+          <rect class="box-final" x="20" y="334" width="220" height="82" rx="2"/>
+          <text x="32" y="362" style="fill:#0C0A12">Studies in meta-analysis</text>
+          <text x="32" y="400" style="font-size:30px;fill:#0C0A12;font-weight:500">35</text>
+          <text x="112" y="400" style="font-size:11px;fill:#0C0A12;opacity:.85">40 cohorts</text>
+
+          <!-- main downward arrow: Screening → Included (spans Eligibility stage on the left rail) -->
+          <path class="arrow" d="M130,200 L130,334" stroke="#C9C2B0" stroke-width="1.4"/>
+          <polygon points="130,334 126,326 134,326" fill="#C9C2B0"/>
+          <path class="arrow" d="M240,268 L270,268" stroke-dasharray="3 3"/>
+          <polygon points="270,268 262,265 262,271" fill="#8A8378"/>
+
+          <text class="stage" x="20" y="436">Figure 1 · PRISMA 2020 Flow</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 STUDY CHARACTERISTICS -->
+<section id="s5" data-title="Characteristics">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">04</div>
+      <div class="sec-title reveal">
+        <h2>Characteristics of Included Studies.</h2>
+        <span class="zh">纳入研究基本特征</span>
+      </div>
+    </div>
+
+    <div class="metrics reveal" style="grid-template-columns:repeat(4,1fr);margin-top:0;margin-bottom:36px;">
+      <div class="metric"><div class="num">35</div><div class="lbl">Studies · 40 Cohorts</div><span class="zh">35 项研究 · 40 队列</span></div>
+      <div class="metric"><div class="num">2016<small>–2025</small></div><div class="lbl">Publication Window</div><span class="zh">发表年份</span></div>
+      <div class="metric"><div class="num">26,812</div><div class="lbl">Patients · All Stages</div><span class="zh">患者总数</span></div>
+      <div class="metric"><div class="num">7.8<small>/9</small></div><div class="lbl">Mean NOS Score</div><span class="zh">NOS 质量评分</span></div>
+    </div>
+
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Characteristic</th><th>Details</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Geographic Regions</td><td>Asia (China, Japan), Europe (Italy, Hungary, Spain, Turkey), North America (USA)</td></tr>
+          <tr><td>Study Design</td><td>38 retrospective cohorts; 2 prospective cohorts</td></tr>
+          <tr><td>TNM Stages</td><td>Stage I–IV; including metastatic CRC, early-stage, and mixed populations</td></tr>
+          <tr><td>Treatment Modalities</td><td>Surgery, chemotherapy, chemo + bevacizumab, immunotherapy (anti-PD-1), TARE</td></tr>
+          <tr><td>SII Cut-off Range</td><td><span class="count">340 – 1,505</span> &nbsp;<span class="ci">wide variation across studies</span></td></tr>
+          <tr><td>Timing of SII</td><td>Baseline / preoperative (majority); post-treatment (8 cohorts)</td></tr>
+          <tr><td>Quality Assessment</td><td>Newcastle-Ottawa Scale; mean score <span class="count">7.8 / 9</span> (high quality, 7–9)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 06 OS RESULTS — FOREST HERO -->
+<section id="s6" data-title="OS Results">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">05</div>
+      <div class="sec-title reveal">
+        <h2>SII &amp; Overall Survival.</h2>
+        <span class="zh">主要结果 · 总生存期</span>
+      </div>
+    </div>
+
+    <div class="result-callout reveal">
+      <div class="big">2.11<small>HR · pooled</small></div>
+      <div class="desc">
+        Elevated SII is significantly associated with <b>worse overall survival</b> in colorectal cancer.
+        <span class="ci-line">95% CI 1.73 – 2.57 &nbsp;·&nbsp; p &lt; 0.00001 &nbsp;·&nbsp; 32 cohorts · 25,366 patients · I² = 92% · random-effects</span>
+      </div>
+    </div>
+
+    <div class="forest-wrap reveal" id="forest-os">
+      <svg class="forest" id="forestOS" viewBox="0 0 980 500" role="img" aria-label="Subgroup forest plot, SII and overall survival">
+        <!-- axis -->
+        <line class="axis" x1="270" y1="430" x2="870" y2="430"/>
+        <line class="null-line" x1="420" y1="40" x2="420" y2="430"/>
+        <text class="axis-title" x="270" y="448">Favours high SII</text>
+        <text class="axis-title" x="870" y="448" text-anchor="end">Favours low SII (better prognosis)</text>
+        <text class="axis-tick" x="270" y="464">0.5</text>
+        <text class="axis-tick" x="420" y="464">1.0</text>
+        <text class="axis-tick" x="570" y="464">2.0</text>
+        <text class="axis-tick" x="720" y="464">4.0</text>
+        <text class="axis-tick" x="870" y="464">8.0</text>
+        <text class="axis-title" x="905" y="30">HR [95% CI]</text>
+        <text class="axis-title" x="905" y="44">I²</text>
+
+        <!-- Subgroup rows (all real data from Table 2, slide 8). Scale: null at x=420, each doubling = 150px -->
+        <!-- Overall 2.11 (1.73-2.57) I2=92 — pooled diamond -->
+        <g class="study">
+          <text class="study-label" x="260" y="64" text-anchor="end" style="font-weight:500">Pooled (random effects)</text>
+          <line class="ci-line path-draw" x1="539" y1="60" x2="624" y2="60"/>
+          <polygon class="diamond path-draw" points="572,60 584,52 596,60 584,68"/>
+          <text class="hr-anno" x="905" y="64" style="font-weight:500">2.11 [1.73, 2.57]</text>
+          <text class="axis-tick" x="905" y="76" style="fill:#C83048">I²=92%</text>
+        </g>
+        <!-- Stage I-II 2.31 (1.65-3.24) I2=78 -->
+        <g class="study">
+          <text class="study-label" x="260" y="104" text-anchor="end">Stage I–II</text>
+          <line class="ci-line path-draw" x1="527" y1="100" x2="675" y2="100"/>
+          <rect class="square" x="595" y="95" width="10" height="10" opacity="0.85"/>
+          <text class="hr-anno" x="905" y="104">2.31 [1.65, 3.24]</text>
+          <text class="axis-tick" x="905" y="116">78%</text>
+        </g>
+        <!-- Stage III 3.65 (1.98-6.91) I2=85 -->
+        <g class="study">
+          <text class="study-label" x="260" y="144" text-anchor="end" style="font-weight:500">Stage III</text>
+          <line class="ci-line path-draw" x1="566" y1="140" x2="838" y2="140"/>
+          <rect class="square" x="694" y="135" width="12" height="10" opacity="0.9" fill="#C83048"/>
+          <text class="hr-anno" x="905" y="144" style="font-weight:500">3.65 [1.98, 6.91]</text>
+          <text class="axis-tick" x="905" y="156">85%</text>
+        </g>
+        <!-- Stage IV 2.47 (1.34-4.84) I2=93 -->
+        <g class="study">
+          <text class="study-label" x="260" y="184" text-anchor="end">Stage IV / Metastatic</text>
+          <line class="ci-line path-draw" x1="483" y1="180" x2="761" y2="180"/>
+          <rect class="square" x="611" y="175" width="10" height="10" opacity="0.85"/>
+          <text class="hr-anno" x="905" y="184">2.47 [1.34, 4.84]</text>
+          <text class="axis-tick" x="905" y="196">93%</text>
+        </g>
+        <!-- Colon 2.18 (1.67-2.85) I2=89 -->
+        <g class="study">
+          <text class="study-label" x="260" y="224" text-anchor="end">Colon</text>
+          <line class="ci-line path-draw" x1="531" y1="220" x2="647" y2="220"/>
+          <rect class="square" x="584" y="215" width="10" height="10" opacity="0.85"/>
+          <text class="hr-anno" x="905" y="224">2.18 [1.67, 2.85]</text>
+          <text class="axis-tick" x="905" y="236">89%</text>
+        </g>
+        <!-- Rectal 1.96 (1.45-2.65) I2=85 -->
+        <g class="study">
+          <text class="study-label" x="260" y="264" text-anchor="end">Rectal</text>
+          <line class="ci-line path-draw" x1="500" y1="260" x2="631" y2="260"/>
+          <rect class="square" x="560" y="255" width="9" height="10" opacity="0.85"/>
+          <text class="hr-anno" x="905" y="264">1.96 [1.45, 2.65]</text>
+          <text class="axis-tick" x="905" y="276">85%</text>
+        </g>
+        <!-- Chemo alone 2.01 (1.52-2.66) I2=90 -->
+        <g class="study">
+          <text class="study-label" x="260" y="304" text-anchor="end">Chemotherapy alone</text>
+          <line class="ci-line path-draw" x1="510" y1="300" x2="632" y2="300"/>
+          <rect class="square" x="566" y="295" width="9" height="10" opacity="0.85"/>
+          <text class="hr-anno" x="905" y="304">2.01 [1.52, 2.66]</text>
+          <text class="axis-tick" x="905" y="316">90%</text>
+        </g>
+        <!-- Chemo+Bev 1.78 (1.23-2.58) I2=85 -->
+        <g class="study">
+          <text class="study-label" x="260" y="344" text-anchor="end">Chemo + Bevacizumab</text>
+          <line class="ci-line path-draw" x1="465" y1="340" x2="625" y2="340"/>
+          <rect class="square" x="540" y="335" width="8" height="10" opacity="0.85"/>
+          <text class="hr-anno" x="905" y="344">1.78 [1.23, 2.58]</text>
+          <text class="axis-tick" x="905" y="356">85%</text>
+        </g>
+        <!-- Surgical 2.24 (1.78-2.82) I2=93 -->
+        <g class="study">
+          <text class="study-label" x="260" y="384" text-anchor="end">Surgical resection</text>
+          <line class="ci-line path-draw" x1="545" y1="380" x2="644" y2="380"/>
+          <rect class="square" x="589" y="375" width="10" height="10" opacity="0.85"/>
+          <text class="hr-anno" x="905" y="384">2.24 [1.78, 2.82]</text>
+          <text class="axis-tick" x="905" y="396">93%</text>
+        </g>
+      </svg>
+      <p class="forest-caption">Figure 2 · Subgroup forest plot (random-effects model). All strata sit to the right of the null line (HR = 1.0); Stage III is the most extreme estimate. Heterogeneity remains high across all subgroups, consistent with clinical rather than threshold-driven variation. Pooled estimate: HR 2.11 [1.73, 2.57]. In the full 32-cohort plot, study weights ranged from ~1% to ~6%, the largest being Gao 2022 (n = 8,384).</p>
+    </div>
+
+    <div class="two-col reveal" style="margin-top:36px;">
+      <div class="col">
+        <h3>Key Subgroup Findings: OS</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Subgroup</th><th class="r">HR</th><th class="r">Studies</th></tr></thead>
+            <tbody>
+              <tr class="overall"><td>Stage III</td><td class="r hr"><span class="count">3.65</span></td><td class="r"><span class="count">4</span></td></tr>
+              <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">2.47</span></td><td class="r"><span class="count">19</span></td></tr>
+              <tr><td>Stage I–II</td><td class="r"><span class="count">2.31</span></td><td class="r"><span class="count">8</span></td></tr>
+              <tr><td>Post-treatment SII</td><td class="r"><span class="count">2.44</span></td><td class="r"><span class="count">8</span></td></tr>
+              <tr><td>Baseline SII</td><td class="r"><span class="count">1.98</span></td><td class="r"><span class="count">24</span></td></tr>
+              <tr><td>Age ≥ 65</td><td class="r"><span class="count">2.34</span></td><td class="r"><span class="count">12</span></td></tr>
+              <tr><td>Age &lt; 65</td><td class="r"><span class="count">1.89</span></td><td class="r"><span class="count">20</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mech-summary" style="background:var(--surface);border-left-color:var(--accent);">
+          Stage III carries the strongest association (HR 3.65). Post-treatment SII (HR 2.44) outweighs baseline (HR 1.98), suggesting dynamic monitoring adds precision beyond a single preoperative read.
+          <span class="zh">III 期关联最强；治疗后动态 SII 优于基线单次测量。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 PFS RESULTS -->
+<section id="s7" data-title="PFS Results">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">06</div>
+      <div class="sec-title reveal">
+        <h2>SII &amp; Progression-Free Survival.</h2>
+        <span class="zh">主要结果 · 无进展生存期</span>
+      </div>
+    </div>
+
+    <div class="result-callout reveal">
+      <div class="big">2.16<small>HR · pooled</small></div>
+      <div class="desc">
+        Elevated SII is significantly associated with <b>shorter progression-free survival</b>.
+        <span class="ci-line">95% CI 1.83 – 2.54 &nbsp;·&nbsp; p &lt; 0.00001 &nbsp;·&nbsp; 24 cohorts · 19,402 patients · I² = 73% · random-effects</span>
+      </div>
+    </div>
+
+    <div class="two-col reveal" style="margin-top:8px;">
+      <div class="col">
+        <h3>Key Subgroup Findings: PFS</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Subgroup</th><th class="r">HR</th><th class="r">Studies</th></tr></thead>
+            <tbody>
+              <tr class="overall"><td>Stage III</td><td class="r hr"><span class="count">3.64</span></td><td class="r"><span class="count">6</span></td></tr>
+              <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">2.23</span></td><td class="r"><span class="count">12</span></td></tr>
+              <tr><td>Colon cancer</td><td class="r"><span class="count">2.24</span></td><td class="r"><span class="count">10</span></td></tr>
+              <tr><td>Rectal cancer</td><td class="r"><span class="count">1.89</span></td><td class="r"><span class="count">6</span></td></tr>
+              <tr><td>Surgical resection</td><td class="r"><span class="count">2.18</span></td><td class="r"><span class="count">12</span></td></tr>
+              <tr><td>Chemotherapy alone</td><td class="r"><span class="count">2.01</span></td><td class="r"><span class="count">10</span></td></tr>
+              <tr><td>Chemo + Bevacizumab <span class="ci">*</span></td><td class="r"><span class="count">1.41</span></td><td class="r"><span class="count">4</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="forest-caption" style="border-top:none;padding-top:0;margin-top:8px;">* Not statistically significant (p = 0.07); prospective cohorts underpowered.</p>
+      </div>
+      <div class="col">
+        <div class="mech-summary">
+          The Stage III signal replicates (PFS HR 3.64), mirroring OS. The bevacizumab-treated subgroup attenuates toward the null, hinting at anti-inflammatory modulation by VEGF blockade.
+          <span class="zh">III 期信号在 PFS 中重现；贝伐珠单抗亚组效应减弱，提示抗血管生成治疗的抗炎修饰。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 OS SUBGROUP TABLE -->
+<section id="s8" data-title="OS Subgroups">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">07</div>
+      <div class="sec-title reveal">
+        <h2>Subgroup Analysis: OS.</h2>
+        <span class="zh">亚组分析 · 总生存期（表 2）</span>
+      </div>
+    </div>
+
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Subgroup</th><th class="r">Studies</th><th class="r">HR (95% CI)</th><th class="r">I² (%)</th><th class="r">P-value</th></tr>
+        </thead>
+        <tbody>
+          <tr class="overall"><td>Overall</td><td class="r"><span class="count">32</span></td><td class="r hr"><span class="count">2.11</span> <span class="ci">(1.73–2.57)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="section"><td colspan="5">Study Design</td></tr>
+          <tr><td>Retrospective</td><td class="r"><span class="count">30</span></td><td class="r"><span class="count">2.05</span> <span class="ci">(1.67–2.52)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Prospective</td><td class="r"><span class="count">2</span></td><td class="r"><span class="count">1.89</span> <span class="ci">(1.45–2.47)</span></td><td class="r"><span class="count">45</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="section"><td colspan="5">TNM Stage</td></tr>
+          <tr><td>Stage I–II</td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">2.31</span> <span class="ci">(1.65–3.24)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="overall"><td>Stage III</td><td class="r"><span class="count">4</span></td><td class="r hr"><span class="count">3.65</span> <span class="ci">(1.98–6.91)</span></td><td class="r"><span class="count">85</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">19</span></td><td class="r"><span class="count">2.47</span> <span class="ci">(1.34–4.84)</span></td><td class="r"><span class="count">93</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="section"><td colspan="5">Tumor Location</td></tr>
+          <tr><td>Colon</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.18</span> <span class="ci">(1.67–2.85)</span></td><td class="r"><span class="count">89</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Rectal</td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">1.96</span> <span class="ci">(1.45–2.65)</span></td><td class="r"><span class="count">85</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="section"><td colspan="5">Treatment</td></tr>
+          <tr><td>Chemotherapy alone</td><td class="r"><span class="count">14</span></td><td class="r"><span class="count">2.01</span> <span class="ci">(1.52–2.66)</span></td><td class="r"><span class="count">90</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Chemo + Bevacizumab</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.78</span> <span class="ci">(1.23–2.58)</span></td><td class="r"><span class="count">85</span></td><td class="r"><span class="count">0.002</span></td></tr>
+          <tr><td>Surgical resection</td><td class="r"><span class="count">16</span></td><td class="r"><span class="count">2.24</span> <span class="ci">(1.78–2.82)</span></td><td class="r"><span class="count">93</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="forest-caption">Table 2 · Random-effects model. All subgroups retain statistical significance; Stage III persists as the strongest stratum.</p>
+  </div>
+</section>
+
+<!-- 09 PFS SUBGROUP TABLE -->
+<section id="s9" data-title="PFS Subgroups">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">08</div>
+      <div class="sec-title reveal">
+        <h2>Subgroup Analysis: PFS.</h2>
+        <span class="zh">亚组分析 · 无进展生存期（表 4）</span>
+      </div>
+    </div>
+
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead>
+          <tr><th>Subgroup</th><th class="r">N</th><th class="r">HR (95% CI)</th><th class="r">I²</th><th class="r">P-value</th></tr>
+        </thead>
+        <tbody>
+          <tr class="overall"><td>Overall</td><td class="r"><span class="count">24</span></td><td class="r hr"><span class="count">2.16</span> <span class="ci">(1.83–2.54)</span></td><td class="r"><span class="count">73</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="section"><td colspan="5">Study Design</td></tr>
+          <tr><td>Retrospective</td><td class="r"><span class="count">22</span></td><td class="r"><span class="count">2.08</span> <span class="ci">(1.74–2.49)</span></td><td class="r"><span class="count">74</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Prospective</td><td class="r"><span class="count">2</span></td><td class="r"><span class="count">1.28</span> <span class="ci">(0.98–1.67)</span></td><td class="r"><span class="count">45</span></td><td class="r"><span class="count">0.07</span></td></tr>
+          <tr class="section"><td colspan="5">TNM Stage</td></tr>
+          <tr class="overall"><td>Stage III</td><td class="r"><span class="count">6</span></td><td class="r hr"><span class="count">3.64</span> <span class="ci">(1.65–8.60)</span></td><td class="r"><span class="count">89</span></td><td class="r"><span class="count">0.002</span></td></tr>
+          <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.23</span> <span class="ci">(1.38–4.01)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">0.001</span></td></tr>
+          <tr><td>Mixed stages</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.97</span> <span class="ci">(1.31–2.98)</span></td><td class="r"><span class="count">65</span></td><td class="r"><span class="count">0.001</span></td></tr>
+          <tr class="section"><td colspan="5">Tumor Location</td></tr>
+          <tr><td>Colon</td><td class="r"><span class="count">10</span></td><td class="r"><span class="count">2.24</span> <span class="ci">(1.78–2.82)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Rectal</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.89</span> <span class="ci">(1.42–2.52)</span></td><td class="r"><span class="count">69</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Mixed / Colorectal</td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">2.08</span> <span class="ci">(1.62–2.67)</span></td><td class="r"><span class="count">72</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="section"><td colspan="5">Treatment</td></tr>
+          <tr><td>Chemotherapy alone</td><td class="r"><span class="count">10</span></td><td class="r"><span class="count">2.01</span> <span class="ci">(1.52–2.66)</span></td><td class="r"><span class="count">75</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Chemo + Bevacizumab</td><td class="r"><span class="count">4</span></td><td class="r"><span class="count">1.41</span> <span class="ci">(0.97–2.06)</span></td><td class="r"><span class="count">68</span></td><td class="r"><span class="count">0.07</span></td></tr>
+          <tr><td>Surgical resection</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.18</span> <span class="ci">(1.74–2.73)</span></td><td class="r"><span class="count">74</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="forest-caption">Table 4 · The bevacizumab stratum loses significance on PFS (p = 0.07), the only subgroup to do so, consistent with an anti-inflammatory mechanism attenuating SII's signal.</p>
+  </div>
+</section>
+
+<!-- 10 SENSITIVITY & BIAS -->
+<section id="s10" data-title="Sensitivity & Bias">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">09</div>
+      <div class="sec-title reveal">
+        <h2>Robustness &amp; Bias.</h2>
+        <span class="zh">敏感性分析 · 发表偏倚 · Meta 回归</span>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="col reveal">
+        <h3>Sensitivity Analysis <span class="zh" style="display:inline;font-size:13px;">· Figure 3</span></h3>
+        <p>Leave-one-out analysis sequentially excluded each study. Pooled HR remained stable for both OS and PFS; no single study exerted disproportionate influence. OS and PFS effect sizes stayed within expected ranges across all iterations.</p>
+
+        <h3 style="margin-top:28px;">Publication Bias <span class="zh" style="display:inline;font-size:13px;">· Figure 4</span></h3>
+        <p>Funnel plots showed approximately symmetric distribution with no obvious small-study effects. Egger's regression confirmed no significant bias:</p>
+        <div class="metrics" style="grid-template-columns:1fr 1fr;margin:14px 0 0;border:none;">
+          <div class="metric" style="border:1px solid var(--border);border-right:1px solid var(--border);">
+            <div class="num" style="font-size:32px;">0.669</div>
+            <div class="lbl">Egger · OS · p</div>
+          </div>
+          <div class="metric" style="border:1px solid var(--border);">
+            <div class="num" style="font-size:32px;">0.261</div>
+            <div class="lbl">Egger · PFS · p</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col reveal">
+        <h3>Meta-Regression · SII Cut-off as Moderator</h3>
+        <p style="margin-bottom:18px;">Despite wide cut-off variation (340–1,505), the cut-off value was <strong>not</strong> a significant source of heterogeneity. This is the key methodological finding: heterogeneity is driven by clinical context (stage, treatment, timing), not by arbitrary threshold choice.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Outcome</th><th>Moderator</th><th class="r">b</th><th class="r">p</th><th class="r">k</th></tr></thead>
+            <tbody>
+              <tr><td>OS</td><td>Cut-off (cont.)</td><td class="r"><span class="count">−0.00001</span></td><td class="r"><span class="count">0.94</span></td><td class="r"><span class="count">28</span></td></tr>
+              <tr><td>OS</td><td>ln(Cut-off)</td><td class="r"><span class="count">0.006</span></td><td class="r"><span class="count">0.89</span></td><td class="r"><span class="count">28</span></td></tr>
+              <tr><td>PFS</td><td>Cut-off (cont.)</td><td class="r"><span class="count">−0.00002</span></td><td class="r"><span class="count">0.75</span></td><td class="r"><span class="count">23</span></td></tr>
+              <tr><td>PFS</td><td>ln(Cut-off)</td><td class="r"><span class="count">−0.002</span></td><td class="r"><span class="count">0.97</span></td><td class="r"><span class="count">23</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="forest-caption" style="border-top:none;padding-top:0;">Table 3 · All p-values far from significance; cut-off value does not moderate effect size.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 MECHANISMS -->
+<section id="s11" data-title="Mechanisms">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">10</div>
+      <div class="sec-title reveal">
+        <h2>Biological Mechanisms.</h2>
+        <span class="zh">SII 预后价值的生物学机制</span>
+      </div>
+    </div>
+
+    <div class="mech-grid reveal">
+      <div class="mech-cell">
+        <svg class="ico" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#C83048" stroke-width="1.5"/><circle cx="18" cy="18" r="4" fill="#C83048"/><circle cx="10" cy="10" r="2.5" fill="#C83048" opacity=".6"/><circle cx="26" cy="12" r="2" fill="#C83048" opacity=".6"/><circle cx="24" cy="26" r="2.5" fill="#C83048" opacity=".6"/><circle cx="9" cy="24" r="2" fill="#C83048" opacity=".6"/></svg>
+        <h3>Neutrophilia</h3>
+        <span class="zh">中性粒细胞升高</span>
+        <ul>
+          <li>Release of VEGF &amp; MMPs</li>
+          <li>Promote angiogenesis</li>
+          <li>Facilitate metastasis</li>
+          <li>Remodel extracellular matrix</li>
+        </ul>
+      </div>
+      <div class="mech-cell">
+        <svg class="ico" viewBox="0 0 36 36" fill="none"><ellipse cx="18" cy="18" rx="15" ry="8" stroke="#C83048" stroke-width="1.5"/><ellipse cx="18" cy="18" rx="8" ry="15" stroke="#C83048" stroke-width="1.5"/><circle cx="18" cy="18" r="3" fill="#C83048"/></svg>
+        <h3>Thrombocytosis</h3>
+        <span class="zh">血小板增多</span>
+        <ul>
+          <li>Platelet–tumor aggregates</li>
+          <li>Protect CTCs from shear stress</li>
+          <li>Shield from immune surveillance</li>
+          <li>Enhance tumor cell survival</li>
+        </ul>
+      </div>
+      <div class="mech-cell">
+        <svg class="ico" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#5A9E97" stroke-width="1.5" stroke-dasharray="2 2"/><circle cx="18" cy="18" r="3" fill="#5A9E97"/><path d="M18 8 L18 4 M18 32 L18 28 M8 18 L4 18 M32 18 L28 18" stroke="#5A9E97" stroke-width="1.2"/></svg>
+        <h3>Lymphocytopenia</h3>
+        <span class="zh">淋巴细胞减少</span>
+        <ul>
+          <li>Impaired CD8+ T-cell function</li>
+          <li>Reduced antitumor immunity</li>
+          <li>Decreased immunosurveillance</li>
+          <li>Treg &amp; MDSC infiltration</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mech-summary reveal">
+      The combined effect of elevated neutrophils and platelets with reduced lymphocytes creates a pro-tumor microenvironment, enhances infiltration of immunosuppressive cells (MDSCs, Tregs), promotes angiogenesis, and impairs cytotoxic T-cell-mediated antitumor immunity. SII captures all three compartments in a single composite index, more comprehensive than NLR or PLR alone.
+      <span class="zh">炎性-免疫失衡驱动肿瘤微环境重塑；SII 同时捕获中性粒、血小板、淋巴三个维度的复合信息，优于 NLR 或 PLR。</span>
+    </div>
+  </div>
+</section>
+
+<!-- 12 DISCUSSION -->
+<section id="s12" data-title="Discussion">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">11</div>
+      <div class="sec-title reveal">
+        <h2>Clinical Implications.</h2>
+        <span class="zh">讨论 · 临床意义与创新点</span>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="col reveal">
+        <h3>Proposed Clinical Framework</h3>
+        <ul>
+          <li>Baseline SII at diagnosis for risk stratification.</li>
+          <li>Serial SII monitoring (e.g., every 3 months).</li>
+          <li>Integrate with TNM staging, especially in Stage III.</li>
+          <li>Treatment intensification if SII persistently elevated.</li>
+          <li>Nomograms combining SII with molecular and clinical variables.</li>
+        </ul>
+
+        <h3 style="margin-top:32px;">Key Clinical Insights</h3>
+        <div class="mech-summary" style="font-size:16px;font-style:normal;font-family:'Spectral',serif;">
+          <strong>Stage III</strong> shows the strongest association (OS HR 3.65, PFS HR 3.64). SII may guide treatment intensification. <strong>Post-treatment &gt; baseline</strong> (OS HR 2.44 vs 1.98) supports dynamic monitoring. <strong>Bevacizumab</strong> attenuates the signal (OS HR 1.78; PFS HR 1.41), suggesting anti-inflammatory properties. <strong>Elderly (≥65)</strong> show stronger effect (meta-regression p = 0.041), reflecting cumulative inflammatory burden.
+        </div>
+      </div>
+
+      <div class="col reveal">
+        <h3>Innovations vs. Previous Meta-Analyses</h3>
+        <div class="tbl-wrap">
+          <table class="vs-tbl">
+            <thead><tr><th>Feature</th><th>This Study</th><th>Tan et al. 2025</th></tr></thead>
+            <tbody>
+              <tr><td>Studies</td><td class="ours"><span class="count">35</span></td><td><span class="count">27</span></td></tr>
+              <tr><td>Patients</td><td class="ours"><span class="count">26,812</span></td><td><span class="count">18,420</span></td></tr>
+              <tr><td>Search updated</td><td class="ours">Nov 2025</td><td>Mar 2024</td></tr>
+              <tr><td>TNM subgroup</td><td class="ours">Yes (detailed)</td><td>Partial</td></tr>
+              <tr><td>Tumor location</td><td class="ours">Yes</td><td>No</td></tr>
+              <tr><td>Cut-off meta-regression</td><td class="ours">Yes</td><td>No</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="forest-caption">This analysis adds eight more studies, 8,392 more patients, and the first meta-regression of cut-off value as a heterogeneity moderator.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 LIMITATIONS -->
+<section id="s13" data-title="Limitations">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">12</div>
+      <div class="sec-title reveal">
+        <h2>Limitations.</h2>
+        <span class="zh">研究局限性</span>
+      </div>
+    </div>
+
+    <div class="lim-grid reveal">
+      <div class="lim">
+        <div class="n">1</div>
+        <div>
+          <h3>Cut-off Heterogeneity</h3>
+          <span class="zh">截断值异质性</span>
+          <p>SII cut-off values ranged from 340 to 1,505. Although meta-regression did not identify it as a significant moderator, this variability limits cross-study comparability and impedes standardization of clinical thresholds.</p>
+        </div>
+      </div>
+      <div class="lim">
+        <div class="n">2</div>
+        <div>
+          <h3>Study Design Imbalance</h3>
+          <span class="zh">研究设计失衡</span>
+          <p>38 of 40 cohorts were retrospective; only 2 were prospective. Retrospective designs introduce potential confounders and selection bias. Prospective data for PFS did not reach significance (p = 0.07).</p>
+        </div>
+      </div>
+      <div class="lim">
+        <div class="n">3</div>
+        <div>
+          <h3>Geographic Bias</h3>
+          <span class="zh">地域偏倚</span>
+          <p>The majority of studies originate from Asia (China, Japan), with limited European representation and minimal data from North America, Africa, and other regions. Findings may not generalize to non-Asian populations.</p>
+        </div>
+      </div>
+      <div class="lim">
+        <div class="n">4</div>
+        <div>
+          <h3>Tumor Location Granularity</h3>
+          <span class="zh">肿瘤部位分辨率不足</span>
+          <p>Most original studies did not provide HRs stratified by right-sided vs. left-sided CRC, despite known biological differences (MSI, BRAF, microbiome) between proximal and distal tumors.</p>
+        </div>
+      </div>
+      <div class="lim" style="grid-column:1 / -1;border-right:none;padding-right:0;">
+        <div class="n">5</div>
+        <div>
+          <h3>High Heterogeneity</h3>
+          <span class="zh">高异质性</span>
+          <p>I² = 92% for OS and 73% for PFS. Despite consistent effect direction across all studies, the high heterogeneity warrants cautious interpretation and underscores the need for standardized protocols in future prospective studies.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 CONCLUSIONS -->
+<section id="s14" data-title="Conclusions">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">13</div>
+      <div class="sec-title reveal">
+        <h2>Conclusions &amp; Future Directions.</h2>
+        <span class="zh">结论与未来研究方向</span>
+      </div>
+    </div>
+
+    <div class="conc-split">
+      <div class="conc-block reveal">
+        <h3>Conclusions <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">结论</span></h3>
+        <ul>
+          <li>Elevated pre-treatment SII is significantly associated with worse OS (<span class="count">HR 2.11</span>) and PFS (<span class="count">HR 2.16</span>) in CRC, based on <b>35 studies</b> and <b>26,812 patients</b>.</li>
+          <li>SII is a robust, accessible, and cost-effective prognostic biomarker derived from routine blood counts.</li>
+          <li>Prognostic value is consistent across diverse clinical subgroups; strongest in Stage III disease (<span class="count">OS HR 3.65</span>).</li>
+          <li>Post-treatment SII may offer superior prognostic precision compared to static baseline measurements.</li>
+          <li>Cut-off heterogeneity and geographic bias limit immediate universal clinical implementation.</li>
+        </ul>
+      </div>
+      <div class="conc-block reveal">
+        <h3>Future Research <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">未来方向</span></h3>
+        <ul>
+          <li>Large-scale prospective multicenter studies with standardized SII measurement protocols.</li>
+          <li>ROC-based validation of universally applicable optimal SII cut-off values.</li>
+          <li>Integration of SII with molecular subtyping (MSI, KRAS, BRAF) and other biomarkers.</li>
+          <li>Investigation of dynamic SII monitoring (DSII) protocols for treatment response assessment.</li>
+          <li>Expansion to geographically diverse populations via multi-center international collaborations.</li>
+          <li>Development of nomograms integrating SII with clinical and molecular variables for personalized prognostication.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 ACKNOWLEDGMENTS -->
+<section id="s15" data-title="Acknowledgments" style="justify-content:flex-start;padding-top:140px;">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num reveal">14</div>
+      <div class="sec-title reveal">
+        <h2>Acknowledgments.</h2>
+        <span class="zh">致谢</span>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="col reveal">
+        <p>Co-author <strong>Huiying Jiang</strong> for supervision, validation, and visualization.</p>
+        <p><strong>Beijing Jingmei Group General Hospital</strong> for institutional support.</p>
+        <p>All investigators of the <strong>35 included studies</strong>, whose work made this synthesis possible.</p>
+        <p>PROSPERO registration: <span class="count">CRD420251010606</span></p>
+      </div>
+      <div class="col reveal" style="display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="label label-accent" style="margin-bottom:14px;">Correspondence</div>
+          <p style="font-size:17px;"><strong>Pengfei Wang</strong><br><span class="count" style="font-size:14px;">248616795@qq.com</span></p>
+          <div class="label" style="margin-top:28px;margin-bottom:14px;">Published In</div>
+          <p><em>Frontiers in Oncology</em>, 2026<br><span class="count" style="font-size:13px;color:var(--muted);">DOI 10.3389/fonc.2026.1616016</span></p>
+        </div>
+        <div style="margin-top:48px;border-top:2px solid var(--ink);padding-top:24px;">
+          <h2 style="font-size:clamp(36px,4.5vw,64px);font-style:italic;font-weight:400;">Thank you.</h2>
+          <p class="zh" style="font-size:16px;margin-top:8px;">恳请提问与讨论。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="left">
+    SII × Colorectal Cancer: A Meta-Analysis
+    <span class="zh">系统免疫炎症指数与结直肠癌 · 系统综述与 Meta 分析</span>
+  </div>
+  <div class="right">
+    <b>Wang P · Jiang H</b>
+    Frontiers in Oncology · 2026<br>
+    DOI 10.3389/fonc.2026.1616016<br>
+    PROSPERO CRD420251010606
+  </div>
+</footer>
+
+<script>
+  const SECTIONS = Array.from(document.querySelectorAll('main > section'));
+  const TOTAL = SECTIONS.length;
+  let current = 0;
+
+  /* dots rail */
+  const dotsEl = document.getElementById('dots');
+  SECTIONS.forEach((s, i) => {
+    const a = document.createElement('a');
+    a.href = '#' + s.id;
+    a.setAttribute('aria-label', s.dataset.title || ('Section ' + (i+1)));
+    a.dataset.idx = i;
+    dotsEl.appendChild(a);
+  });
+  const dotEls = Array.from(dotsEl.children);
+
+  const counter = document.getElementById('pgcounter');
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function setActive(i){
+    current = i;
+    dotEls.forEach((d, idx) => d.classList.toggle('active', idx === i));
+    counter.textContent = pad(i+1) + ' / ' + pad(TOTAL);
+  }
+  setActive(0);
+
+  /* IntersectionObserver for active dot + nav hide */
+  const navEl = document.getElementById('nav');
+  let lastY = 0;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = SECTIONS.indexOf(e.target);
+        if (idx !== -1) setActive(idx);
+      }
+    });
+  }, { threshold: 0.5 });
+  SECTIONS.forEach(s => io.observe(s));
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 120 && y > lastY) navEl.style.transform = 'translateY(-100%)';
+    else navEl.style.transform = 'translateY(0)';
+    lastY = y;
+  }, { passive: true });
+
+  /* keyboard navigation */
+  function scrollToSection(i){
+    const clamped = Math.max(0, Math.min(TOTAL - 1, i));
+    SECTIONS[clamped].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  window.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+      e.preventDefault(); scrollToSection(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault(); scrollToSection(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); scrollToSection(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); scrollToSection(TOTAL - 1);
+    }
+  });
+
+  /* GSAP reveal — respects reduced motion */
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReduced && window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    SECTIONS.forEach((sec) => {
+      const reveals = sec.querySelectorAll('.reveal');
+      reveals.forEach((el) => {
+        gsap.to(el, {
+          opacity: 1, y: 0,
+          duration: 0.9, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 86%', toggleActions: 'play none none none' }
+        });
+      });
+    });
+
+    /* Forest plot — draw CI lines + diamond on enter */
+    const forest = document.getElementById('forestOS');
+    if (forest) {
+      const paths = forest.querySelectorAll('.path-draw');
+      paths.forEach((p) => {
+        const len = p.getTotalLength ? p.getTotalLength() : 200;
+        gsap.set(p, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 });
+      });
+      const squares = forest.querySelectorAll('.square, .diamond');
+      gsap.set(squares, { opacity: 0, scale: 0.4, transformOrigin: 'center' });
+
+      ScrollTrigger.create({
+        trigger: forest,
+        start: 'top 70%',
+        once: true,
+        onEnter: () => {
+          paths.forEach((p, i) => {
+            const len = p.getTotalLength ? p.getTotalLength() : 200;
+            gsap.to(p, { strokeDashoffset: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: i * 0.08 });
+          });
+          squares.forEach((s, i) => {
+            gsap.to(s, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.6)', delay: 0.3 + i * 0.07 });
+          });
+        }
+      });
+    }
+  } else {
+    /* reduced motion or no GSAP — just show everything */
+    document.querySelectorAll('.reveal').forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
+  }
+</script>
+
+</body>
+</html>
