@@ -167,7 +167,6 @@ section {
   flex-direction: column;
   justify-content: center;
   position: relative;
-  overflow: hidden;
   box-sizing: border-box;
 }
 html { scroll-snap-type: y proximity; }
@@ -614,13 +613,14 @@ table tbody td .ci { color: var(--ink-muted); font-size: 12px; }
   gap: 64px;
   align-items: center;
 }
-.prisma-svg { width: 100%; max-width: 480px; }
+.prisma-svg { width: 100%; max-width: 520px; height: auto; }
 .prisma-svg .box { fill: var(--paper); stroke: var(--border-strong); stroke-width: 1; rx: 4; }
 .prisma-svg .box-final { fill: var(--ink); stroke: none; rx: 4; }
 .prisma-svg .box-final text { fill: var(--bg); }
 .prisma-svg text { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-light); }
-.prisma-svg .arrow { stroke: var(--ink-faint); stroke-width: 1; }
-.prisma-svg .stage { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; fill: var(--ink-faint); }
+.prisma-svg .arrow { stroke: var(--ink-faint); stroke-width: 1; fill: none; }
+.prisma-svg .arrow-head { fill: var(--ink-faint); }
+.prisma-svg .stage { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; fill: var(--ink-faint); text-transform: uppercase; }
 
 .crit-list li { padding-left: 20px; }
 
@@ -1105,35 +1105,57 @@ html {
         </ul>
       </div>
       <div class="reveal">
-        <svg class="prisma-svg" viewBox="0 0 480 440" role="img" aria-label="PRISMA 2020 flow diagram">
+        <svg class="prisma-svg" viewBox="0 0 520 560" role="img" aria-label="PRISMA 2020 flow diagram">
           <text class="stage" x="20" y="14">Identification</text>
-          <rect class="box" x="20" y="22" width="220" height="80" rx="4"/>
+          <rect class="box" x="20" y="22" width="240" height="88" rx="4"/>
           <text x="32" y="46">Records identified</text>
-          <text x="32" y="74" style="font-size:20px;font-weight:500">349</text>
-          <text x="32" y="92" style="font-size:10px;">PubMed 142 · Embase 105</text>
-          <text x="32" y="104" style="font-size:10px;">Cochrane 8 · WoS 94</text>
-          <rect class="box" x="270" y="22" width="190" height="80" rx="4"/>
-          <text x="282" y="46">After duplicate removal</text>
-          <text x="282" y="74" style="font-size:20px;font-weight:500">198</text>
-          <path class="arrow" d="M240,62 L270,62"/>
-          <text class="stage" x="20" y="128">Screening</text>
-          <rect class="box" x="20" y="136" width="220" height="64" rx="4"/>
-          <text x="32" y="160">Full-text assessed</text>
-          <text x="32" y="188" style="font-size:20px;font-weight:500">67</text>
-          <rect class="box" x="270" y="136" width="190" height="64" rx="4"/>
-          <text x="282" y="160">Excluded</text>
-          <text x="282" y="188" style="font-size:20px;font-weight:500">32</text>
-          <path class="arrow" d="M240,168 L270,168"/>
-          <text class="stage" x="20" y="220">Eligibility</text>
-          <rect class="box" x="20" y="228" width="220" height="56" rx="4"/>
-          <text x="32" y="252">Eligible studies</text>
-          <text x="32" y="272" style="font-size:20px;font-weight:500">35</text>
-          <path class="arrow" d="M240,256 L270,256"/>
-          <text class="stage" x="20" y="300">Included</text>
-          <rect class="box-final" x="20" y="308" width="440" height="56" rx="4"/>
-          <text x="32" y="332" fill="white">Studies included in qualitative synthesis</text>
-          <text x="32" y="352" style="font-size:20px;font-weight:500;fill:white">35</text>
-          <path class="arrow" d="M130,284 L130,308"/>
+          <text x="32" y="76" style="font-size:22px;font-weight:500">349</text>
+          <text x="32" y="94" style="font-size:9px;">PubMed 142 · Embase 105</text>
+          <text x="32" y="106" style="font-size:9px;">Cochrane 8 · WoS 94</text>
+          <rect class="box" x="300" y="22" width="200" height="88" rx="4"/>
+          <text x="312" y="46">After duplicate removal</text>
+          <text x="312" y="76" style="font-size:22px;font-weight:500">198</text>
+          <text x="312" y="94" style="font-size:9px;">151 duplicates removed</text>
+          <path class="arrow" d="M260,66 L300,66"/>
+          <polygon class="arrow-head" points="300,66 294,63 294,69"/>
+          <path class="arrow" d="M140,110 L140,142"/>
+          <polygon class="arrow-head" points="140,142 137,136 143,136"/>
+          <text class="stage" x="20" y="134">Screening</text>
+          <rect class="box" x="20" y="142" width="240" height="68" rx="4"/>
+          <text x="32" y="166">Title/Abstract screened</text>
+          <text x="32" y="194" style="font-size:22px;font-weight:500">198</text>
+          <rect class="box" x="300" y="142" width="200" height="68" rx="4"/>
+          <text x="312" y="166">Excluded</text>
+          <text x="312" y="194" style="font-size:22px;font-weight:500">131</text>
+          <path class="arrow" d="M260,176 L300,176"/>
+          <polygon class="arrow-head" points="300,176 294,173 294,179"/>
+          <path class="arrow" d="M140,210 L140,242"/>
+          <polygon class="arrow-head" points="140,242 137,236 143,236"/>
+          <text class="stage" x="20" y="234">Eligibility</text>
+          <rect class="box" x="20" y="242" width="240" height="68" rx="4"/>
+          <text x="32" y="266">Full-text assessed</text>
+          <text x="32" y="294" style="font-size:22px;font-weight:500">67</text>
+          <rect class="box" x="300" y="242" width="200" height="68" rx="4"/>
+          <text x="312" y="266">Excluded with reasons</text>
+          <text x="312" y="290" style="font-size:9px;">No SII data: 18</text>
+          <text x="312" y="302" style="font-size:9px;">No HR/CI: 9 · Overlap: 5</text>
+          <path class="arrow" d="M260,276 L300,276"/>
+          <polygon class="arrow-head" points="300,276 294,273 294,279"/>
+          <path class="arrow" d="M140,310 L140,342"/>
+          <polygon class="arrow-head" points="140,342 137,336 143,336"/>
+          <text class="stage" x="20" y="334">Included</text>
+          <rect class="box-final" x="20" y="342" width="480" height="68" rx="4"/>
+          <text x="32" y="368" fill="white">Studies included in meta-analysis</text>
+          <text x="32" y="396" style="font-size:22px;font-weight:500;fill:white">35</text>
+          <text x="300" y="368" style="font-size:10px;fill:rgba(255,255,255,.6)">Patients</text>
+          <text x="300" y="396" style="font-size:22px;font-weight:500;fill:white">26,812</text>
+          <path class="arrow" d="M140,410 L140,442"/>
+          <polygon class="arrow-head" points="140,442 137,436 143,436"/>
+          <rect class="box" x="20" y="442" width="480" height="56" rx="4" style="fill:var(--paper);stroke:var(--border-strong);stroke-dasharray:4 3;"/>
+          <text x="32" y="466" style="font-size:10px;">Quantitative synthesis</text>
+          <text x="32" y="486" style="font-size:16px;font-weight:500">OS: 32 studies · PFS: 23 studies</text>
+          <text x="280" y="466" style="font-size:10px;">Subgroup analyses</text>
+          <text x="280" y="486" style="font-size:9px;">TNM · Location · Treatment · Timing</text>
         </svg>
       </div>
     </div>
