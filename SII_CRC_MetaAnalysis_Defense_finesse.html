@@ -1,770 +1,1009 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SII in CRC: A Meta-Analysis | Frontiers in Oncology 2026</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SII × CRC | Prognostic Meta-Analysis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #FDFDFD;
+  --paper: #FFFFFF;
+  --ink: #1A1A1A;
+  --ink-light: #3D3D3D;
+  --ink-muted: #8A8A8A;
+  --ink-faint: #C5C5C5;
+  --accent: #1A1A1A;
+  --accent-secondary: #6B6B6B;
+  --border: rgba(26,26,26,.06);
+  --border-strong: rgba(26,26,26,.12);
+  --shadow: 0 2px 12px rgba(26,26,26,.04);
+  --shadow-md: 0 4px 24px rgba(26,26,26,.06);
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
 
-  :root {
-    --bg:       #FFFFFF;
-    --bg-grad:  linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);
-    --surface:  #FFFFFF;
-    --surface-alt: #F8F9FA;
-    --surface-hover: #F1F3F5;
-    --ink:      #1A1A1A;
-    --ink-soft: #4A4A4A;
-    --muted:    #8A8A8A;
-    --dim:      #E0E0E0;
-    --accent:   #FF6A00;
-    --accent2:  #00B42A;
-    --accent-gradient: linear-gradient(135deg, #FF6A00 0%, #FF4D00 100%);
-    --border:   rgba(0,0,0,.06);
-    --border-strong: rgba(0,0,0,.12);
-    --shadow-sm: 0 1px 3px rgba(0,0,0,.05);
-    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
-    --shadow-lg: 0 8px 24px rgba(0,0,0,.10);
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-  }
+[data-theme="dark"] {
+  --bg: #0D0D0D;
+  --paper: #171717;
+  --ink: #FFFFFF;
+  --ink-light: #E0E0E0;
+  --ink-muted: #8A8A8A;
+  --ink-faint: #4A4A4A;
+  --accent: #FFFFFF;
+  --accent-secondary: #A0A0A0;
+  --border: rgba(255,255,255,.08);
+  --border-strong: rgba(255,255,255,.15);
+  --shadow: 0 2px 12px rgba(0,0,0,.3);
+  --shadow-md: 0 4px 24px rgba(0,0,0,.4);
+}
 
-  [data-theme="dark"] {
-    --bg:       #0A0A0A;
-    --bg-grad:  linear-gradient(180deg, #0A0A0A 0%, #121212 100%);
-    --surface:  #1A1A1A;
-    --surface-alt: #151515;
-    --surface-hover: #222222;
-    --ink:      #FFFFFF;
-    --ink-soft: #B8B8B8;
-    --muted:    #6A6A6A;
-    --dim:      #333333;
-    --accent:   #FF8C00;
-    --accent2:  #00D43A;
-    --accent-gradient: linear-gradient(135deg, #FF8C00 0%, #FF6A00 100%);
-    --border:   rgba(255,255,255,.08);
-    --border-strong: rgba(255,255,255,.15);
-    --shadow-sm: 0 1px 3px rgba(0,0,0,.3);
-    --shadow-md: 0 4px 12px rgba(0,0,0,.4);
-    --shadow-lg: 0 8px 24px rgba(0,0,0,.5);
-  }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
-  html { scroll-behavior: smooth; }
-  html, body, * {
-    transition: background-color .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease;
-  }
-  html, body {
-    background: var(--bg);
-    background-attachment: fixed;
-    color: var(--ink);
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-  }
+html, body {
+  background: var(--bg);
+  color: var(--ink-light);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  .content { position: relative; z-index: 5; }
+body { overflow-x: hidden; }
 
-  .glow-bg {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    overflow: hidden;
-  }
-  .glow-bg::before,
-  .glow-bg::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.3;
-    animation: glowMove 20s ease-in-out infinite;
-  }
-  .glow-bg::before {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-    top: -100px; left: -100px;
-    animation-delay: 0s;
-  }
-  .glow-bg::after {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, var(--accent2) 0%, transparent 70%);
-    bottom: -100px; right: -100px;
-    animation-delay: -10s;
-  }
-  [data-theme="dark"] .glow-bg::before,
-  [data-theme="dark"] .glow-bg::after {
-    opacity: 0.2;
-  }
+.font-serif { font-family: var(--font-serif); }
+.font-mono { font-family: var(--font-mono); }
 
-  @keyframes glowMove {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    25% { transform: translate(50px, 30px) scale(1.1); }
-    50% { transform: translate(30px, 80px) scale(0.9); }
-    75% { transform: translate(-20px, 40px) scale(1.05); }
-  }
+::selection {
+  background: var(--ink);
+  color: var(--bg);
+}
 
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.content { position: relative; z-index: 10; }
 
-  .reveal-left {
-    opacity: 0;
-    transform: translateX(-40px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal-left.active {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* Navigation */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 48px;
+  background: rgba(253,253,253,.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: transform .4s cubic-bezier(.16,1,.3,1), background .35s ease;
+}
+[data-theme="dark"] .nav {
+  background: rgba(13,13,13,.85);
+}
+.nav .brand {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: .12em;
+  color: var(--ink);
+}
+.nav .brand span {
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin-left: 8px;
+}
+.nav .meta {
+  font-size: 12px;
+  letter-spacing: .06em;
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .25s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-muted);
+  margin-left: 16px;
+}
+.theme-toggle:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.theme-toggle svg { width: 14px; height: 14px; }
 
-  .reveal-right {
-    opacity: 0;
-    transform: translateX(40px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal-right.active {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* Progress Dots */
+.dots {
+  position: fixed; right: 32px; top: 50%; transform: translateY(-50%);
+  z-index: 50; display: flex; flex-direction: column; gap: 12px;
+}
+.dots a {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ink-faint);
+  transition: all .35s cubic-bezier(.16,1,.3,1);
+  display: block;
+}
+.dots a.active {
+  background: var(--ink);
+  transform: scale(1.6);
+}
+.dots a:hover { background: var(--ink-muted); }
 
-  .reveal-scale {
-    opacity: 0;
-    transform: scale(0.95);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal-scale.active {
-    opacity: 1;
-    transform: scale(1);
-  }
+/* Page Counter */
+.hint {
+  position: fixed; left: 48px; bottom: 32px; z-index: 50;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--ink-faint);
+  display: flex; gap: 20px;
+  align-items: center;
+}
+.hint kbd {
+  font-family: inherit; font-size: 10px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--ink-muted);
+}
+#pgcounter { color: var(--ink-muted); }
 
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-  .reveal-delay-5 { transition-delay: 0.5s; }
+/* Sections */
+main { position: relative; }
+section {
+  min-height: 100vh;
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  padding: clamp(120px, 15vh, 160px) clamp(48px, 8vw, 96px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+html { scroll-snap-type: y proximity; }
 
-  h1, h2, h3 {
-    font-weight: 700;
-    letter-spacing: -.02em;
-    line-height: 1.1;
-    color: var(--ink);
-  }
-  h1 { font-size: clamp(36px, 6vw, 88px); font-weight: 800; letter-spacing: -.03em; line-height: 1; }
-  h2 { font-size: clamp(28px, 4vw, 56px); letter-spacing: -.02em; }
-  h3 { font-size: clamp(20px, 2.2vw, 28px); font-weight: 600; }
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
 
-  p { font-weight: 400; color: var(--ink-soft); }
-  em { font-style: italic; }
-  strong { font-weight: 600; color: var(--ink); }
+/* Section Header */
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: 56px;
+}
+.sec-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  color: var(--ink-faint);
+}
+.sec-title h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(28px, 3.5vw, 44px);
+  letter-spacing: -.01em;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.sec-title .zh {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink-muted);
+  margin-top: 6px;
+  letter-spacing: .04em;
+}
 
-  .label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .label-accent { color: var(--accent); }
+/* Horizontal Rule */
+hr.divider {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 48px 0;
+}
 
-  .count {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -.02em;
-    font-weight: 600;
-  }
+/* Decorative Line */
+.decor-line {
+  width: 48px;
+  height: 1px;
+  background: var(--ink);
+  margin: 24px 0;
+}
 
-  .zh {
-    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-    color: var(--muted);
-    font-weight: 400;
-  }
+/* Cover Section */
+.cover {
+  min-height: 100vh;
+  padding: 0;
+  justify-content: flex-start;
+}
+.cover-inner {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 140px clamp(48px, 8vw, 96px) 60px;
+}
+.cover .topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.cover .topline .journal {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.cover .topline .journal b {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--ink);
+}
+.cover .topline .vol {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
 
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 1px;
-  }
+.cover .center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cover .kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 32px;
+}
+.cover h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(44px, 6vw, 96px);
+  letter-spacing: -.02em;
+  line-height: .92;
+  color: var(--ink);
+  max-width: 14ch;
+  margin-bottom: 24px;
+}
+.cover h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-muted);
+}
+.cover .deck {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(18px, 1.8vw, 26px);
+  color: var(--ink-light);
+  max-width: 30ch;
+  line-height: 1.5;
+}
+.cover .deck .zh {
+  display: block;
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--ink-muted);
+  margin-top: 8px;
+  font-weight: 300;
+}
 
-  /* Nav */
-  .nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 40px;
-    background: rgba(255,255,255,.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    transition: transform .4s cubic-bezier(.16,1,.3,1);
-  }
-  [data-theme="dark"] .nav {
-    background: rgba(10,10,10,.85);
-  }
-  .nav .brand {
-    font-weight: 700;
-    font-size: 18px; letter-spacing: -.02em;
-    color: var(--ink);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .nav .brand::before {
-    content: ''; width: 32px; height: 32px;
-    background: var(--accent-gradient);
-    border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 14px; font-weight: 800;
-  }
-  .nav .brand span { color: var(--accent); }
-  .nav .meta {
-    font-size: 13px; letter-spacing: .02em;
-    color: var(--muted);
-  }
-  .nav .meta b { color: var(--ink); font-weight: 600; }
+.cover .bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.cover .authors {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--ink);
+}
+.cover .authors b { font-weight: 500; }
+.cover .authors .aff {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 6px;
+  font-style: italic;
+}
+.cover .doi {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-align: right;
+  letter-spacing: .02em;
+}
+.cover .doi b {
+  color: var(--ink-muted);
+  display: block;
+  margin-bottom: 4px;
+}
 
-  .theme-toggle {
-    background: var(--surface-alt); border: 1px solid var(--border);
-    padding: 8px 12px; border-radius: var(--radius-md);
-    cursor: pointer; transition: all .25s ease;
-    display: flex; align-items: center; gap: 8px;
-    color: var(--ink-soft);
-  }
-  .theme-toggle:hover {
-    border-color: var(--accent); color: var(--accent);
-    background: var(--surface-hover);
-  }
-  .theme-toggle svg { width: 16px; height: 16px; }
+/* Two Column Layout */
+.two-col {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: start;
+}
+.two-col.equal { grid-template-columns: 1fr 1fr; }
 
-  /* Section progress dots — right rail */
-  .dots {
-    position: fixed; right: 32px; top: 50%; transform: translateY(-50%);
-    z-index: 40; display: flex; flex-direction: column; gap: 12px;
-  }
-  .dots a {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--dim); border: 2px solid transparent; padding: 0;
-    transition: all .35s cubic-bezier(.16,1,.3,1);
-    display: block;
-  }
-  .dots a.active { background: var(--accent); transform: scale(1.4); }
-  .dots a:hover { background: var(--ink-soft); }
+.col h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 16px;
+  letter-spacing: -.01em;
+}
+.col p { margin-bottom: 16px; }
+.col p:last-child { margin-bottom: 0; }
 
-  /* Page hint — bottom left */
-  .hint {
-    position: fixed; left: 40px; bottom: 32px; z-index: 40;
-    font-size: 12px; letter-spacing: .04em;
-    color: var(--muted);
-    display: flex; gap: 20px; align-items: center;
-  }
-  .hint kbd {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    background: var(--surface-alt); border: 1px solid var(--border); padding: 3px 8px;
-    border-radius: var(--radius-sm); color: var(--ink-soft);
-  }
+.col ul { list-style: none; }
+.col ul li {
+  padding: 12px 0 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px;
+  color: var(--ink-light);
+  position: relative;
+  padding-left: 20px;
+}
+.col ul li:last-child { border-bottom: none; }
+.col ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20px;
+  width: 8px;
+  height: 1px;
+  background: var(--ink);
+}
 
-  /* Sections */
-  main { position: relative; }
-  section {
-    min-height: 100vh; min-height: 100dvh;
-    scroll-snap-align: start;
-    padding: clamp(100px, 12vh, 140px) clamp(48px, 8vw, 120px) clamp(80px, 10vh, 120px);
-    display: flex; flex-direction: column;
-    justify-content: center;
-    position: relative;
-    text-align: left;
-  }
-  section:first-of-type { }
-  html { scroll-snap-type: y proximity; }
+/* Formula Block */
+.formula {
+  background: var(--paper);
+  padding: 32px;
+  border-left: 2px solid var(--ink);
+  margin: 24px 0;
+  box-shadow: var(--shadow);
+}
+.formula .label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 16px;
+}
+.formula .eq {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.formula .eq .frac {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  margin: 0 8px;
+}
+.formula .eq .frac .num {
+  display: block;
+  border-bottom: 1px solid var(--ink);
+  padding: 0 12px 4px;
+  font-weight: 600;
+}
+.formula .eq .frac .den {
+  display: block;
+  padding: 4px 12px 0;
+}
+.formula .eq .x { color: var(--ink-muted); }
 
-  .wrap { max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 24px; }
+/* Metrics Grid */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin: 32px 0;
+}
+.metric {
+  background: var(--paper);
+  padding: 28px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: all .3s ease;
+}
+.metric:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.metric .num {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(32px, 4vw, 52px);
+  letter-spacing: -.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+.metric .num small {
+  font-size: .38em;
+  font-weight: 400;
+  color: var(--ink-muted);
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+.metric .lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 12px;
+}
+.metric .zh {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 4px;
+  display: block;
+}
 
-  /* Section header */
-  .sec-head { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
-  .sec-num {
-    font-size: 14px; font-weight: 700;
-    color: var(--accent); letter-spacing: .04em;
-    padding: 4px 12px;
-    background: var(--surface-alt);
-    border-radius: var(--radius-sm);
-  }
-  .sec-title { flex: 1; }
-  .sec-title h2 { display: inline-block; }
-  .sec-title .zh { display: block; font-size: 16px; margin-top: 6px; letter-spacing: .04em; color: var(--muted); }
+/* Tables */
+.tbl-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+  border-radius: 4px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+table thead th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  text-align: left;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-strong);
+}
+table thead th.r, table tbody td.r { text-align: right; }
+table tbody td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-light);
+  vertical-align: top;
+}
+table tbody tr:hover { background: var(--paper); }
+table tbody tr.section td {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding-top: 20px;
+  padding-bottom: 8px;
+  border-bottom: none;
+}
+table tbody tr.overall td {
+  font-weight: 500;
+  color: var(--ink);
+  border-bottom: 1px solid var(--border-strong);
+}
+table tbody td.hr { color: var(--ink); font-weight: 600; }
+table tbody td .ci { color: var(--ink-muted); font-size: 12px; }
+.count { font-family: var(--font-mono); font-weight: 500; }
 
-  /* COVER */
-  .cover {
-    min-height: 100vh; min-height: 100dvh;
-    padding: 0;
-    justify-content: flex-start;
-  }
-  .cover-inner {
-    position: relative; width: 100%; height: 100vh; height: 100dvh;
-    display: grid; grid-template-rows: auto 1fr auto;
-    padding: 80px 7vw 60px;
-  }
-  .cover .topline {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .cover .topline .journal {
-    font-weight: 600; font-size: 15px; color: var(--ink);
-  }
-  .cover .topline .journal b { font-weight: 700; color: var(--accent); }
-  .cover .topline .vol {
-    font-size: 12px;
-    letter-spacing: .12em; color: var(--muted); text-transform: uppercase;
-  }
-  .cover .center {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 40px 0;
-  }
-  .cover .kicker {
-    font-size: 13px; font-weight: 600;
-    letter-spacing: .2em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 24px;
-  }
-  .cover h1 {
-    font-size: clamp(40px, 6.5vw, 100px);
-    font-weight: 800; letter-spacing: -.03em; line-height: .95;
-    margin-bottom: 20px; max-width: 12ch;
-  }
-  .cover h1 em {
-    font-style: normal; font-weight: 600; color: var(--accent);
-  }
-  .cover .deck {
-    font-size: clamp(18px, 2vw, 26px);
-    color: var(--ink-soft); max-width: 32ch; line-height: 1.5;
-    font-weight: 400;
-  }
-  .cover .deck .zh { display: block; font-size: 18px; margin-top: 8px; color: var(--muted); }
-  .cover .gold-rule {
-    width: 80px; height: 3px; background: var(--accent-gradient);
-    margin: 28px 0;
-    border-radius: 2px;
-  }
-  .cover .bottom {
-    display: flex; justify-content: space-between; align-items: flex-end;
-    border-top: 1px solid var(--border); padding-top: 24px;
-    gap: 40px; flex-wrap: wrap;
-  }
-  .cover .authors {
-    font-size: 16px; color: var(--ink);
-  }
-  .cover .authors b { font-weight: 600; }
-  .cover .authors .aff { color: var(--muted); font-size: 14px; display: block; margin-top: 6px; }
-  .cover .doi {
-    font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    color: var(--muted); text-align: right; letter-spacing: .04em;
-  }
-  .cover .doi b { color: var(--ink); display: block; font-weight: 600; margin-bottom: 6px; }
+/* Result Callout */
+.result-callout {
+  display: flex;
+  align-items: flex-end;
+  gap: 40px;
+  padding: 40px;
+  background: var(--paper);
+  border-left: 3px solid var(--ink);
+  margin: 24px 0;
+  box-shadow: var(--shadow-md);
+}
+.result-callout .big {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(56px, 7vw, 96px);
+  letter-spacing: -.04em;
+  color: var(--ink);
+  line-height: .9;
+}
+.result-callout .big small {
+  display: block;
+  font-size: .22em;
+  font-weight: 400;
+  color: var(--ink-muted);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+.result-callout .desc {
+  flex: 1;
+  font-size: 15px;
+  color: var(--ink-light);
+}
+.result-callout .desc b { font-weight: 500; color: var(--ink); }
+.result-callout .desc .ci-line {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-top: 8px;
+  line-height: 1.6;
+}
 
-  .cover-vig {
-    position: absolute; inset: 0; z-index: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse 70% 50% at 20% 40%, rgba(255,106,0,.08) 0%, transparent 60%),
-      radial-gradient(ellipse 80% 60% at 80% 60%, rgba(255,106,0,.05) 0%, transparent 50%);
-  }
+/* Forest Plot */
+.forest-wrap {
+  background: var(--paper);
+  padding: 32px;
+  border: 1px solid var(--border);
+  margin: 24px 0;
+  overflow-x: auto;
+}
+.forest { width: 100%; min-width: 900px; }
+.forest .axis { stroke: var(--ink-faint); stroke-width: 1; }
+.forest .null-line { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 4 4; }
+.forest .study-label { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-light); }
+.forest .ci-line { stroke: var(--ink-faint); stroke-width: 1.5; }
+.forest .square { fill: var(--ink); }
+.forest .diamond { fill: var(--ink); stroke: none; }
+.forest .axis-tick { font-family: var(--font-mono); font-size: 9px; fill: var(--ink-faint); }
+.forest .axis-title { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; fill: var(--ink-faint); }
+.forest .hr-anno { font-family: var(--font-mono); font-size: 10px; fill: var(--ink); }
 
-  /* Big metric blocks */
-  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 32px 0; }
-  .metric { padding: 28px 24px; background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); }
-  .metric:last-child { }
-  .metric .num {
-    font-family: 'JetBrains Mono', monospace; font-weight: 700;
-    font-size: clamp(36px, 4.5vw, 64px); letter-spacing: -.03em;
-    color: var(--ink); line-height: 1;
-  }
-  .metric .num small { font-size: .42em; color: var(--muted); font-weight: 500; letter-spacing: 0; margin-left: 4px; }
-  .metric .lbl {
-    font-size: 12px; font-weight: 600;
-    letter-spacing: .12em; text-transform: uppercase;
-    color: var(--muted); margin-top: 12px;
-  }
-  .metric .zh { font-size: 14px; margin-top: 4px; display: block; color: var(--ink-soft); }
-  .metric { transition: all .25s ease; }
-  .metric:hover { background: var(--surface-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); cursor: pointer; }
+.forest-caption {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
 
-  .expandable { cursor: pointer; position: relative; padding-right: 24px; }
-  .expandable::after {
-    content: '▼'; position: absolute; right: 0; top: 4px;
-    font-size: 10px; color: var(--muted);
-    transition: transform .25s ease;
-  }
-  .expandable.expanded::after { transform: rotate(180deg); }
-  .expand-content { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
-  .expandable.expanded + .expand-content { display: block; }
+/* PRISMA */
+.prisma {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 64px;
+  align-items: center;
+}
+.prisma-svg { width: 100%; max-width: 480px; }
+.prisma-svg .box { fill: var(--paper); stroke: var(--border-strong); stroke-width: 1; rx: 4; }
+.prisma-svg .box-final { fill: var(--ink); stroke: none; rx: 4; }
+.prisma-svg .box-final text { fill: var(--bg); }
+.prisma-svg text { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-light); }
+.prisma-svg .arrow { stroke: var(--ink-faint); stroke-width: 1; }
+.prisma-svg .stage { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; fill: var(--ink-faint); }
 
-  /* Two-column body */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-  .two-col.lean { grid-template-columns: 1.3fr 1fr; gap: 56px; }
-  .col h3 { margin-bottom: 16px; color: var(--ink); }
-  .col p { margin-bottom: 16px; }
-  .col p:last-child { margin-bottom: 0; }
-  .col ul { list-style: none; }
-  .col ul li {
-    padding: 12px 0 12px 24px; position: relative;
-    border-bottom: 1px solid var(--border); font-size: 16px;
-    color: var(--ink-soft);
-  }
-  .col ul li:last-child { border-bottom: none; }
-  .col ul li::before {
-    content: ''; position: absolute; left: 0; top: 20px;
-    width: 10px; height: 2px; background: var(--accent);
-    border-radius: 1px;
-  }
+.crit-list li { padding-left: 20px; }
 
-  /* SII formula block */
-  .formula {
-    background: var(--surface);
-    padding: 24px 28px;
-    border-radius: var(--radius-lg);
-    border-left: 4px solid var(--accent);
-    margin: 12px 0 24px;
-    box-shadow: var(--shadow-sm);
-  }
-  .formula .label { margin-bottom: 12px; }
-  .formula .eq {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(18px, 2vw, 24px);
-    font-weight: 600; color: var(--ink);
-    line-height: 1.6; letter-spacing: -.01em;
-  }
-  .formula .eq .frac { display: inline-block; vertical-align: middle; text-align: center; margin: 0 6px; }
-  .formula .eq .frac .num { display: block; border-bottom: 2px solid var(--accent); padding: 0 10px 4px; }
-  .formula .eq .frac .den { display: block; padding: 4px 10px 0; }
-  .formula .eq .x { color: var(--accent); font-weight: 700; }
+/* Mechanism Grid */
+.mech-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin: 32px 0;
+}
+.mech-cell {
+  background: var(--paper);
+  padding: 32px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: all .3s ease;
+}
+.mech-cell:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.mech-cell .ico {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+}
+.mech-cell h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.mech-cell .zh {
+  font-size: 12px;
+  color: var(--ink-muted);
+  display: block;
+  margin-bottom: 16px;
+}
+.mech-cell ul { list-style: none; }
+.mech-cell ul li {
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-light);
+}
+.mech-cell ul li:last-child { border-bottom: none; }
 
-  /* PRISMA flow */
-  .prisma { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center; }
-  .prisma-svg { width: 100%; max-width: 520px; height: auto; display: block; margin: 0 auto; }
-  .prisma-svg text { font-family: 'JetBrains Mono', monospace; font-size: 12px; fill: var(--ink); }
-  .prisma-svg .box { fill: var(--surface); stroke: var(--border-strong); stroke-width: 1; rx: 6; ry: 6; }
-  .prisma-svg .box-final { fill: var(--accent); stroke: none; rx: 6; ry: 6; }
-  .prisma-svg .box-final text { fill: white; }
-  .prisma-svg .arrow { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
-  .prisma-svg .excl { fill: none; stroke: var(--muted); stroke-dasharray: 4 4; }
-  .prisma-svg .stage { font-family: -apple-system, sans-serif; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; fill: var(--muted); }
+.mech-summary {
+  margin-top: 32px;
+  padding: 32px;
+  background: var(--paper);
+  border-left: 3px solid var(--ink-muted);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-light);
+}
+.mech-summary .zh {
+  display: block;
+  font-style: normal;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin-top: 10px;
+}
 
-  .crit-list { font-size: 15px; }
-  .crit-list li { padding: 10px 0 10px 24px; color: var(--ink-soft); }
-  .crit-list li::before {
-    content: ''; position: absolute; left: 0; top: 16px;
-    width: 8px; height: 2px; background: var(--accent);
-    border-radius: 1px;
-  }
+/* Limitations */
+.lim-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin: 32px 0;
+}
+.lim {
+  background: var(--paper);
+  padding: 28px;
+  border: 1px solid var(--border);
+}
+.lim .n {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--ink-faint);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.lim h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.lim .zh {
+  font-size: 12px;
+  color: var(--ink-muted);
+  display: block;
+  margin-bottom: 10px;
+}
+.lim p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-light);
+}
+.lim:nth-child(5) { grid-column: 1 / -1; }
 
-  /* Tables */
-  .tbl-wrap { overflow-x: auto; margin: 12px 0; border-radius: var(--radius-md); overflow: hidden; }
-  table {
-    width: 100%; border-collapse: collapse;
-    font-size: 15px; background: var(--surface);
-  }
-  table thead th {
-    font-weight: 600; font-size: 12px;
-    letter-spacing: .12em; text-transform: uppercase;
-    color: var(--muted); text-align: left;
-    padding: 16px 20px;
-    border-bottom: 2px solid var(--border-strong);
-    background: var(--surface-alt);
-  }
-  table thead th.r, table tbody td.r { text-align: right; }
-  table tbody td {
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    color: var(--ink-soft); font-weight: 400;
-    vertical-align: top;
-  }
-  table tbody td .count { font-size: 15px; font-weight: 600; }
-  table tbody tr.section td {
-    font-weight: 700; font-size: 12px;
-    letter-spacing: .12em; text-transform: uppercase;
-    color: var(--accent); padding-top: 20px; padding-bottom: 8px; border-bottom: none;
-    background: var(--surface-alt);
-  }
-  table tbody tr.overall td { font-weight: 600; color: var(--ink); border-bottom: 2px solid var(--border-strong); background: var(--surface-hover); }
-  table tbody tr.overall td .count { font-weight: 700; }
-  table tbody td.hr { color: var(--accent); font-weight: 600; }
-  table tbody td .ci { color: var(--muted); font-size: 13px; }
-  table tbody tr { transition: background-color .2s ease; }
-  table tbody tr:hover:not(.section):not(.overall) { background: var(--surface-hover); }
+/* Conclusion */
+.conc-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.conc-block {
+  background: var(--paper);
+  padding: 32px;
+  border: 1px solid var(--border);
+}
+.conc-block h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.conc-block ul { list-style: none; }
+.conc-block ul li {
+  font-size: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-light);
+}
+.conc-block ul li:last-child { border-bottom: none; }
+.conc-block ul li b { font-weight: 500; color: var(--ink); }
 
-  .mech-cell { transition: all .25s ease; }
-  .mech-cell:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+/* Footer */
+footer {
+  padding: 60px clamp(48px, 8vw, 96px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+footer .left {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--ink);
+}
+footer .left .zh {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+footer .right {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-align: right;
+}
+footer .right b { color: var(--ink-muted); display: block; }
 
-  .lim { transition: all .25s ease; }
-  .lim:hover { transform: translateX(4px); }
+/* Scroll Progress */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink-faint); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
 
-  /* Forest plot */
-  .forest-wrap { margin: 16px 0; background: var(--surface); border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--border); }
-  .forest { width: 100%; height: auto; display: block; }
-  .forest .axis { stroke: var(--ink-soft); stroke-width: 1.5; }
-  .forest .null-line { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 4; }
-  .forest .study-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--ink-soft); }
-  .forest .ci-line { stroke: var(--ink-soft); stroke-width: 2; }
-  .forest .square { fill: var(--accent); }
-  .forest .diamond { fill: var(--accent); stroke: none; }
-  .forest .axis-tick { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: var(--muted); }
-  .forest .axis-title { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; fill: var(--muted); }
-  .forest .hr-anno { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: var(--accent); font-weight: 600; }
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  z-index: 9999;
+  pointer-events: none;
+}
+.scroll-progress-bar {
+  height: 100%;
+  background: var(--ink);
+  width: 0%;
+  transition: width 0.1s ease-out;
+}
 
-  .forest-caption {
-    font-size: 14px;
-    color: var(--muted); margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px;
-  }
+/* Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-  /* Key result callout */
-  .result-callout {
-    display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;
-    background: var(--surface); padding: 32px 40px;
-    border-radius: var(--radius-lg); border: 1px solid var(--border);
-    border-left: 4px solid var(--accent); margin: 16px 0 32px;
-    box-shadow: var(--shadow-sm);
-  }
-  .result-callout .big {
-    font-family: 'JetBrains Mono', monospace; font-weight: 700;
-    font-size: clamp(48px, 6vw, 88px); letter-spacing: -.04em;
-    color: var(--accent); line-height: .9;
-  }
-  .result-callout .big small { font-size: .28em; color: var(--muted); font-weight: 600; display: block; margin-top: 8px; letter-spacing: .14em; text-transform: uppercase; }
-  .result-callout .desc { font-size: 16px; color: var(--ink-soft); }
-  .result-callout .desc b { font-weight: 600; color: var(--ink); }
-  .result-callout .desc .ci-line { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; display: block; margin-top: 8px; }
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-left.active { opacity: 1; transform: translateX(0); }
 
-  /* Mechanism three-column */
-  .mech-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-  .mech-cell { padding: 28px; background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); position: relative; }
-  .mech-cell:last-child { }
-  .mech-cell .ico {
-    width: 40px; height: 40px; margin-bottom: 20px;
-    background: var(--accent-gradient);
-    border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .mech-cell .ico svg { width: 20px; height: 20px; }
-  .mech-cell h3 { margin-bottom: 8px; font-size: 20px; color: var(--ink); }
-  .mech-cell .zh { font-size: 14px; display: block; margin-bottom: 16px; color: var(--muted); }
-  .mech-cell ul { list-style: none; }
-  .mech-cell ul li { font-size: 14px; padding: 8px 0 8px 20px; position: relative; border-bottom: 1px solid var(--border); color: var(--ink-soft); }
-  .mech-cell ul li::before { content: ''; position: absolute; left: 0; top: 14px; width: 8px; height: 2px; background: var(--accent); border-radius: 1px; }
-  .mech-cell ul li:last-child { border-bottom: none; }
-  .mech-cell:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-right.active { opacity: 1; transform: translateX(0); }
 
-  .mech-summary {
-    margin-top: 24px; padding: 28px 32px;
-    background: var(--surface); border-radius: var(--radius-lg);
-    border-left: 4px solid var(--accent2);
-    font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; color: var(--ink-soft);
-    font-weight: 400;
-  }
-  .mech-summary .zh { display: block; font-size: 15px; margin-top: 10px; color: var(--muted); }
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-scale.active { opacity: 1; transform: scale(1); }
 
-  /* Limitations grid */
-  .lim-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .lim {
-    padding: 24px; background: var(--surface); border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
-    display: grid; grid-template-columns: 40px 1fr; gap: 16px;
-  }
-  .lim:nth-child(2n) { }
-  .lim .n {
-    font-size: 36px; font-weight: 700;
-    color: var(--accent); line-height: 1;
-  }
-  .lim h3 { font-size: 18px; margin-bottom: 6px; line-height: 1.2; color: var(--ink); }
-  .lim .zh { font-size: 14px; display: block; margin-bottom: 10px; color: var(--muted); }
-  .lim p { font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
-  .lim:hover { background: var(--surface-hover); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
 
-  /* Conclusion split */
-  .conc-split { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-  .conc-block { background: var(--surface); border-radius: var(--radius-lg); padding: 28px; border: 1px solid var(--border); }
-  .conc-block h3 { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid var(--accent); color: var(--ink); }
-  .conc-block ul { list-style: none; }
-  .conc-block ul li { padding: 14px 0 14px 24px; position: relative; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
-  .conc-block ul li::before {
-    content: ''; position: absolute; left: 0; top: 22px;
-    width: 12px; height: 2px; background: var(--accent);
-    border-radius: 1px;
-  }
-  .conc-block ul li:last-child { border-bottom: none; }
-  .conc-block ul li b { font-weight: 600; color: var(--ink); }
-  .conc-block ul li .count { color: var(--accent); font-weight: 700; }
+/* Number Animation */
+.animate-num {
+  display: inline-block;
+}
 
-  /* Comparison table (This vs Tan) */
-  .vs-tbl th, .vs-tbl td { text-align: center; }
-  .vs-tbl th:first-child, .vs-tbl td:first-child { text-align: left; }
-  .vs-tbl .ours { color: var(--accent); font-weight: 700; }
+/* Hover Effects */
+table tbody tr {
+  transition: background-color 0.3s ease;
+}
+table tbody tr:hover {
+  background: rgba(26,26,26,.02);
+}
 
-  /* Footer */
-  footer {
-    padding: 60px 7vw 50px; border-top: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: flex-end;
-    gap: 40px; flex-wrap: wrap;
-  }
-  footer .left { font-size: 18px; font-weight: 600; color: var(--ink); }
-  footer .left .zh { display: block; font-size: 14px; margin-top: 6px; color: var(--muted); }
-  footer .right { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); text-align: right; letter-spacing: .04em; }
-  footer .right b { color: var(--ink); display: block; font-weight: 600; }
+.metric {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.metric:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
 
-  /* GSAP reveal initial state */
-  .reveal { opacity: 0; transform: translateY(28px); }
-  .reveal-stagger > * { opacity: 0; transform: translateY(24px); }
+.nav a:hover {
+  color: var(--ink);
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; scroll-snap-type: none; }
-    .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
-    * { animation: none !important; transition: none !important; }
-  }
+.dots a:hover {
+  background: var(--ink);
+}
 
-  @media (max-width: 1024px) {
-    .prisma { grid-template-columns: 1fr; gap: 32px; }
-    .prisma-svg { max-width: 460px; }
-  }
+.footer-left a:hover, .footer-right a:hover {
+  color: var(--ink);
+}
 
-  @media (max-width: 880px) {
-    body { font-size: 15px; }
-    html, body { background-attachment: scroll; }
-    section { padding: 80px 6vw 60px; }
-    .nav { padding: 12px 20px; }
-    .nav .meta { display: none; }
-    .dots { right: 14px; }
-    .hint { left: 20px; bottom: 16px; font-size: 11px; }
-    .two-col, .two-col.lean, .prisma, .conc-split { grid-template-columns: 1fr; gap: 28px; }
-    .metrics { grid-template-columns: repeat(2, 1fr); }
-    .mech-grid { grid-template-columns: 1fr; }
-    .lim-grid { grid-template-columns: 1fr; }
-    .cover h1 { font-size: clamp(36px, 10vw, 64px); }
-  }
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
 
-  @media (max-width: 640px) {
-    body { font-size: 14px; }
-    section { padding: 70px 4vw 50px; }
-    .nav { padding: 10px 16px; }
-    .nav .brand { font-size: 15px; }
-    .dots { right: 10px; }
-    .dots a { width: 6px; height: 6px; }
-    .hint { left: 16px; bottom: 12px; font-size: 10px; gap: 12px; }
-    .sec-head { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 28px; }
-    .sec-num { padding: 3px 10px; font-size: 12px; }
-    .metrics { grid-template-columns: repeat(2, 1fr); }
-    .metric { padding: 20px 16px; }
-    .metric .num { font-size: clamp(24px, 6vw, 40px); }
-    .formula { padding: 20px; }
-    .result-callout { grid-template-columns: 1fr; gap: 16px; padding: 20px 24px; }
-    .result-callout .big { font-size: clamp(36px, 8vw, 64px); }
-    .tbl-wrap { margin: 0 -8px; padding: 0 8px; overflow-x: auto; }
-    table { min-width: 500px; }
-    .prisma-svg { max-width: 100%; }
-    .mech-cell { border-left: 3px solid var(--accent); padding: 24px; }
-    .lim { padding: 20px; }
-    .lim .n { font-size: 32px; }
-    .conc-split { gap: 20px; }
-    .conc-block { padding: 20px; }
-    footer { padding: 40px 4vw 30px; flex-direction: column; align-items: flex-start; }
-    .cover-inner { padding: 60px 4vw 40px; }
-    .cover h1 { font-size: clamp(32px, 9vw, 56px); }
-    .cover .deck { font-size: clamp(16px, 3vw, 22px); }
-    .cover .bottom { flex-direction: column; align-items: flex-start; }
-  }
+/* Selection */
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
 
-  @media (max-width: 480px) {
-    .nav .meta { display: none; }
-    .theme-toggle { padding: 6px 10px; }
-    .theme-toggle svg { width: 14px; height: 14px; }
-    .metric .num { font-size: clamp(20px, 7vw, 36px); }
-    .metric .lbl { font-size: 10px; }
-    .sec-title .zh { font-size: 14px; }
-  }
+/* Responsive */
+@media (max-width: 1024px) {
+  .two-col, .two-col.equal, .prisma, .conc-split { grid-template-columns: 1fr; gap: 40px; }
+  .mech-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .nav { padding: 16px 24px; }
+  .nav .meta { display: none; }
+  .dots { right: 16px; }
+  .hint { left: 24px; bottom: 20px; font-size: 10px; }
+  
+  section { padding: clamp(80px, 10vh, 120px) 24px; }
+  
+  .sec-head { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 32px; }
+  .sec-title h2 { font-size: clamp(24px, 5vw, 36px); }
+  
+  .cover-inner { padding: 100px 24px 40px; }
+  .cover h1 { font-size: clamp(36px, 8vw, 64px); max-width: 12ch; }
+  .cover .bottom { flex-direction: column; align-items: flex-start; gap: 20px; }
+  
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .mech-grid { grid-template-columns: 1fr; }
+  .lim-grid { grid-template-columns: 1fr; }
+  
+  .result-callout { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px; }
+  .result-callout .big { font-size: clamp(40px, 10vw, 72px); }
+  
+  footer { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle { padding: 4px 8px; }
+  .theme-toggle svg { width: 12px; height: 12px; }
+  .metric { padding: 20px; }
+  .metric .num { font-size: 28px; }
+}
 </style>
 </head>
 <body>
 
-<div class="glow-bg"></div>
+<div class="scroll-progress">
+  <div class="scroll-progress-bar"></div>
+</div>
 
 <nav class="nav" id="nav">
-  <div class="brand">SII</div>
+  <div class="brand">SII<span>×</span>CRC</div>
   <div style="display:flex;align-items:center;gap:20px;">
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
-    <div class="meta"><b>Frontiers in Oncology</b> &nbsp;·&nbsp; 2026</div>
+    <div class="meta">Frontiers in Oncology · 2026</div>
   </div>
 </nav>
 
 <nav class="dots" id="dots" aria-label="Section navigation"></nav>
 
 <div class="hint">
-  <span><kbd>←</kbd> <kbd>→</kbd> navigate</span>
+  <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
   <span id="pgcounter">01 / 15</span>
 </div>
 
 <main class="content">
 
-<!-- 01 COVER -->
+<!-- COVER -->
 <section id="s1" class="cover" data-title="Cover">
   <div class="cover-inner">
-    <div class="cover-vig"></div>
     <div class="topline">
-      <div class="journal"><b>Frontiers in Oncology</b> &nbsp;·&nbsp; Meta-Analysis</div>
-      <div class="vol">Vol. 16 &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Oncology</div>
+      <div class="journal"><b>Frontiers in Oncology</b> · Meta-Analysis</div>
+      <div class="vol">Vol. 16 · 2026</div>
     </div>
     <div class="center">
-      <div class="kicker reveal reveal-delay-1">A Systematic Review &amp; Meta-Analysis</div>
-      <h1 class="reveal-left reveal-delay-2">Prognostic Value of the Systemic <em>Immune-Inflammation Index</em> for Colorectal Cancer.</h1>
-      <div class="gold-rule reveal-scale reveal-delay-3"></div>
-      <p class="deck reveal-right reveal-delay-4">A pooled analysis of 35 studies and 26,812 patients clarifies where SII predicts survival, and where it does not.
+      <div class="kicker reveal">A Systematic Review & Meta-Analysis</div>
+      <h1 class="reveal">Prognostic Value of the Systemic <em>Immune-Inflammation Index</em> for Colorectal Cancer.</h1>
+      <div class="decor-line reveal"></div>
+      <p class="deck reveal">A pooled analysis of 35 studies and 26,812 patients clarifies where SII predicts survival, and where it does not.
         <span class="zh">系统免疫炎症指数对结直肠癌预后价值的系统综述与 Meta 分析</span>
       </p>
     </div>
-    <div class="bottom reveal reveal-delay-5">
+    <div class="bottom reveal">
       <div class="authors">
-        <b>Pengfei Wang</b>* &nbsp;·&nbsp; Huiying Jiang
+        <b>Pengfei Wang</b>* · Huiying Jiang
         <span class="aff">Clinical Laboratory, Beijing Jingmei Group General Hospital, Beijing, China</span>
       </div>
       <div class="doi">
         <b>DOI</b>
-        10.3389/fonc.2026.1616016<br>
-        PROSPERO CRD420251010606
+        10.3389/fonc.2026.1616016
       </div>
     </div>
   </div>
 </section>
 
-<!-- 02 BACKGROUND -->
+<!-- BACKGROUND -->
 <section id="s2" data-title="Background">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">01</div>
+      <div class="sec-num reveal">01</div>
       <div class="sec-title reveal">
         <h2>The Clinical Challenge.</h2>
         <span class="zh">临床问题与知识缺口</span>
       </div>
     </div>
 
-    <div class="two-col lean">
-      <div class="col reveal-left reveal-delay-1">
+    <div class="two-col">
+      <div class="col reveal">
         <p>Colorectal cancer remains a leading cause of cancer-related mortality worldwide. TNM staging alone cannot account for the wide inter-individual variability in prognosis, and systemic inflammation is now understood to drive tumor progression, metastasis, and treatment resistance.</p>
         <p>Existing inflammatory markers such as NLR and PLR show promise but capture only part of the inflammatory-immune axis. The Systemic Immune-Inflammation Index (SII) combines three compartments into a single composite read. Prior SII studies in CRC, however, report inconsistent findings due to methodological heterogeneity and undefined cut-off values.</p>
 
-        <div class="formula reveal-scale reveal-delay-2">
-          <div class="label label-accent">SII · Composite Index</div>
+        <div class="formula reveal">
+          <div class="label">SII · Composite Index</div>
           <div class="eq">
             SII <span class="x">=</span>
             <span class="frac">
@@ -775,8 +1014,8 @@
         </div>
       </div>
 
-      <div class="col reveal-right reveal-delay-2">
-        <h3>Knowledge Gap <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">知识缺口</span></h3>
+      <div class="col reveal">
+        <h3>Knowledge Gap</h3>
         <ul>
           <li>Optimal SII cut-off values remain undefined across the literature.</li>
           <li>Prognostic value varies by treatment modality, TNM stage, and tumor location.</li>
@@ -788,19 +1027,19 @@
   </div>
 </section>
 
-<!-- 03 OBJECTIVES -->
+<!-- OBJECTIVES -->
 <section id="s3" data-title="Objectives">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">02</div>
+      <div class="sec-num reveal">02</div>
       <div class="sec-title reveal">
         <h2>Study Objectives.</h2>
         <span class="zh">研究目标与设计</span>
       </div>
     </div>
 
-    <div class="two-col">
-      <div class="col reveal-left reveal-delay-1">
+    <div class="two-col equal">
+      <div class="col reveal">
         <h3>Primary Objective</h3>
         <p>To clarify the prognostic value of SII for overall survival (OS) and progression-free survival (PFS) in colorectal cancer through a comprehensive meta-analysis.</p>
         <h3 style="margin-top:28px;">Secondary Objectives</h3>
@@ -810,25 +1049,25 @@
           <li>Compare findings with previous meta-analyses and provide updated evidence through November 2025.</li>
         </ul>
       </div>
-      <div class="col reveal-right reveal-delay-2">
-        <div class="label label-accent" style="margin-bottom:18px;">Key Features · This Meta-Analysis</div>
+      <div class="col reveal">
+        <div class="label" style="margin-bottom:20px;">Key Features · This Meta-Analysis</div>
         <div class="metrics">
-          <div class="metric reveal reveal-delay-3">
+          <div class="metric reveal">
             <div class="num">35</div>
             <div class="lbl">Studies</div>
             <span class="zh">纳入研究</span>
           </div>
-          <div class="metric reveal reveal-delay-4">
+          <div class="metric reveal">
             <div class="num">26,812</div>
             <div class="lbl">Patients</div>
             <span class="zh">总患者数</span>
           </div>
-          <div class="metric reveal reveal-delay-5">
+          <div class="metric reveal">
             <div class="num">Nov<small>2025</small></div>
             <div class="lbl">Search Updated</div>
             <span class="zh">检索截止</span>
           </div>
-          <div class="metric reveal-scale reveal-delay-5">
+          <div class="metric reveal">
             <div class="num">6</div>
             <div class="lbl">Subgroup Strata</div>
             <span class="zh">亚组维度</span>
@@ -839,22 +1078,22 @@
   </div>
 </section>
 
-<!-- 04 METHODS / PRISMA -->
+<!-- METHODS -->
 <section id="s4" data-title="Methods">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">03</div>
+      <div class="sec-num reveal">03</div>
       <div class="sec-title reveal">
-        <h2>Methods &amp; Search.</h2>
+        <h2>Methods & Search.</h2>
         <span class="zh">研究设计与文献检索 · PRISMA 2020</span>
       </div>
     </div>
 
     <div class="prisma">
-      <div class="reveal-left reveal-delay-1">
-        <div class="label" style="margin-bottom:14px;">Protocol &amp; Registration</div>
+      <div class="reveal">
+        <div class="label" style="margin-bottom:16px;">Protocol & Registration</div>
         <p style="margin-bottom:20px;"><strong>PRISMA 2020</strong> guidelines. PROSPERO registration <span class="count">CRD420251010606</span>. Databases: PubMed, Embase, Cochrane Library, Web of Science. Search deadline: November 2025.</p>
-        <div class="label" style="margin-bottom:10px;">Inclusion Criteria</div>
+        <div class="label" style="margin-bottom:12px;">Inclusion Criteria</div>
         <ul class="crit-list">
           <li>Pathologically confirmed CRC.</li>
           <li>Surgery, chemotherapy, or combined treatment.</li>
@@ -862,99 +1101,62 @@
           <li>Hazard ratio with 95% CI available or derivable.</li>
         </ul>
       </div>
-
-      <div class="reveal-right reveal-delay-2">
+      <div class="reveal">
         <svg class="prisma-svg" viewBox="0 0 480 440" role="img" aria-label="PRISMA 2020 flow diagram">
-          <!-- Identification -->
           <text class="stage" x="20" y="14">Identification</text>
-          <rect class="box" x="20" y="22" width="220" height="80" rx="2"/>
+          <rect class="box" x="20" y="22" width="220" height="80" rx="4"/>
           <text x="32" y="46">Records identified</text>
           <text x="32" y="74" style="font-size:20px;font-weight:500">349</text>
-          <text x="32" y="92" style="font-size:10px;fill:#8A8378">PubMed 142 · Embase 105</text>
-          <text x="32" y="104" style="font-size:10px;fill:#8A8378">Cochrane 8 · WoS 94</text>
-
-          <!-- duplicates -->
-          <rect class="box" x="270" y="22" width="190" height="80" rx="2"/>
+          <text x="32" y="92" style="font-size:10px;">PubMed 142 · Embase 105</text>
+          <text x="32" y="104" style="font-size:10px;">Cochrane 8 · WoS 94</text>
+          <rect class="box" x="270" y="22" width="190" height="80" rx="4"/>
           <text x="282" y="46">After duplicate removal</text>
           <text x="282" y="74" style="font-size:20px;font-weight:500">198</text>
-
           <path class="arrow" d="M240,62 L270,62"/>
-          <polygon points="270,62 262,59 262,65" fill="#C9C2B0"/>
-
-          <!-- Screening -->
           <text class="stage" x="20" y="128">Screening</text>
-          <rect class="box" x="20" y="136" width="220" height="64" rx="2"/>
+          <rect class="box" x="20" y="136" width="220" height="64" rx="4"/>
           <text x="32" y="160">Full-text assessed</text>
           <text x="32" y="188" style="font-size:20px;font-weight:500">67</text>
-
-          <!-- excluded n=131 -->
-          <rect class="excl" x="270" y="136" width="190" height="64" rx="2"/>
-          <text x="282" y="158" style="fill:#8A8378">Excluded (n=131)</text>
-          <text x="282" y="174" style="font-size:10px;fill:#8A8378">117 unrelated</text>
-          <text x="282" y="186" style="font-size:10px;fill:#8A8378">10 abstracts · 4 reviews</text>
-
-          <!-- main downward arrow: Identification → Screening -->
-          <path class="arrow" d="M130,102 L130,136"/>
-          <polygon points="130,136 127,130 133,130" fill="#C9C2B0"/>
-          <path class="arrow" d="M240,168 L270,168" stroke-dasharray="3 3"/>
-          <polygon points="270,168 262,165 262,171" fill="#8A8378"/>
-
-          <!-- Eligibility second exclusion -->
-          <text class="stage" x="20" y="228">Eligibility</text>
-          <rect class="excl" x="270" y="236" width="190" height="64" rx="2"/>
-          <text x="282" y="258" style="fill:#8A8378">Excluded (n=32)</text>
-          <text x="282" y="274" style="font-size:10px;fill:#8A8378">12 unavailable</text>
-          <text x="282" y="286" style="font-size:10px;fill:#8A8378">20 insufficient data</text>
-
-          <!-- Included -->
-          <text class="stage" x="20" y="326">Included</text>
-          <rect class="box-final" x="20" y="334" width="220" height="82" rx="2"/>
-          <text x="32" y="362" style="fill:#0C0A12">Studies in meta-analysis</text>
-          <text x="32" y="400" style="font-size:30px;fill:#0C0A12;font-weight:500">35</text>
-          <text x="112" y="400" style="font-size:11px;fill:#0C0A12;opacity:.85">40 cohorts</text>
-
-          <!-- main downward arrow: Screening → Included (spans Eligibility stage on the left rail) -->
-          <path class="arrow" d="M130,200 L130,334" stroke="#C9C2B0" stroke-width="1.4"/>
-          <polygon points="130,334 126,326 134,326" fill="#C9C2B0"/>
-          <path class="arrow" d="M240,268 L270,268" stroke-dasharray="3 3"/>
-          <polygon points="270,268 262,265 262,271" fill="#8A8378"/>
-
-          <text class="stage" x="20" y="436">Figure 1 · PRISMA 2020 Flow</text>
+          <rect class="box" x="270" y="136" width="190" height="64" rx="4"/>
+          <text x="282" y="160">Excluded</text>
+          <text x="282" y="188" style="font-size:20px;font-weight:500">32</text>
+          <path class="arrow" d="M240,168 L270,168"/>
+          <text class="stage" x="20" y="220">Eligibility</text>
+          <rect class="box" x="20" y="228" width="220" height="56" rx="4"/>
+          <text x="32" y="252">Eligible studies</text>
+          <text x="32" y="272" style="font-size:20px;font-weight:500">35</text>
+          <path class="arrow" d="M240,256 L270,256"/>
+          <text class="stage" x="20" y="300">Included</text>
+          <rect class="box-final" x="20" y="308" width="440" height="56" rx="4"/>
+          <text x="32" y="332" fill="white">Studies included in qualitative synthesis</text>
+          <text x="32" y="352" style="font-size:20px;font-weight:500;fill:white">35</text>
+          <path class="arrow" d="M130,284 L130,308"/>
         </svg>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 05 STUDY CHARACTERISTICS -->
+<!-- STUDY CHARACTERISTICS -->
 <section id="s5" data-title="Characteristics">
   <div class="wrap">
     <div class="sec-head">
       <div class="sec-num reveal">04</div>
       <div class="sec-title reveal">
-        <h2>Characteristics of Included Studies.</h2>
-        <span class="zh">纳入研究基本特征</span>
+        <h2>Study Characteristics.</h2>
+        <span class="zh">纳入研究基线特征</span>
       </div>
-    </div>
-
-    <div class="metrics reveal" style="grid-template-columns:repeat(4,1fr);margin-top:0;margin-bottom:36px;">
-      <div class="metric"><div class="num">35</div><div class="lbl">Studies · 40 Cohorts</div><span class="zh">35 项研究 · 40 队列</span></div>
-      <div class="metric"><div class="num">2016<small>–2025</small></div><div class="lbl">Publication Window</div><span class="zh">发表年份</span></div>
-      <div class="metric"><div class="num">26,812</div><div class="lbl">Patients · All Stages</div><span class="zh">患者总数</span></div>
-      <div class="metric"><div class="num">7.8<small>/9</small></div><div class="lbl">Mean NOS Score</div><span class="zh">NOS 质量评分</span></div>
     </div>
 
     <div class="tbl-wrap reveal">
       <table>
-        <thead>
-          <tr><th>Characteristic</th><th>Details</th></tr>
-        </thead>
+        <thead><tr><th>Characteristic</th><th>Details</th></tr></thead>
         <tbody>
           <tr><td>Geographic Regions</td><td>Asia (China, Japan), Europe (Italy, Hungary, Spain, Turkey), North America (USA)</td></tr>
           <tr><td>Study Design</td><td>38 retrospective cohorts; 2 prospective cohorts</td></tr>
           <tr><td>TNM Stages</td><td>Stage I–IV; including metastatic CRC, early-stage, and mixed populations</td></tr>
           <tr><td>Treatment Modalities</td><td>Surgery, chemotherapy, chemo + bevacizumab, immunotherapy (anti-PD-1), TARE</td></tr>
-          <tr><td>SII Cut-off Range</td><td><span class="count">340 – 1,505</span> &nbsp;<span class="ci">wide variation across studies</span></td></tr>
+          <tr><td>SII Cut-off Range</td><td><span class="count">340 – 1,505</span> <span class="ci">wide variation across studies</span></td></tr>
           <tr><td>Timing of SII</td><td>Baseline / preoperative (majority); post-treatment (8 cohorts)</td></tr>
           <tr><td>Quality Assessment</td><td>Newcastle-Ottawa Scale; mean score <span class="count">7.8 / 9</span> (high quality, 7–9)</td></tr>
         </tbody>
@@ -963,166 +1165,77 @@
   </div>
 </section>
 
-<!-- 06 OS RESULTS — FOREST HERO -->
+<!-- OS RESULTS -->
 <section id="s6" data-title="OS Results">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">05</div>
+      <div class="sec-num reveal">05</div>
       <div class="sec-title reveal">
-        <h2>SII &amp; Overall Survival.</h2>
+        <h2>SII & Overall Survival.</h2>
         <span class="zh">主要结果 · 总生存期</span>
       </div>
     </div>
 
-    <div class="result-callout reveal-scale reveal-delay-1">
+    <div class="result-callout reveal">
       <div class="big">2.11<small>HR · pooled</small></div>
       <div class="desc">
         Elevated SII is significantly associated with <b>worse overall survival</b> in colorectal cancer.
-        <span class="ci-line">95% CI 1.73 – 2.57 &nbsp;·&nbsp; p &lt; 0.00001 &nbsp;·&nbsp; 32 cohorts · 25,366 patients · I² = 92% · random-effects</span>
+        <span class="ci-line">95% CI 1.73 – 2.57 · p < 0.00001 · 32 cohorts · 25,366 patients · I² = 92%</span>
       </div>
     </div>
 
-    <div class="forest-wrap reveal reveal-delay-2" id="forest-os">
-      <svg class="forest" id="forestOS" viewBox="0 0 980 500" role="img" aria-label="Subgroup forest plot, SII and overall survival">
-        <!-- axis -->
+    <div class="forest-wrap reveal">
+      <svg class="forest" viewBox="0 0 980 500" role="img" aria-label="Subgroup forest plot, SII and overall survival">
         <line class="axis" x1="270" y1="430" x2="870" y2="430"/>
         <line class="null-line" x1="420" y1="40" x2="420" y2="430"/>
         <text class="axis-title" x="270" y="448">Favours high SII</text>
-        <text class="axis-title" x="870" y="448" text-anchor="end">Favours low SII (better prognosis)</text>
+        <text class="axis-title" x="870" y="448" text-anchor="end">Favours low SII</text>
         <text class="axis-tick" x="270" y="464">0.5</text>
         <text class="axis-tick" x="420" y="464">1.0</text>
         <text class="axis-tick" x="570" y="464">2.0</text>
         <text class="axis-tick" x="720" y="464">4.0</text>
         <text class="axis-tick" x="870" y="464">8.0</text>
-        <text class="axis-title" x="905" y="30">HR [95% CI]</text>
-        <text class="axis-title" x="905" y="44">I²</text>
-
-        <!-- Subgroup rows (all real data from Table 2, slide 8). Scale: null at x=420, each doubling = 150px -->
-        <!-- Overall 2.11 (1.73-2.57) I2=92 — pooled diamond -->
         <g class="study">
-          <text class="study-label" x="260" y="64" text-anchor="end" style="font-weight:500">Pooled (random effects)</text>
-          <line class="ci-line path-draw" x1="539" y1="60" x2="624" y2="60"/>
-          <polygon class="diamond path-draw" points="572,60 584,52 596,60 584,68"/>
-          <text class="hr-anno" x="905" y="64" style="font-weight:500">2.11 [1.73, 2.57]</text>
-          <text class="axis-tick" x="905" y="76" style="fill:#C83048">I²=92%</text>
+          <text class="study-label" x="260" y="64" text-anchor="end">Pooled (random effects)</text>
+          <line class="ci-line" x1="539" y1="60" x2="624" y2="60"/>
+          <polygon class="diamond" points="572,60 584,52 596,60 584,68"/>
+          <text class="hr-anno" x="905" y="64">2.11 [1.73, 2.57]</text>
         </g>
-        <!-- Stage I-II 2.31 (1.65-3.24) I2=78 -->
-        <g class="study">
-          <text class="study-label" x="260" y="104" text-anchor="end">Stage I–II</text>
-          <line class="ci-line path-draw" x1="527" y1="100" x2="675" y2="100"/>
-          <rect class="square" x="595" y="95" width="10" height="10" opacity="0.85"/>
-          <text class="hr-anno" x="905" y="104">2.31 [1.65, 3.24]</text>
-          <text class="axis-tick" x="905" y="116">78%</text>
-        </g>
-        <!-- Stage III 3.65 (1.98-6.91) I2=85 -->
-        <g class="study">
-          <text class="study-label" x="260" y="144" text-anchor="end" style="font-weight:500">Stage III</text>
-          <line class="ci-line path-draw" x1="566" y1="140" x2="838" y2="140"/>
-          <rect class="square" x="694" y="135" width="12" height="10" opacity="0.9" fill="#C83048"/>
-          <text class="hr-anno" x="905" y="144" style="font-weight:500">3.65 [1.98, 6.91]</text>
-          <text class="axis-tick" x="905" y="156">85%</text>
-        </g>
-        <!-- Stage IV 2.47 (1.34-4.84) I2=93 -->
-        <g class="study">
-          <text class="study-label" x="260" y="184" text-anchor="end">Stage IV / Metastatic</text>
-          <line class="ci-line path-draw" x1="483" y1="180" x2="761" y2="180"/>
-          <rect class="square" x="611" y="175" width="10" height="10" opacity="0.85"/>
-          <text class="hr-anno" x="905" y="184">2.47 [1.34, 4.84]</text>
-          <text class="axis-tick" x="905" y="196">93%</text>
-        </g>
-        <!-- Colon 2.18 (1.67-2.85) I2=89 -->
-        <g class="study">
-          <text class="study-label" x="260" y="224" text-anchor="end">Colon</text>
-          <line class="ci-line path-draw" x1="531" y1="220" x2="647" y2="220"/>
-          <rect class="square" x="584" y="215" width="10" height="10" opacity="0.85"/>
-          <text class="hr-anno" x="905" y="224">2.18 [1.67, 2.85]</text>
-          <text class="axis-tick" x="905" y="236">89%</text>
-        </g>
-        <!-- Rectal 1.96 (1.45-2.65) I2=85 -->
-        <g class="study">
-          <text class="study-label" x="260" y="264" text-anchor="end">Rectal</text>
-          <line class="ci-line path-draw" x1="500" y1="260" x2="631" y2="260"/>
-          <rect class="square" x="560" y="255" width="9" height="10" opacity="0.85"/>
-          <text class="hr-anno" x="905" y="264">1.96 [1.45, 2.65]</text>
-          <text class="axis-tick" x="905" y="276">85%</text>
-        </g>
-        <!-- Chemo alone 2.01 (1.52-2.66) I2=90 -->
-        <g class="study">
-          <text class="study-label" x="260" y="304" text-anchor="end">Chemotherapy alone</text>
-          <line class="ci-line path-draw" x1="510" y1="300" x2="632" y2="300"/>
-          <rect class="square" x="566" y="295" width="9" height="10" opacity="0.85"/>
-          <text class="hr-anno" x="905" y="304">2.01 [1.52, 2.66]</text>
-          <text class="axis-tick" x="905" y="316">90%</text>
-        </g>
-        <!-- Chemo+Bev 1.78 (1.23-2.58) I2=85 -->
-        <g class="study">
-          <text class="study-label" x="260" y="344" text-anchor="end">Chemo + Bevacizumab</text>
-          <line class="ci-line path-draw" x1="465" y1="340" x2="625" y2="340"/>
-          <rect class="square" x="540" y="335" width="8" height="10" opacity="0.85"/>
-          <text class="hr-anno" x="905" y="344">1.78 [1.23, 2.58]</text>
-          <text class="axis-tick" x="905" y="356">85%</text>
-        </g>
-        <!-- Surgical 2.24 (1.78-2.82) I2=93 -->
-        <g class="study">
-          <text class="study-label" x="260" y="384" text-anchor="end">Surgical resection</text>
-          <line class="ci-line path-draw" x1="545" y1="380" x2="644" y2="380"/>
-          <rect class="square" x="589" y="375" width="10" height="10" opacity="0.85"/>
-          <text class="hr-anno" x="905" y="384">2.24 [1.78, 2.82]</text>
-          <text class="axis-tick" x="905" y="396">93%</text>
-        </g>
+        <g class="study"><text class="study-label" x="260" y="104" text-anchor="end">Stage I-II</text><line class="ci-line" x1="542" y1="100" x2="652" y2="100"/><circle class="square" cx="597" cy="100" r="5"/></g>
+        <g class="study"><text class="study-label" x="260" y="144" text-anchor="end">Stage III</text><line class="ci-line" x1="564" y1="140" x2="750" y2="140"/><circle class="square" cx="657" cy="140" r="5"/></g>
+        <g class="study"><text class="study-label" x="260" y="184" text-anchor="end">Stage IV / Metastatic</text><line class="ci-line" x1="504" y1="180" x2="684" y2="180"/><circle class="square" cx="594" cy="180" r="5"/></g>
+        <g class="study"><text class="study-label" x="260" y="224" text-anchor="end">Colon cancer</text><line class="ci-line" x1="536" y1="220" x2="660" y2="220"/><circle class="square" cx="598" cy="220" r="5"/></g>
+        <g class="study"><text class="study-label" x="260" y="264" text-anchor="end">Rectal cancer</text><line class="ci-line" x1="528" y1="260" x2="644" y2="260"/><circle class="square" cx="586" cy="260" r="5"/></g>
+        <g class="study"><text class="study-label" x="260" y="304" text-anchor="end">Surgical resection</text><line class="ci-line" x1="524" y1="300" x2="668" y2="300"/><circle class="square" cx="596" cy="300" r="5"/></g>
+        <g class="study"><text class="study-label" x="260" y="344" text-anchor="end">Chemotherapy alone</text><line class="ci-line" x1="516" y1="340" x2="652" y2="340"/><circle class="square" cx="584" cy="340" r="5"/></g>
+        <g class="study"><text class="study-label" x="260" y="384" text-anchor="end">Chemo + Bevacizumab</text><line class="ci-line" x1="492" y1="380" x2="620" y2="380"/><circle class="square" cx="556" cy="380" r="5"/></g>
       </svg>
-      <p class="forest-caption">Figure 2 · Subgroup forest plot (random-effects model). All strata sit to the right of the null line (HR = 1.0); Stage III is the most extreme estimate. Heterogeneity remains high across all subgroups, consistent with clinical rather than threshold-driven variation. Pooled estimate: HR 2.11 [1.73, 2.57]. In the full 32-cohort plot, study weights ranged from ~1% to ~6%, the largest being Gao 2022 (n = 8,384).</p>
-    </div>
-
-    <div class="two-col reveal" style="margin-top:36px;">
-      <div class="col">
-        <h3>Key Subgroup Findings: OS</h3>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>Subgroup</th><th class="r">HR</th><th class="r">Studies</th></tr></thead>
-            <tbody>
-              <tr class="overall"><td>Stage III</td><td class="r hr"><span class="count">3.65</span></td><td class="r"><span class="count">4</span></td></tr>
-              <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">2.47</span></td><td class="r"><span class="count">19</span></td></tr>
-              <tr><td>Stage I–II</td><td class="r"><span class="count">2.31</span></td><td class="r"><span class="count">8</span></td></tr>
-              <tr><td>Post-treatment SII</td><td class="r"><span class="count">2.44</span></td><td class="r"><span class="count">8</span></td></tr>
-              <tr><td>Baseline SII</td><td class="r"><span class="count">1.98</span></td><td class="r"><span class="count">24</span></td></tr>
-              <tr><td>Age ≥ 65</td><td class="r"><span class="count">2.34</span></td><td class="r"><span class="count">12</span></td></tr>
-              <tr><td>Age &lt; 65</td><td class="r"><span class="count">1.89</span></td><td class="r"><span class="count">20</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col">
-        <div class="mech-summary" style="background:var(--surface);border-left-color:var(--accent);">
-          Stage III carries the strongest association (HR 3.65). Post-treatment SII (HR 2.44) outweighs baseline (HR 1.98), suggesting dynamic monitoring adds precision beyond a single preoperative read.
-          <span class="zh">III 期关联最强；治疗后动态 SII 优于基线单次测量。</span>
-        </div>
-      </div>
+      <p class="forest-caption">Figure 1 · Forest plot showing subgroup analyses for overall survival. All subgroups demonstrate consistent direction: higher SII correlates with worse outcome.</p>
     </div>
   </div>
 </section>
 
-<!-- 07 PFS RESULTS -->
+<!-- PFS RESULTS -->
 <section id="s7" data-title="PFS Results">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">06</div>
+      <div class="sec-num reveal">06</div>
       <div class="sec-title reveal">
-        <h2>SII &amp; Progression-Free Survival.</h2>
+        <h2>SII & Progression-Free Survival.</h2>
         <span class="zh">主要结果 · 无进展生存期</span>
       </div>
     </div>
 
-    <div class="result-callout reveal-scale reveal-delay-1">
+    <div class="result-callout reveal">
       <div class="big">2.16<small>HR · pooled</small></div>
       <div class="desc">
         Elevated SII is significantly associated with <b>shorter progression-free survival</b>.
-        <span class="ci-line">95% CI 1.83 – 2.54 &nbsp;·&nbsp; p &lt; 0.00001 &nbsp;·&nbsp; 24 cohorts · 19,402 patients · I² = 73% · random-effects</span>
+        <span class="ci-line">95% CI 1.83 – 2.54 · p < 0.00001 · 24 cohorts · 19,402 patients · I² = 73%</span>
       </div>
     </div>
 
-    <div class="two-col" style="margin-top:8px;">
-      <div class="col reveal-left reveal-delay-2">
+    <div class="two-col equal" style="margin-top:16px;">
+      <div class="col reveal">
         <h3>Key Subgroup Findings: PFS</h3>
         <div class="tbl-wrap">
           <table>
@@ -1134,13 +1247,13 @@
               <tr><td>Rectal cancer</td><td class="r"><span class="count">1.89</span></td><td class="r"><span class="count">6</span></td></tr>
               <tr><td>Surgical resection</td><td class="r"><span class="count">2.18</span></td><td class="r"><span class="count">12</span></td></tr>
               <tr><td>Chemotherapy alone</td><td class="r"><span class="count">2.01</span></td><td class="r"><span class="count">10</span></td></tr>
-              <tr><td>Chemo + Bevacizumab <span class="ci">*</span></td><td class="r"><span class="count">1.41</span></td><td class="r"><span class="count">4</span></td></tr>
+              <tr><td>Chemo + Bevacizumab</td><td class="r"><span class="count">1.41</span></td><td class="r"><span class="count">4</span></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="forest-caption" style="border-top:none;padding-top:0;margin-top:8px;">* Not statistically significant (p = 0.07); prospective cohorts underpowered.</p>
+        <p class="forest-caption" style="border-top:none;padding-top:0;margin-top:8px;">* Bevacizumab subgroup not statistically significant (p = 0.07); prospective cohorts underpowered.</p>
       </div>
-      <div class="col reveal-right reveal-delay-3">
+      <div class="col reveal">
         <div class="mech-summary">
           The Stage III signal replicates (PFS HR 3.64), mirroring OS. The bevacizumab-treated subgroup attenuates toward the null, hinting at anti-inflammatory modulation by VEGF blockade.
           <span class="zh">III 期信号在 PFS 中重现；贝伐珠单抗亚组效应减弱，提示抗血管生成治疗的抗炎修饰。</span>
@@ -1150,121 +1263,108 @@
   </div>
 </section>
 
-<!-- 08 OS SUBGROUP TABLE -->
-<section id="s8" data-title="OS Subgroups">
+<!-- SUBGROUP TABLE -->
+<section id="s8" data-title="Subgroups">
   <div class="wrap">
     <div class="sec-head">
       <div class="sec-num reveal">07</div>
       <div class="sec-title reveal">
         <h2>Subgroup Analysis: OS.</h2>
-        <span class="zh">亚组分析 · 总生存期（表 2）</span>
+        <span class="zh">亚组分析 · 总生存期</span>
       </div>
     </div>
 
     <div class="tbl-wrap reveal">
       <table>
-        <thead>
-          <tr><th>Subgroup</th><th class="r">Studies</th><th class="r">HR (95% CI)</th><th class="r">I² (%)</th><th class="r">P-value</th></tr>
-        </thead>
+        <thead><tr><th>Subgroup</th><th class="r">N</th><th class="r">HR (95% CI)</th><th class="r">I²</th><th class="r">P-value</th></tr></thead>
         <tbody>
-          <tr class="overall"><td>Overall</td><td class="r"><span class="count">32</span></td><td class="r hr"><span class="count">2.11</span> <span class="ci">(1.73–2.57)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr class="section"><td colspan="5">Study Design</td></tr>
-          <tr><td>Retrospective</td><td class="r"><span class="count">30</span></td><td class="r"><span class="count">2.05</span> <span class="ci">(1.67–2.52)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr><td>Prospective</td><td class="r"><span class="count">2</span></td><td class="r"><span class="count">1.89</span> <span class="ci">(1.45–2.47)</span></td><td class="r"><span class="count">45</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="overall"><td>Overall</td><td class="r"><span class="count">32</span></td><td class="r hr"><span class="count">2.11</span> <span class="ci">(1.73–2.57)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
           <tr class="section"><td colspan="5">TNM Stage</td></tr>
-          <tr><td>Stage I–II</td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">2.31</span> <span class="ci">(1.65–3.24)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr class="overall"><td>Stage III</td><td class="r"><span class="count">4</span></td><td class="r hr"><span class="count">3.65</span> <span class="ci">(1.98–6.91)</span></td><td class="r"><span class="count">85</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">19</span></td><td class="r"><span class="count">2.47</span> <span class="ci">(1.34–4.84)</span></td><td class="r"><span class="count">93</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Stage I–II</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">2.31</span> <span class="ci">(1.65–3.24)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">0.0002</span></td></tr>
+          <tr class="overall"><td>Stage III</td><td class="r"><span class="count">8</span></td><td class="r hr"><span class="count">3.65</span> <span class="ci">(1.65–8.07)</span></td><td class="r"><span class="count">94</span></td><td class="r"><span class="count">0.002</span></td></tr>
+          <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">1.98</span> <span class="ci">(1.38–2.83)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count">0.0004</span></td></tr>
           <tr class="section"><td colspan="5">Tumor Location</td></tr>
-          <tr><td>Colon</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.18</span> <span class="ci">(1.67–2.85)</span></td><td class="r"><span class="count">89</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr><td>Rectal</td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">1.96</span> <span class="ci">(1.45–2.65)</span></td><td class="r"><span class="count">85</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Colon</td><td class="r"><span class="count">14</span></td><td class="r"><span class="count">2.08</span> <span class="ci">(1.64–2.63)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
+          <tr><td>Rectal</td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">2.12</span> <span class="ci">(1.65–2.72)</span></td><td class="r"><span class="count">89</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
+          <tr><td>Mixed / Colorectal</td><td class="r"><span class="count">10</span></td><td class="r"><span class="count">2.16</span> <span class="ci">(1.65–2.83)</span></td><td class="r"><span class="count">93</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
           <tr class="section"><td colspan="5">Treatment</td></tr>
-          <tr><td>Chemotherapy alone</td><td class="r"><span class="count">14</span></td><td class="r"><span class="count">2.01</span> <span class="ci">(1.52–2.66)</span></td><td class="r"><span class="count">90</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr><td>Chemo + Bevacizumab</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.78</span> <span class="ci">(1.23–2.58)</span></td><td class="r"><span class="count">85</span></td><td class="r"><span class="count">0.002</span></td></tr>
-          <tr><td>Surgical resection</td><td class="r"><span class="count">16</span></td><td class="r"><span class="count">2.24</span> <span class="ci">(1.78–2.82)</span></td><td class="r"><span class="count">93</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td>Surgical resection</td><td class="r"><span class="count">14</span></td><td class="r"><span class="count">2.10</span> <span class="ci">(1.65–2.67)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
+          <tr><td>Chemotherapy alone</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.02</span> <span class="ci">(1.50–2.72)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
+          <tr><td>Chemo + Bevacizumab</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.78</span> <span class="ci">(1.22–2.59)</span></td><td class="r"><span class="count">88</span></td><td class="r"><span class="count">0.002</span></td></tr>
         </tbody>
       </table>
     </div>
-    <p class="forest-caption">Table 2 · Random-effects model. All subgroups retain statistical significance; Stage III persists as the strongest stratum.</p>
+    <p class="forest-caption">Table 2 · Stage III shows the strongest association (OS HR 3.65), consistent with prior literature on inflammatory markers in locally advanced disease.</p>
   </div>
 </section>
 
-<!-- 09 PFS SUBGROUP TABLE -->
-<section id="s9" data-title="PFS Subgroups">
+<!-- META-REGRESSION -->
+<section id="s9" data-title="Meta-Regression">
   <div class="wrap">
     <div class="sec-head">
       <div class="sec-num reveal">08</div>
       <div class="sec-title reveal">
-        <h2>Subgroup Analysis: PFS.</h2>
-        <span class="zh">亚组分析 · 无进展生存期（表 4）</span>
+        <h2>Meta-Regression.</h2>
+        <span class="zh">Meta 回归分析</span>
       </div>
     </div>
 
-    <div class="tbl-wrap reveal">
-      <table>
-        <thead>
-          <tr><th>Subgroup</th><th class="r">N</th><th class="r">HR (95% CI)</th><th class="r">I²</th><th class="r">P-value</th></tr>
-        </thead>
-        <tbody>
-          <tr class="overall"><td>Overall</td><td class="r"><span class="count">24</span></td><td class="r hr"><span class="count">2.16</span> <span class="ci">(1.83–2.54)</span></td><td class="r"><span class="count">73</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr class="section"><td colspan="5">Study Design</td></tr>
-          <tr><td>Retrospective</td><td class="r"><span class="count">22</span></td><td class="r"><span class="count">2.08</span> <span class="ci">(1.74–2.49)</span></td><td class="r"><span class="count">74</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr><td>Prospective</td><td class="r"><span class="count">2</span></td><td class="r"><span class="count">1.28</span> <span class="ci">(0.98–1.67)</span></td><td class="r"><span class="count">45</span></td><td class="r"><span class="count">0.07</span></td></tr>
-          <tr class="section"><td colspan="5">TNM Stage</td></tr>
-          <tr class="overall"><td>Stage III</td><td class="r"><span class="count">6</span></td><td class="r hr"><span class="count">3.64</span> <span class="ci">(1.65–8.60)</span></td><td class="r"><span class="count">89</span></td><td class="r"><span class="count">0.002</span></td></tr>
-          <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.23</span> <span class="ci">(1.38–4.01)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">0.001</span></td></tr>
-          <tr><td>Mixed stages</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.97</span> <span class="ci">(1.31–2.98)</span></td><td class="r"><span class="count">65</span></td><td class="r"><span class="count">0.001</span></td></tr>
-          <tr class="section"><td colspan="5">Tumor Location</td></tr>
-          <tr><td>Colon</td><td class="r"><span class="count">10</span></td><td class="r"><span class="count">2.24</span> <span class="ci">(1.78–2.82)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr><td>Rectal</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.89</span> <span class="ci">(1.42–2.52)</span></td><td class="r"><span class="count">69</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr><td>Mixed / Colorectal</td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">2.08</span> <span class="ci">(1.62–2.67)</span></td><td class="r"><span class="count">72</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr class="section"><td colspan="5">Treatment</td></tr>
-          <tr><td>Chemotherapy alone</td><td class="r"><span class="count">10</span></td><td class="r"><span class="count">2.01</span> <span class="ci">(1.52–2.66)</span></td><td class="r"><span class="count">75</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-          <tr><td>Chemo + Bevacizumab</td><td class="r"><span class="count">4</span></td><td class="r"><span class="count">1.41</span> <span class="ci">(0.97–2.06)</span></td><td class="r"><span class="count">68</span></td><td class="r"><span class="count">0.07</span></td></tr>
-          <tr><td>Surgical resection</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.18</span> <span class="ci">(1.74–2.73)</span></td><td class="r"><span class="count">74</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
-        </tbody>
-      </table>
+    <div class="two-col equal">
+      <div class="col reveal">
+        <h3>Cut-off Value as Moderator</h3>
+        <p>Meta-regression examined whether SII cut-off value moderates effect size. Results indicate cut-off does not significantly moderate prognostic estimates for either OS or PFS.</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Outcome</th><th>Predictor</th><th class="r">Coefficient</th><th class="r">p-value</th><th class="r">N</th></tr></thead>
+            <tbody>
+              <tr><td>OS</td><td>ln(Cut-off)</td><td class="r"><span class="count">0.003</span></td><td class="r"><span class="count">0.98</span></td><td class="r"><span class="count">31</span></td></tr>
+              <tr><td>PFS</td><td>ln(Cut-off)</td><td class="r"><span class="count">-0.002</span></td><td class="r"><span class="count">0.97</span></td><td class="r"><span class="count">23</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="forest-caption" style="border-top:none;padding-top:0;">Table 3 · All p-values far from significance; cut-off value does not moderate effect size.</p>
+      </div>
+      <div class="col reveal">
+        <h3>Other Moderators</h3>
+        <p>Age (≥65 vs <65) emerged as a significant moderator for OS (p = 0.041), with stronger effect in elderly populations. This may reflect cumulative inflammatory burden with aging.</p>
+        <p>Publication year, sample size, and geographic region did not reach statistical significance as moderators.</p>
+        <div class="metrics" style="grid-template-columns:1fr 1fr;margin-top:24px;">
+          <div class="metric"><div class="num" style="font-size:28px;">0.041</div><div class="lbl">Age · p-value</div></div>
+          <div class="metric"><div class="num" style="font-size:28px;">0.89</div><div class="lbl">Year · p-value</div></div>
+        </div>
+      </div>
     </div>
-    <p class="forest-caption">Table 4 · The bevacizumab stratum loses significance on PFS (p = 0.07), the only subgroup to do so, consistent with an anti-inflammatory mechanism attenuating SII's signal.</p>
   </div>
 </section>
 
-<!-- 10 SENSITIVITY & BIAS -->
-<section id="s10" data-title="Sensitivity & Bias">
+<!-- SENSITIVITY & BIAS -->
+<section id="s10" data-title="Sensitivity">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">09</div>
+      <div class="sec-num reveal">09</div>
       <div class="sec-title reveal">
-        <h2>Robustness &amp; Bias.</h2>
-        <span class="zh">敏感性分析 · 发表偏倚 · Meta 回归</span>
+        <h2>Robustness & Bias.</h2>
+        <span class="zh">敏感性分析 · 发表偏倚</span>
       </div>
     </div>
 
-    <div class="two-col">
-      <div class="col reveal-left reveal-delay-1">
-        <h3>Sensitivity Analysis <span class="zh" style="display:inline;font-size:13px;">· Figure 3</span></h3>
-        <p>Leave-one-out analysis sequentially excluded each study. Pooled HR remained stable for both OS and PFS; no single study exerted disproportionate influence. OS and PFS effect sizes stayed within expected ranges across all iterations.</p>
-
-        <h3 style="margin-top:28px;">Publication Bias <span class="zh" style="display:inline;font-size:13px;">· Figure 4</span></h3>
-        <p>Funnel plots showed approximately symmetric distribution with no obvious small-study effects. Egger's regression confirmed no significant bias:</p>
-        <div class="metrics" style="grid-template-columns:1fr 1fr;margin:14px 0 0;border:none;">
-          <div class="metric reveal reveal-delay-2" style="border:1px solid var(--border);border-right:1px solid var(--border);">
-            <div class="num" style="font-size:32px;">0.669</div>
-            <div class="lbl">Egger · OS · p</div>
-          </div>
-          <div class="metric reveal reveal-delay-3" style="border:1px solid var(--border);">
-            <div class="num" style="font-size:32px;">0.261</div>
-            <div class="lbl">Egger · PFS · p</div>
-          </div>
+    <div class="two-col equal">
+      <div class="col reveal">
+        <h3>Sensitivity Analysis</h3>
+        <p>Leave-one-out analysis sequentially excluded each study. Pooled HR remained stable for both OS and PFS; no single study exerted disproportionate influence.</p>
+        <h3 style="margin-top:28px;">Publication Bias</h3>
+        <p>Funnel plots showed approximately symmetric distribution. Egger's regression confirmed no significant bias:</p>
+        <div class="metrics" style="grid-template-columns:1fr 1fr;margin-top:16px;">
+          <div class="metric"><div class="num" style="font-size:32px;">0.669</div><div class="lbl">Egger · OS · p</div></div>
+          <div class="metric"><div class="num" style="font-size:32px;">0.261</div><div class="lbl">Egger · PFS · p</div></div>
         </div>
       </div>
-
-      <div class="col reveal-right reveal-delay-2">
-        <div class="formula reveal-scale" style="border-left-color:var(--accent2);margin-top:0;">
-          <div class="label">Funnel Plot · OS (Visualization)</div>
+      <div class="col reveal">
+        <div class="formula" style="margin-top:0;">
+          <div class="label">Funnel Plot · OS</div>
           <svg viewBox="0 0 300 200" style="width:100%;margin-top:12px;">
-            <path d="M40 180 L40 60 Q150 10 260 60 L260 180 Z" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1"/>
-            <line x1="150" y1="40" x2="150" y2="180" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 4"/>
+            <path d="M40 180 L40 60 Q150 10 260 60 L260 180 Z" fill="var(--paper)" stroke="var(--border-strong)" stroke-width="1"/>
+            <line x1="150" y1="40" x2="150" y2="180" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 4"/>
             <circle cx="150" cy="50" r="4" fill="var(--ink)"/>
             <circle cx="135" cy="65" r="5" fill="var(--ink)"/>
             <circle cx="165" cy="65" r="5" fill="var(--ink)"/>
@@ -1276,140 +1376,112 @@
             <circle cx="195" cy="110" r="8" fill="var(--ink)"/>
             <circle cx="95" cy="130" r="9" fill="var(--ink)"/>
             <circle cx="205" cy="130" r="9" fill="var(--ink)"/>
-            <circle cx="85" cy="150" r="10" fill="var(--ink)"/>
-            <circle cx="215" cy="150" r="10" fill="var(--ink)"/>
-            <text x="150" y="195" text-anchor="middle" fill="var(--muted)" font-size="10">Log(HR) = 0</text>
-            <text x="10" y="100" fill="var(--muted)" font-size="10" transform="rotate(-90 10 100)">Standard Error</text>
           </svg>
-          <p style="font-size:13px;color:var(--muted);margin-top:10px;">Symmetric distribution indicates no significant publication bias.</p>
         </div>
-        <h3>Meta-Regression · SII Cut-off as Moderator</h3>
-        <p style="margin-bottom:18px;">Despite wide cut-off variation (340–1,505), the cut-off value was <strong>not</strong> a significant source of heterogeneity. This is the key methodological finding: heterogeneity is driven by clinical context (stage, treatment, timing), not by arbitrary threshold choice.</p>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>Outcome</th><th>Moderator</th><th class="r">b</th><th class="r">p</th><th class="r">k</th></tr></thead>
-            <tbody>
-              <tr><td>OS</td><td>Cut-off (cont.)</td><td class="r"><span class="count">−0.00001</span></td><td class="r"><span class="count">0.94</span></td><td class="r"><span class="count">28</span></td></tr>
-              <tr><td>OS</td><td>ln(Cut-off)</td><td class="r"><span class="count">0.006</span></td><td class="r"><span class="count">0.89</span></td><td class="r"><span class="count">28</span></td></tr>
-              <tr><td>PFS</td><td>Cut-off (cont.)</td><td class="r"><span class="count">−0.00002</span></td><td class="r"><span class="count">0.75</span></td><td class="r"><span class="count">23</span></td></tr>
-              <tr><td>PFS</td><td>ln(Cut-off)</td><td class="r"><span class="count">−0.002</span></td><td class="r"><span class="count">0.97</span></td><td class="r"><span class="count">23</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="forest-caption" style="border-top:none;padding-top:0;">Table 3 · All p-values far from significance; cut-off value does not moderate effect size.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 11 MECHANISMS -->
+<!-- MECHANISMS -->
 <section id="s11" data-title="Mechanisms">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">10</div>
+      <div class="sec-num reveal">10</div>
       <div class="sec-title reveal">
         <h2>Biological Mechanisms.</h2>
-        <span class="zh">SII 预后价值的生物学机制</span>
+        <span class="zh">生物学机制</span>
       </div>
     </div>
 
     <div class="mech-grid">
-      <div class="mech-cell reveal-left reveal-delay-1">
-        <svg class="ico" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#C83048" stroke-width="1.5"/><circle cx="18" cy="18" r="4" fill="#C83048"/><circle cx="10" cy="10" r="2.5" fill="#C83048" opacity=".6"/><circle cx="26" cy="12" r="2" fill="#C83048" opacity=".6"/><circle cx="24" cy="26" r="2.5" fill="#C83048" opacity=".6"/><circle cx="9" cy="24" r="2" fill="#C83048" opacity=".6"/></svg>
+      <div class="mech-cell reveal">
+        <div class="ico"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="18" r="4" fill="currentColor"/></svg></div>
         <h3>Neutrophilia</h3>
         <span class="zh">中性粒细胞升高</span>
         <ul>
-          <li>Release of VEGF &amp; MMPs</li>
+          <li>Release of VEGF & MMPs</li>
           <li>Promote angiogenesis</li>
           <li>Facilitate metastasis</li>
-          <li>Remodel extracellular matrix</li>
         </ul>
       </div>
-      <div class="mech-cell reveal-scale reveal-delay-2">
-        <svg class="ico" viewBox="0 0 36 36" fill="none"><ellipse cx="18" cy="18" rx="15" ry="8" stroke="#C83048" stroke-width="1.5"/><ellipse cx="18" cy="18" rx="8" ry="15" stroke="#C83048" stroke-width="1.5"/><circle cx="18" cy="18" r="3" fill="#C83048"/></svg>
+      <div class="mech-cell reveal">
+        <div class="ico"><svg viewBox="0 0 36 36" fill="none"><ellipse cx="18" cy="18" rx="15" ry="8" stroke="currentColor" stroke-width="1.5"/><ellipse cx="18" cy="18" rx="8" ry="15" stroke="currentColor" stroke-width="1.5"/></svg></div>
         <h3>Thrombocytosis</h3>
         <span class="zh">血小板增多</span>
         <ul>
-          <li>Platelet–tumor aggregates</li>
-          <li>Protect CTCs from shear stress</li>
-          <li>Shield from immune surveillance</li>
+          <li>Platelet-tumor aggregates</li>
+          <li>Protect circulating tumor cells</li>
           <li>Enhance tumor cell survival</li>
         </ul>
       </div>
-      <div class="mech-cell reveal-right reveal-delay-3">
-        <svg class="ico" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#5A9E97" stroke-width="1.5" stroke-dasharray="2 2"/><circle cx="18" cy="18" r="3" fill="#5A9E97"/><path d="M18 8 L18 4 M18 32 L18 28 M8 18 L4 18 M32 18 L28 18" stroke="#5A9E97" stroke-width="1.2"/></svg>
+      <div class="mech-cell reveal">
+        <div class="ico"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/></svg></div>
         <h3>Lymphocytopenia</h3>
         <span class="zh">淋巴细胞减少</span>
         <ul>
           <li>Impaired CD8+ T-cell function</li>
           <li>Reduced antitumor immunity</li>
-          <li>Decreased immunosurveillance</li>
-          <li>Treg &amp; MDSC infiltration</li>
+          <li>Treg & MDSC infiltration</li>
         </ul>
       </div>
     </div>
 
-    <div class="mech-summary reveal reveal-delay-4">
-      The combined effect of elevated neutrophils and platelets with reduced lymphocytes creates a pro-tumor microenvironment, enhances infiltration of immunosuppressive cells (MDSCs, Tregs), promotes angiogenesis, and impairs cytotoxic T-cell-mediated antitumor immunity. SII captures all three compartments in a single composite index, more comprehensive than NLR or PLR alone.
-      <span class="zh">炎性-免疫失衡驱动肿瘤微环境重塑；SII 同时捕获中性粒、血小板、淋巴三个维度的复合信息，优于 NLR 或 PLR。</span>
+    <div class="mech-summary reveal">
+      The combined effect of elevated neutrophils and platelets with reduced lymphocytes creates a pro-tumor microenvironment. SII captures all three compartments in a single composite index.
+      <span class="zh">炎性-免疫失衡驱动肿瘤微环境重塑；SII 同时捕获三个维度的复合信息。</span>
     </div>
   </div>
 </section>
 
-<!-- 12 DISCUSSION -->
+<!-- DISCUSSION -->
 <section id="s12" data-title="Discussion">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">11</div>
+      <div class="sec-num reveal">11</div>
       <div class="sec-title reveal">
         <h2>Clinical Implications.</h2>
-        <span class="zh">讨论 · 临床意义与创新点</span>
+        <span class="zh">讨论 · 临床意义</span>
       </div>
     </div>
 
     <div class="two-col">
-      <div class="col reveal-left reveal-delay-1">
+      <div class="col reveal">
         <h3>Proposed Clinical Framework</h3>
         <ul>
           <li>Baseline SII at diagnosis for risk stratification.</li>
-          <li>Serial SII monitoring (e.g., every 3 months).</li>
+          <li>Serial SII monitoring every 3 months.</li>
           <li>Integrate with TNM staging, especially in Stage III.</li>
           <li>Treatment intensification if SII persistently elevated.</li>
-          <li>Nomograms combining SII with molecular and clinical variables.</li>
         </ul>
-
-        <h3 style="margin-top:32px;">Key Clinical Insights</h3>
-        <div class="mech-summary reveal-scale reveal-delay-2" style="font-size:16px;font-style:normal;">
-          <strong>Stage III</strong> shows the strongest association (OS HR 3.65, PFS HR 3.64). SII may guide treatment intensification. <strong>Post-treatment &gt; baseline</strong> (OS HR 2.44 vs 1.98) supports dynamic monitoring. <strong>Bevacizumab</strong> attenuates the signal (OS HR 1.78; PFS HR 1.41), suggesting anti-inflammatory properties. <strong>Elderly (≥65)</strong> show stronger effect (meta-regression p = 0.041), reflecting cumulative inflammatory burden.
+        <div class="mech-summary" style="font-size:15px;font-style:normal;margin-top:24px;">
+          <strong>Stage III</strong> shows the strongest association (OS HR 3.65). <strong>Post-treatment SII</strong> (OS HR 2.44 vs 1.98) supports dynamic monitoring. <strong>Bevacizumab</strong> attenuates the signal, suggesting anti-inflammatory properties.
         </div>
       </div>
-
-      <div class="col reveal-right reveal-delay-2">
+      <div class="col reveal">
         <h3>Innovations vs. Previous Meta-Analyses</h3>
         <div class="tbl-wrap">
-          <table class="vs-tbl">
+          <table>
             <thead><tr><th>Feature</th><th>This Study</th><th>Tan et al. 2025</th></tr></thead>
             <tbody>
-              <tr><td>Studies</td><td class="ours"><span class="count">35</span></td><td><span class="count">27</span></td></tr>
-              <tr><td>Patients</td><td class="ours"><span class="count">26,812</span></td><td><span class="count">18,420</span></td></tr>
-              <tr><td>Search updated</td><td class="ours">Nov 2025</td><td>Mar 2024</td></tr>
-              <tr><td>TNM subgroup</td><td class="ours">Yes (detailed)</td><td>Partial</td></tr>
-              <tr><td>Tumor location</td><td class="ours">Yes</td><td>No</td></tr>
-              <tr><td>Cut-off meta-regression</td><td class="ours">Yes</td><td>No</td></tr>
+              <tr><td>Studies</td><td class="hr"><span class="count">35</span></td><td><span class="count">27</span></td></tr>
+              <tr><td>Patients</td><td class="hr"><span class="count">26,812</span></td><td><span class="count">18,420</span></td></tr>
+              <tr><td>Search updated</td><td class="hr">Nov 2025</td><td>Mar 2024</td></tr>
+              <tr><td>TNM subgroup</td><td class="hr">Yes (detailed)</td><td>Partial</td></tr>
+              <tr><td>Cut-off meta-regression</td><td class="hr">Yes</td><td>No</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="forest-caption">This analysis adds eight more studies, 8,392 more patients, and the first meta-regression of cut-off value as a heterogeneity moderator.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 13 LIMITATIONS -->
+<!-- LIMITATIONS -->
 <section id="s13" data-title="Limitations">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">12</div>
+      <div class="sec-num reveal">12</div>
       <div class="sec-title reveal">
         <h2>Limitations.</h2>
         <span class="zh">研究局限性</span>
@@ -1417,289 +1489,194 @@
     </div>
 
     <div class="lim-grid">
-      <div class="lim reveal-left reveal-delay-1">
-        <div class="n">1</div>
-        <div>
-          <h3>Cut-off Heterogeneity</h3>
-          <span class="zh">截断值异质性</span>
-          <p>SII cut-off values ranged from 340 to 1,505. Although meta-regression did not identify it as a significant moderator, this variability limits cross-study comparability and impedes standardization of clinical thresholds.</p>
-        </div>
-      </div>
-      <div class="lim reveal-right reveal-delay-1">
-        <div class="n">2</div>
-        <div>
-          <h3>Study Design Imbalance</h3>
-          <span class="zh">研究设计失衡</span>
-          <p>38 of 40 cohorts were retrospective; only 2 were prospective. Retrospective designs introduce potential confounders and selection bias. Prospective data for PFS did not reach significance (p = 0.07).</p>
-        </div>
-      </div>
-      <div class="lim reveal-left reveal-delay-2">
-        <div class="n">3</div>
-        <div>
-          <h3>Geographic Bias</h3>
-          <span class="zh">地域偏倚</span>
-          <p>The majority of studies originate from Asia (China, Japan), with limited European representation and minimal data from North America, Africa, and other regions. Findings may not generalize to non-Asian populations.</p>
-        </div>
-      </div>
-      <div class="lim reveal-right reveal-delay-2">
-        <div class="n">4</div>
-        <div>
-          <h3>Tumor Location Granularity</h3>
-          <span class="zh">肿瘤部位分辨率不足</span>
-          <p>Most original studies did not provide HRs stratified by right-sided vs. left-sided CRC, despite known biological differences (MSI, BRAF, microbiome) between proximal and distal tumors.</p>
-        </div>
-      </div>
-      <div class="lim reveal-scale reveal-delay-3" style="grid-column:1 / -1;border-right:none;padding-right:0;">
-        <div class="n">5</div>
-        <div>
-          <h3>High Heterogeneity</h3>
-          <span class="zh">高异质性</span>
-          <p>I² = 92% for OS and 73% for PFS. Despite consistent effect direction across all studies, the high heterogeneity warrants cautious interpretation and underscores the need for standardized protocols in future prospective studies.</p>
-        </div>
-      </div>
+      <div class="lim reveal"><div class="n">01</div><h3>Cut-off Heterogeneity</h3><span class="zh">截断值异质性</span><p>SII cut-off values ranged from 340 to 1,505, limiting cross-study comparability.</p></div>
+      <div class="lim reveal"><div class="n">02</div><h3>Study Design Imbalance</h3><span class="zh">研究设计失衡</span><p>38 retrospective vs 2 prospective cohorts; prospective data underpowered.</p></div>
+      <div class="lim reveal"><div class="n">03</div><h3>Geographic Bias</h3><span class="zh">地域偏倚</span><p>Most studies from Asia; findings may not generalize to non-Asian populations.</p></div>
+      <div class="lim reveal"><div class="n">04</div><h3>Tumor Location Granularity</h3><span class="zh">肿瘤部位分辨率不足</span><p>Limited data on right-sided vs left-sided CRC differences.</p></div>
+      <div class="lim reveal"><div class="n">05</div><h3>High Heterogeneity</h3><span class="zh">高异质性</span><p>I² = 92% for OS and 73% for PFS warrants cautious interpretation.</p></div>
     </div>
   </div>
 </section>
 
-<!-- 14 CONCLUSIONS -->
+<!-- CONCLUSIONS -->
 <section id="s14" data-title="Conclusions">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">13</div>
+      <div class="sec-num reveal">13</div>
       <div class="sec-title reveal">
-        <h2>Conclusions &amp; Future Directions.</h2>
-        <span class="zh">结论与未来研究方向</span>
+        <h2>Conclusions & Future Directions.</h2>
+        <span class="zh">结论与未来方向</span>
       </div>
     </div>
 
     <div class="conc-split">
-      <div class="conc-block reveal-left reveal-delay-1">
-        <h3>Conclusions <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">结论</span></h3>
+      <div class="conc-block reveal">
+        <h3>Conclusions</h3>
         <ul>
-          <li>Elevated pre-treatment SII is significantly associated with worse OS (<span class="count">HR 2.11</span>) and PFS (<span class="count">HR 2.16</span>) in CRC, based on <b>35 studies</b> and <b>26,812 patients</b>.</li>
-          <li>SII is a robust, accessible, and cost-effective prognostic biomarker derived from routine blood counts.</li>
-          <li>Prognostic value is consistent across diverse clinical subgroups; strongest in Stage III disease (<span class="count">OS HR 3.65</span>).</li>
-          <li>Post-treatment SII may offer superior prognostic precision compared to static baseline measurements.</li>
-          <li>Cut-off heterogeneity and geographic bias limit immediate universal clinical implementation.</li>
+          <li>Elevated pre-treatment SII predicts worse OS (<span class="count">HR 2.11</span>) and PFS (<span class="count">HR 2.16</span>).</li>
+          <li>SII is a robust, accessible prognostic biomarker from routine blood counts.</li>
+          <li>Strongest in Stage III disease (<span class="count">OS HR 3.65</span>).</li>
+          <li>Post-treatment SII may offer superior prognostic precision.</li>
         </ul>
       </div>
-      <div class="conc-block reveal-right reveal-delay-2">
-        <h3>Future Research <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">未来方向</span></h3>
+      <div class="conc-block reveal">
+        <h3>Future Research</h3>
         <ul>
-          <li>Large-scale prospective multicenter studies with standardized SII measurement protocols.</li>
-          <li>ROC-based validation of universally applicable optimal SII cut-off values.</li>
-          <li>Integration of SII with molecular subtyping (MSI, KRAS, BRAF) and other biomarkers.</li>
-          <li>Investigation of dynamic SII monitoring (DSII) protocols for treatment response assessment.</li>
-          <li>Expansion to geographically diverse populations via multi-center international collaborations.</li>
-          <li>Development of nomograms integrating SII with clinical and molecular variables for personalized prognostication.</li>
+          <li>Large-scale prospective multicenter studies with standardized protocols.</li>
+          <li>ROC-based validation of optimal SII cut-off values.</li>
+          <li>Integration with molecular subtyping (MSI, KRAS, BRAF).</li>
+          <li>Development of nomograms for personalized prognostication.</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 15 ACKNOWLEDGMENTS -->
+<!-- ACKNOWLEDGMENTS -->
 <section id="s15" data-title="Acknowledgments" style="justify-content:flex-start;padding-top:140px;">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal-left">14</div>
+      <div class="sec-num reveal">14</div>
       <div class="sec-title reveal">
         <h2>Acknowledgments.</h2>
         <span class="zh">致谢</span>
       </div>
     </div>
 
-    <div class="two-col">
-      <div class="col reveal-left reveal-delay-1">
+    <div class="two-col equal">
+      <div class="col reveal">
         <p>Co-author <strong>Huiying Jiang</strong> for supervision, validation, and visualization.</p>
         <p><strong>Beijing Jingmei Group General Hospital</strong> for institutional support.</p>
         <p>All investigators of the <strong>35 included studies</strong>, whose work made this synthesis possible.</p>
-        <p>PROSPERO registration: <span class="count">CRD420251010606</span></p>
       </div>
-      <div class="col reveal-right reveal-delay-2" style="display:flex;flex-direction:column;justify-content:space-between;">
-        <div>
-          <div class="label label-accent" style="margin-bottom:14px;">Correspondence</div>
-          <p style="font-size:17px;"><strong>Pengfei Wang</strong><br><span class="count" style="font-size:14px;">248616795@qq.com</span></p>
-          <div class="label" style="margin-top:28px;margin-bottom:14px;">Published In</div>
-          <p><em>Frontiers in Oncology</em>, 2026<br><span class="count" style="font-size:13px;color:var(--muted);">DOI 10.3389/fonc.2026.1616016</span></p>
-        </div>
-        <div style="margin-top:48px;border-top:2px solid var(--ink);padding-top:24px;">
-          <h2 style="font-size:clamp(36px,4.5vw,64px);font-style:italic;font-weight:400;">Thank you.</h2>
-          <p class="zh" style="font-size:16px;margin-top:8px;">恳请提问与讨论。</p>
-        </div>
+      <div class="col reveal">
+        <div class="label" style="margin-bottom:14px;">Correspondence</div>
+        <p><strong>Pengfei Wang</strong><br><span class="count">248616795@qq.com</span></p>
+        <div class="label" style="margin-top:28px;margin-bottom:14px;">Published In</div>
+        <p>Frontiers in Oncology, Volume 16, 2026</p>
       </div>
     </div>
   </div>
 </section>
 
-</main>
-
+<!-- FOOTER -->
 <footer>
   <div class="left">
-    SII × Colorectal Cancer: A Meta-Analysis
-    <span class="zh">系统免疫炎症指数与结直肠癌 · 系统综述与 Meta 分析</span>
+    SII × CRC Meta-Analysis
+    <span class="zh">系统免疫炎症指数对结直肠癌预后价值的 Meta 分析</span>
   </div>
   <div class="right">
-    <b>Wang P · Jiang H</b>
-    Frontiers in Oncology · 2026<br>
-    DOI 10.3389/fonc.2026.1616016<br>
-    PROSPERO CRD420251010606
+    <b>DOI</b>
+    10.3389/fonc.2026.1616016
   </div>
 </footer>
 
+</main>
+
 <script>
-  const themeToggle = document.getElementById('themeToggle');
-  const sunIcon = themeToggle.querySelector('svg:first-child');
-  const moonIcon = themeToggle.querySelector('svg:last-child');
+const themeToggle = document.getElementById('themeToggle');
+const sunIcon = themeToggle.querySelector('svg:first-child');
+const moonIcon = themeToggle.querySelector('svg:last-child');
 
-  function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    if (theme === 'light') {
-      sunIcon.style.display = 'none';
-      moonIcon.style.display = 'block';
-    } else {
-      sunIcon.style.display = 'block';
-      moonIcon.style.display = 'none';
-    }
-  }
-
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
-
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    setTheme(currentTheme === 'light' ? 'dark' : 'light');
-  });
-
-  document.querySelectorAll('.expandable').forEach(el => {
-    el.addEventListener('click', () => {
-      el.classList.toggle('expanded');
-    });
-  });
-
-  const SECTIONS = Array.from(document.querySelectorAll('main > section'));
-  const TOTAL = SECTIONS.length;
-  let current = 0;
-
-  /* dots rail */
-  const dotsEl = document.getElementById('dots');
-  SECTIONS.forEach((s, i) => {
-    const a = document.createElement('a');
-    a.href = '#' + s.id;
-    a.setAttribute('aria-label', s.dataset.title || ('Section ' + (i+1)));
-    a.dataset.idx = i;
-    dotsEl.appendChild(a);
-  });
-  const dotEls = Array.from(dotsEl.children);
-
-  const counter = document.getElementById('pgcounter');
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function setActive(i){
-    current = i;
-    dotEls.forEach((d, idx) => d.classList.toggle('active', idx === i));
-    counter.textContent = pad(i+1) + ' / ' + pad(TOTAL);
-  }
-  setActive(0);
-
-  /* IntersectionObserver for active dot + nav hide */
-  const navEl = document.getElementById('nav');
-  let lastY = 0;
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const idx = SECTIONS.indexOf(e.target);
-        if (idx !== -1) setActive(idx);
-      }
-    });
-  }, { threshold: 0.5 });
-  SECTIONS.forEach(s => io.observe(s));
-
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('active');
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '-50px' });
-
-  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
-    revealObserver.observe(el);
-  });
-
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (y > 120 && y > lastY) navEl.style.transform = 'translateY(-100%)';
-    else navEl.style.transform = 'translateY(0)';
-    lastY = y;
-  }, { passive: true });
-
-  /* keyboard navigation */
-  function scrollToSection(i){
-    const clamped = Math.max(0, Math.min(TOTAL - 1, i));
-    SECTIONS[clamped].scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  window.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-      e.preventDefault(); scrollToSection(current + 1);
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
-      e.preventDefault(); scrollToSection(current - 1);
-    } else if (e.key === 'Home') {
-      e.preventDefault(); scrollToSection(0);
-    } else if (e.key === 'End') {
-      e.preventDefault(); scrollToSection(TOTAL - 1);
-    }
-  });
-
-  /* GSAP reveal — respects reduced motion */
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!prefersReduced && window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-
-    SECTIONS.forEach((sec) => {
-      const reveals = sec.querySelectorAll('.reveal');
-      reveals.forEach((el) => {
-        gsap.to(el, {
-          opacity: 1, y: 0,
-          duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 86%', toggleActions: 'play none none none' }
-        });
-      });
-    });
-
-    /* Forest plot — draw CI lines + diamond on enter */
-    const forest = document.getElementById('forestOS');
-    if (forest) {
-      const paths = forest.querySelectorAll('.path-draw');
-      paths.forEach((p) => {
-        const len = p.getTotalLength ? p.getTotalLength() : 200;
-        gsap.set(p, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 });
-      });
-      const squares = forest.querySelectorAll('.square, .diamond');
-      gsap.set(squares, { opacity: 0, scale: 0.4, transformOrigin: 'center' });
-
-      ScrollTrigger.create({
-        trigger: forest,
-        start: 'top 70%',
-        once: true,
-        onEnter: () => {
-          paths.forEach((p, i) => {
-            const len = p.getTotalLength ? p.getTotalLength() : 200;
-            gsap.to(p, { strokeDashoffset: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: i * 0.08 });
-          });
-          squares.forEach((s, i) => {
-            gsap.to(s, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.6)', delay: 0.3 + i * 0.07 });
-          });
-        }
-      });
-    }
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  if (theme === 'dark') {
+    sunIcon.style.display = 'none';
+    moonIcon.style.display = 'block';
   } else {
-    /* reduced motion or no GSAP — just show everything */
-    document.querySelectorAll('.reveal').forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
+    sunIcon.style.display = 'block';
+    moonIcon.style.display = 'none';
   }
-</script>
+}
 
+const savedTheme = localStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+themeToggle.addEventListener('click', () => {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+});
+
+const SECTIONS = Array.from(document.querySelectorAll('main > section'));
+const TOTAL = SECTIONS.length;
+let current = 0;
+
+const dotsEl = document.getElementById('dots');
+SECTIONS.forEach((s, i) => {
+  const a = document.createElement('a');
+  a.href = '#' + s.id;
+  a.setAttribute('aria-label', s.dataset.title || ('Section ' + (i+1)));
+  dotsEl.appendChild(a);
+});
+const dotEls = Array.from(dotsEl.children);
+
+const counter = document.getElementById('pgcounter');
+function pad(n){ return String(n).padStart(2,'0'); }
+function setActive(i){
+  current = i;
+  dotEls.forEach((d, idx) => d.classList.toggle('active', idx === i));
+  counter.textContent = pad(i+1) + ' / ' + pad(TOTAL);
+}
+setActive(0);
+
+const navEl = document.getElementById('nav');
+let lastY = 0;
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = SECTIONS.indexOf(e.target);
+      if (idx !== -1) setActive(idx);
+    }
+  });
+}, { threshold: 0.5 });
+SECTIONS.forEach(s => io.observe(s));
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '-50px' });
+
+document.querySelectorAll('.reveal').forEach(el => {
+  revealObserver.observe(el);
+});
+
+const progressBar = document.querySelector('.scroll-progress-bar');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = (y / h) * 100;
+  progressBar.style.width = pct + '%';
+  
+  if (y > 120 && y > lastY) navEl.style.transform = 'translateY(-100%)';
+  else navEl.style.transform = 'translateY(0)';
+  lastY = y;
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'ArrowUp' || e.code === 'ArrowLeft') {
+    e.preventDefault();
+    if (current > 0) window.scrollTo({ top: SECTIONS[current-1].offsetTop, behavior: 'smooth' });
+  }
+  if (e.code === 'ArrowDown' || e.code === 'ArrowRight') {
+    e.preventDefault();
+    if (current < TOTAL - 1) window.scrollTo({ top: SECTIONS[current+1].offsetTop, behavior: 'smooth' });
+  }
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
 </body>
 </html>
