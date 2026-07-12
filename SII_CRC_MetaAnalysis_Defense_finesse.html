@@ -60,7 +60,7 @@
     transition: background-color .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease;
   }
   html, body {
-    background: var(--bg-grad);
+    background: var(--bg);
     background-attachment: fixed;
     color: var(--ink);
   }
@@ -75,6 +75,89 @@
   }
 
   .content { position: relative; z-index: 5; }
+
+  .glow-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .glow-bg::before,
+  .glow-bg::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    animation: glowMove 20s ease-in-out infinite;
+  }
+  .glow-bg::before {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    animation-delay: 0s;
+  }
+  .glow-bg::after {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--accent2) 0%, transparent 70%);
+    bottom: -100px; right: -100px;
+    animation-delay: -10s;
+  }
+  [data-theme="dark"] .glow-bg::before,
+  [data-theme="dark"] .glow-bg::after {
+    opacity: 0.2;
+  }
+
+  @keyframes glowMove {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(50px, 30px) scale(1.1); }
+    50% { transform: translate(30px, 80px) scale(0.9); }
+    75% { transform: translate(-20px, 40px) scale(1.05); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-left.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-right.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-scale.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
 
   h1, h2, h3 {
     font-weight: 700;
@@ -199,15 +282,16 @@
   section {
     min-height: 100vh; min-height: 100dvh;
     scroll-snap-align: start;
-    padding: clamp(100px, 12vh, 140px) clamp(40px, 7vw, 96px) clamp(80px, 10vh, 120px);
+    padding: clamp(100px, 12vh, 140px) clamp(48px, 8vw, 120px) clamp(80px, 10vh, 120px);
     display: flex; flex-direction: column;
-    justify-content: safe center;
+    justify-content: center;
     position: relative;
+    text-align: left;
   }
   section:first-of-type { }
   html { scroll-snap-type: y proximity; }
 
-  .wrap { max-width: 1200px; margin: 0 auto; width: 100%; }
+  .wrap { max-width: 1200px; margin: 0 auto; width: 100%; padding: 0 24px; }
 
   /* Section header */
   .sec-head { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
@@ -611,6 +695,8 @@
 </head>
 <body>
 
+<div class="glow-bg"></div>
+
 <nav class="nav" id="nav">
   <div class="brand">SII</div>
   <div style="display:flex;align-items:center;gap:20px;">
@@ -640,14 +726,14 @@
       <div class="vol">Vol. 16 &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Oncology</div>
     </div>
     <div class="center">
-      <div class="kicker reveal">A Systematic Review &amp; Meta-Analysis</div>
-      <h1 class="reveal">Prognostic Value of the Systemic <em>Immune-Inflammation Index</em> for Colorectal Cancer.</h1>
-      <div class="gold-rule reveal"></div>
-      <p class="deck reveal">A pooled analysis of 35 studies and 26,812 patients clarifies where SII predicts survival, and where it does not.
+      <div class="kicker reveal reveal-delay-1">A Systematic Review &amp; Meta-Analysis</div>
+      <h1 class="reveal-left reveal-delay-2">Prognostic Value of the Systemic <em>Immune-Inflammation Index</em> for Colorectal Cancer.</h1>
+      <div class="gold-rule reveal-scale reveal-delay-3"></div>
+      <p class="deck reveal-right reveal-delay-4">A pooled analysis of 35 studies and 26,812 patients clarifies where SII predicts survival, and where it does not.
         <span class="zh">系统免疫炎症指数对结直肠癌预后价值的系统综述与 Meta 分析</span>
       </p>
     </div>
-    <div class="bottom reveal">
+    <div class="bottom reveal reveal-delay-5">
       <div class="authors">
         <b>Pengfei Wang</b>* &nbsp;·&nbsp; Huiying Jiang
         <span class="aff">Clinical Laboratory, Beijing Jingmei Group General Hospital, Beijing, China</span>
@@ -665,7 +751,7 @@
 <section id="s2" data-title="Background">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">01</div>
+      <div class="sec-num reveal-left">01</div>
       <div class="sec-title reveal">
         <h2>The Clinical Challenge.</h2>
         <span class="zh">临床问题与知识缺口</span>
@@ -673,11 +759,11 @@
     </div>
 
     <div class="two-col lean">
-      <div class="col reveal">
+      <div class="col reveal-left reveal-delay-1">
         <p>Colorectal cancer remains a leading cause of cancer-related mortality worldwide. TNM staging alone cannot account for the wide inter-individual variability in prognosis, and systemic inflammation is now understood to drive tumor progression, metastasis, and treatment resistance.</p>
         <p>Existing inflammatory markers such as NLR and PLR show promise but capture only part of the inflammatory-immune axis. The Systemic Immune-Inflammation Index (SII) combines three compartments into a single composite read. Prior SII studies in CRC, however, report inconsistent findings due to methodological heterogeneity and undefined cut-off values.</p>
 
-        <div class="formula">
+        <div class="formula reveal-scale reveal-delay-2">
           <div class="label label-accent">SII · Composite Index</div>
           <div class="eq">
             SII <span class="x">=</span>
@@ -689,7 +775,7 @@
         </div>
       </div>
 
-      <div class="col reveal">
+      <div class="col reveal-right reveal-delay-2">
         <h3>Knowledge Gap <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">知识缺口</span></h3>
         <ul>
           <li>Optimal SII cut-off values remain undefined across the literature.</li>
@@ -706,7 +792,7 @@
 <section id="s3" data-title="Objectives">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">02</div>
+      <div class="sec-num reveal-left">02</div>
       <div class="sec-title reveal">
         <h2>Study Objectives.</h2>
         <span class="zh">研究目标与设计</span>
@@ -714,7 +800,7 @@
     </div>
 
     <div class="two-col">
-      <div class="col reveal">
+      <div class="col reveal-left reveal-delay-1">
         <h3>Primary Objective</h3>
         <p>To clarify the prognostic value of SII for overall survival (OS) and progression-free survival (PFS) in colorectal cancer through a comprehensive meta-analysis.</p>
         <h3 style="margin-top:28px;">Secondary Objectives</h3>
@@ -724,25 +810,25 @@
           <li>Compare findings with previous meta-analyses and provide updated evidence through November 2025.</li>
         </ul>
       </div>
-      <div class="col reveal">
+      <div class="col reveal-right reveal-delay-2">
         <div class="label label-accent" style="margin-bottom:18px;">Key Features · This Meta-Analysis</div>
         <div class="metrics">
-          <div class="metric">
+          <div class="metric reveal reveal-delay-3">
             <div class="num">35</div>
             <div class="lbl">Studies</div>
             <span class="zh">纳入研究</span>
           </div>
-          <div class="metric">
+          <div class="metric reveal reveal-delay-4">
             <div class="num">26,812</div>
             <div class="lbl">Patients</div>
             <span class="zh">总患者数</span>
           </div>
-          <div class="metric">
+          <div class="metric reveal reveal-delay-5">
             <div class="num">Nov<small>2025</small></div>
             <div class="lbl">Search Updated</div>
             <span class="zh">检索截止</span>
           </div>
-          <div class="metric">
+          <div class="metric reveal-scale reveal-delay-5">
             <div class="num">6</div>
             <div class="lbl">Subgroup Strata</div>
             <span class="zh">亚组维度</span>
@@ -757,7 +843,7 @@
 <section id="s4" data-title="Methods">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">03</div>
+      <div class="sec-num reveal-left">03</div>
       <div class="sec-title reveal">
         <h2>Methods &amp; Search.</h2>
         <span class="zh">研究设计与文献检索 · PRISMA 2020</span>
@@ -765,7 +851,7 @@
     </div>
 
     <div class="prisma">
-      <div class="reveal">
+      <div class="reveal-left reveal-delay-1">
         <div class="label" style="margin-bottom:14px;">Protocol &amp; Registration</div>
         <p style="margin-bottom:20px;"><strong>PRISMA 2020</strong> guidelines. PROSPERO registration <span class="count">CRD420251010606</span>. Databases: PubMed, Embase, Cochrane Library, Web of Science. Search deadline: November 2025.</p>
         <div class="label" style="margin-bottom:10px;">Inclusion Criteria</div>
@@ -777,7 +863,7 @@
         </ul>
       </div>
 
-      <div class="reveal">
+      <div class="reveal-right reveal-delay-2">
         <svg class="prisma-svg" viewBox="0 0 480 440" role="img" aria-label="PRISMA 2020 flow diagram">
           <!-- Identification -->
           <text class="stage" x="20" y="14">Identification</text>
@@ -881,14 +967,14 @@
 <section id="s6" data-title="OS Results">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">05</div>
+      <div class="sec-num reveal-left">05</div>
       <div class="sec-title reveal">
         <h2>SII &amp; Overall Survival.</h2>
         <span class="zh">主要结果 · 总生存期</span>
       </div>
     </div>
 
-    <div class="result-callout reveal">
+    <div class="result-callout reveal-scale reveal-delay-1">
       <div class="big">2.11<small>HR · pooled</small></div>
       <div class="desc">
         Elevated SII is significantly associated with <b>worse overall survival</b> in colorectal cancer.
@@ -896,7 +982,7 @@
       </div>
     </div>
 
-    <div class="forest-wrap reveal" id="forest-os">
+    <div class="forest-wrap reveal reveal-delay-2" id="forest-os">
       <svg class="forest" id="forestOS" viewBox="0 0 980 500" role="img" aria-label="Subgroup forest plot, SII and overall survival">
         <!-- axis -->
         <line class="axis" x1="270" y1="430" x2="870" y2="430"/>
@@ -1020,14 +1106,14 @@
 <section id="s7" data-title="PFS Results">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">06</div>
+      <div class="sec-num reveal-left">06</div>
       <div class="sec-title reveal">
         <h2>SII &amp; Progression-Free Survival.</h2>
         <span class="zh">主要结果 · 无进展生存期</span>
       </div>
     </div>
 
-    <div class="result-callout reveal">
+    <div class="result-callout reveal-scale reveal-delay-1">
       <div class="big">2.16<small>HR · pooled</small></div>
       <div class="desc">
         Elevated SII is significantly associated with <b>shorter progression-free survival</b>.
@@ -1035,8 +1121,8 @@
       </div>
     </div>
 
-    <div class="two-col reveal" style="margin-top:8px;">
-      <div class="col">
+    <div class="two-col" style="margin-top:8px;">
+      <div class="col reveal-left reveal-delay-2">
         <h3>Key Subgroup Findings: PFS</h3>
         <div class="tbl-wrap">
           <table>
@@ -1054,7 +1140,7 @@
         </div>
         <p class="forest-caption" style="border-top:none;padding-top:0;margin-top:8px;">* Not statistically significant (p = 0.07); prospective cohorts underpowered.</p>
       </div>
-      <div class="col">
+      <div class="col reveal-right reveal-delay-3">
         <div class="mech-summary">
           The Stage III signal replicates (PFS HR 3.64), mirroring OS. The bevacizumab-treated subgroup attenuates toward the null, hinting at anti-inflammatory modulation by VEGF blockade.
           <span class="zh">III 期信号在 PFS 中重现；贝伐珠单抗亚组效应减弱，提示抗血管生成治疗的抗炎修饰。</span>
@@ -1147,7 +1233,7 @@
 <section id="s10" data-title="Sensitivity & Bias">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">09</div>
+      <div class="sec-num reveal-left">09</div>
       <div class="sec-title reveal">
         <h2>Robustness &amp; Bias.</h2>
         <span class="zh">敏感性分析 · 发表偏倚 · Meta 回归</span>
@@ -1155,26 +1241,26 @@
     </div>
 
     <div class="two-col">
-      <div class="col reveal">
+      <div class="col reveal-left reveal-delay-1">
         <h3>Sensitivity Analysis <span class="zh" style="display:inline;font-size:13px;">· Figure 3</span></h3>
         <p>Leave-one-out analysis sequentially excluded each study. Pooled HR remained stable for both OS and PFS; no single study exerted disproportionate influence. OS and PFS effect sizes stayed within expected ranges across all iterations.</p>
 
         <h3 style="margin-top:28px;">Publication Bias <span class="zh" style="display:inline;font-size:13px;">· Figure 4</span></h3>
         <p>Funnel plots showed approximately symmetric distribution with no obvious small-study effects. Egger's regression confirmed no significant bias:</p>
         <div class="metrics" style="grid-template-columns:1fr 1fr;margin:14px 0 0;border:none;">
-          <div class="metric" style="border:1px solid var(--border);border-right:1px solid var(--border);">
+          <div class="metric reveal reveal-delay-2" style="border:1px solid var(--border);border-right:1px solid var(--border);">
             <div class="num" style="font-size:32px;">0.669</div>
             <div class="lbl">Egger · OS · p</div>
           </div>
-          <div class="metric" style="border:1px solid var(--border);">
+          <div class="metric reveal reveal-delay-3" style="border:1px solid var(--border);">
             <div class="num" style="font-size:32px;">0.261</div>
             <div class="lbl">Egger · PFS · p</div>
           </div>
         </div>
       </div>
 
-      <div class="col reveal">
-        <div class="formula" style="border-left-color:var(--accent2);margin-top:0;">
+      <div class="col reveal-right reveal-delay-2">
+        <div class="formula reveal-scale" style="border-left-color:var(--accent2);margin-top:0;">
           <div class="label">Funnel Plot · OS (Visualization)</div>
           <svg viewBox="0 0 300 200" style="width:100%;margin-top:12px;">
             <path d="M40 180 L40 60 Q150 10 260 60 L260 180 Z" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1"/>
@@ -1220,15 +1306,15 @@
 <section id="s11" data-title="Mechanisms">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">10</div>
+      <div class="sec-num reveal-left">10</div>
       <div class="sec-title reveal">
         <h2>Biological Mechanisms.</h2>
         <span class="zh">SII 预后价值的生物学机制</span>
       </div>
     </div>
 
-    <div class="mech-grid reveal">
-      <div class="mech-cell">
+    <div class="mech-grid">
+      <div class="mech-cell reveal-left reveal-delay-1">
         <svg class="ico" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#C83048" stroke-width="1.5"/><circle cx="18" cy="18" r="4" fill="#C83048"/><circle cx="10" cy="10" r="2.5" fill="#C83048" opacity=".6"/><circle cx="26" cy="12" r="2" fill="#C83048" opacity=".6"/><circle cx="24" cy="26" r="2.5" fill="#C83048" opacity=".6"/><circle cx="9" cy="24" r="2" fill="#C83048" opacity=".6"/></svg>
         <h3>Neutrophilia</h3>
         <span class="zh">中性粒细胞升高</span>
@@ -1239,7 +1325,7 @@
           <li>Remodel extracellular matrix</li>
         </ul>
       </div>
-      <div class="mech-cell">
+      <div class="mech-cell reveal-scale reveal-delay-2">
         <svg class="ico" viewBox="0 0 36 36" fill="none"><ellipse cx="18" cy="18" rx="15" ry="8" stroke="#C83048" stroke-width="1.5"/><ellipse cx="18" cy="18" rx="8" ry="15" stroke="#C83048" stroke-width="1.5"/><circle cx="18" cy="18" r="3" fill="#C83048"/></svg>
         <h3>Thrombocytosis</h3>
         <span class="zh">血小板增多</span>
@@ -1250,7 +1336,7 @@
           <li>Enhance tumor cell survival</li>
         </ul>
       </div>
-      <div class="mech-cell">
+      <div class="mech-cell reveal-right reveal-delay-3">
         <svg class="ico" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#5A9E97" stroke-width="1.5" stroke-dasharray="2 2"/><circle cx="18" cy="18" r="3" fill="#5A9E97"/><path d="M18 8 L18 4 M18 32 L18 28 M8 18 L4 18 M32 18 L28 18" stroke="#5A9E97" stroke-width="1.2"/></svg>
         <h3>Lymphocytopenia</h3>
         <span class="zh">淋巴细胞减少</span>
@@ -1263,7 +1349,7 @@
       </div>
     </div>
 
-    <div class="mech-summary reveal">
+    <div class="mech-summary reveal reveal-delay-4">
       The combined effect of elevated neutrophils and platelets with reduced lymphocytes creates a pro-tumor microenvironment, enhances infiltration of immunosuppressive cells (MDSCs, Tregs), promotes angiogenesis, and impairs cytotoxic T-cell-mediated antitumor immunity. SII captures all three compartments in a single composite index, more comprehensive than NLR or PLR alone.
       <span class="zh">炎性-免疫失衡驱动肿瘤微环境重塑；SII 同时捕获中性粒、血小板、淋巴三个维度的复合信息，优于 NLR 或 PLR。</span>
     </div>
@@ -1274,7 +1360,7 @@
 <section id="s12" data-title="Discussion">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">11</div>
+      <div class="sec-num reveal-left">11</div>
       <div class="sec-title reveal">
         <h2>Clinical Implications.</h2>
         <span class="zh">讨论 · 临床意义与创新点</span>
@@ -1282,7 +1368,7 @@
     </div>
 
     <div class="two-col">
-      <div class="col reveal">
+      <div class="col reveal-left reveal-delay-1">
         <h3>Proposed Clinical Framework</h3>
         <ul>
           <li>Baseline SII at diagnosis for risk stratification.</li>
@@ -1293,12 +1379,12 @@
         </ul>
 
         <h3 style="margin-top:32px;">Key Clinical Insights</h3>
-        <div class="mech-summary" style="font-size:16px;font-style:normal;font-family:'Spectral',serif;">
+        <div class="mech-summary reveal-scale reveal-delay-2" style="font-size:16px;font-style:normal;">
           <strong>Stage III</strong> shows the strongest association (OS HR 3.65, PFS HR 3.64). SII may guide treatment intensification. <strong>Post-treatment &gt; baseline</strong> (OS HR 2.44 vs 1.98) supports dynamic monitoring. <strong>Bevacizumab</strong> attenuates the signal (OS HR 1.78; PFS HR 1.41), suggesting anti-inflammatory properties. <strong>Elderly (≥65)</strong> show stronger effect (meta-regression p = 0.041), reflecting cumulative inflammatory burden.
         </div>
       </div>
 
-      <div class="col reveal">
+      <div class="col reveal-right reveal-delay-2">
         <h3>Innovations vs. Previous Meta-Analyses</h3>
         <div class="tbl-wrap">
           <table class="vs-tbl">
@@ -1323,15 +1409,15 @@
 <section id="s13" data-title="Limitations">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">12</div>
+      <div class="sec-num reveal-left">12</div>
       <div class="sec-title reveal">
         <h2>Limitations.</h2>
         <span class="zh">研究局限性</span>
       </div>
     </div>
 
-    <div class="lim-grid reveal">
-      <div class="lim">
+    <div class="lim-grid">
+      <div class="lim reveal-left reveal-delay-1">
         <div class="n">1</div>
         <div>
           <h3>Cut-off Heterogeneity</h3>
@@ -1339,7 +1425,7 @@
           <p>SII cut-off values ranged from 340 to 1,505. Although meta-regression did not identify it as a significant moderator, this variability limits cross-study comparability and impedes standardization of clinical thresholds.</p>
         </div>
       </div>
-      <div class="lim">
+      <div class="lim reveal-right reveal-delay-1">
         <div class="n">2</div>
         <div>
           <h3>Study Design Imbalance</h3>
@@ -1347,7 +1433,7 @@
           <p>38 of 40 cohorts were retrospective; only 2 were prospective. Retrospective designs introduce potential confounders and selection bias. Prospective data for PFS did not reach significance (p = 0.07).</p>
         </div>
       </div>
-      <div class="lim">
+      <div class="lim reveal-left reveal-delay-2">
         <div class="n">3</div>
         <div>
           <h3>Geographic Bias</h3>
@@ -1355,7 +1441,7 @@
           <p>The majority of studies originate from Asia (China, Japan), with limited European representation and minimal data from North America, Africa, and other regions. Findings may not generalize to non-Asian populations.</p>
         </div>
       </div>
-      <div class="lim">
+      <div class="lim reveal-right reveal-delay-2">
         <div class="n">4</div>
         <div>
           <h3>Tumor Location Granularity</h3>
@@ -1363,7 +1449,7 @@
           <p>Most original studies did not provide HRs stratified by right-sided vs. left-sided CRC, despite known biological differences (MSI, BRAF, microbiome) between proximal and distal tumors.</p>
         </div>
       </div>
-      <div class="lim" style="grid-column:1 / -1;border-right:none;padding-right:0;">
+      <div class="lim reveal-scale reveal-delay-3" style="grid-column:1 / -1;border-right:none;padding-right:0;">
         <div class="n">5</div>
         <div>
           <h3>High Heterogeneity</h3>
@@ -1379,7 +1465,7 @@
 <section id="s14" data-title="Conclusions">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">13</div>
+      <div class="sec-num reveal-left">13</div>
       <div class="sec-title reveal">
         <h2>Conclusions &amp; Future Directions.</h2>
         <span class="zh">结论与未来研究方向</span>
@@ -1387,7 +1473,7 @@
     </div>
 
     <div class="conc-split">
-      <div class="conc-block reveal">
+      <div class="conc-block reveal-left reveal-delay-1">
         <h3>Conclusions <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">结论</span></h3>
         <ul>
           <li>Elevated pre-treatment SII is significantly associated with worse OS (<span class="count">HR 2.11</span>) and PFS (<span class="count">HR 2.16</span>) in CRC, based on <b>35 studies</b> and <b>26,812 patients</b>.</li>
@@ -1397,7 +1483,7 @@
           <li>Cut-off heterogeneity and geographic bias limit immediate universal clinical implementation.</li>
         </ul>
       </div>
-      <div class="conc-block reveal">
+      <div class="conc-block reveal-right reveal-delay-2">
         <h3>Future Research <span class="zh" style="display:inline;font-size:13px;margin-left:6px;">未来方向</span></h3>
         <ul>
           <li>Large-scale prospective multicenter studies with standardized SII measurement protocols.</li>
@@ -1416,7 +1502,7 @@
 <section id="s15" data-title="Acknowledgments" style="justify-content:flex-start;padding-top:140px;">
   <div class="wrap">
     <div class="sec-head">
-      <div class="sec-num reveal">14</div>
+      <div class="sec-num reveal-left">14</div>
       <div class="sec-title reveal">
         <h2>Acknowledgments.</h2>
         <span class="zh">致谢</span>
@@ -1424,13 +1510,13 @@
     </div>
 
     <div class="two-col">
-      <div class="col reveal">
+      <div class="col reveal-left reveal-delay-1">
         <p>Co-author <strong>Huiying Jiang</strong> for supervision, validation, and visualization.</p>
         <p><strong>Beijing Jingmei Group General Hospital</strong> for institutional support.</p>
         <p>All investigators of the <strong>35 included studies</strong>, whose work made this synthesis possible.</p>
         <p>PROSPERO registration: <span class="count">CRD420251010606</span></p>
       </div>
-      <div class="col reveal" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="col reveal-right reveal-delay-2" style="display:flex;flex-direction:column;justify-content:space-between;">
         <div>
           <div class="label label-accent" style="margin-bottom:14px;">Correspondence</div>
           <p style="font-size:17px;"><strong>Pengfei Wang</strong><br><span class="count" style="font-size:14px;">248616795@qq.com</span></p>
@@ -1529,6 +1615,18 @@
     });
   }, { threshold: 0.5 });
   SECTIONS.forEach(s => io.observe(s));
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '-50px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+    revealObserver.observe(el);
+  });
 
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
