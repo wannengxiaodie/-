@@ -1822,16 +1822,7 @@ html {
 
 /* === Enhanced Reveal Animations (MiMo-style) === */
 (function() {
-  // Stagger child elements within reveal containers
-  const revealGroups = document.querySelectorAll('.two-col, .mech-grid, .lim-grid, .conc-split, .metrics, .prisma');
-  revealGroups.forEach(group => {
-    const children = group.querySelectorAll('.col, .mech-cell, .lim, .conc-block, .metric, .reveal');
-    children.forEach((child, i) => {
-      child.style.transitionDelay = (i * 0.12) + 's';
-    });
-  });
-
-  // Parallax scroll effect for cover
+  // Parallax scroll effect for cover DNA strand
   const cover = document.querySelector('.cover');
   const dnaStrand = document.querySelector('.dna-strand');
   if (cover && dnaStrand) {
@@ -1844,71 +1835,6 @@ html {
       }
     }, { passive: true });
   }
-
-  // Smooth scale-in for section headers on scroll
-  const secHeads = document.querySelectorAll('.sec-head');
-  const headObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.2 });
-
-  secHeads.forEach(head => {
-    head.style.opacity = '0';
-    head.style.transform = 'translateY(20px)';
-    head.style.transition = 'all 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
-    headObserver.observe(head);
-  });
-
-  // Number count-up animation only for pure integers
-  const numEls = document.querySelectorAll('.metric .num, .result-callout .big');
-  const numObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !entry.target.dataset.animated && !entry.target.dataset.noAnim) {
-        entry.target.dataset.animated = '1';
-        const small = entry.target.querySelector('small');
-        const smallHTML = small ? small.outerHTML : '';
-        const rawText = entry.target.textContent.replace(/\s+/g, '').trim();
-        // Only animate pure integers (with optional commas), skip decimals and non-numeric
-        const intMatch = rawText.match(/^([\d,]+)$/);
-        if (!intMatch) return;
-
-        const target = parseInt(rawText.replace(/,/g, ''));
-        if (isNaN(target) || target < 1) return;
-
-        const duration = 1200;
-        const startTime = performance.now();
-
-        function animate(now) {
-          const elapsed = now - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = Math.floor(target * eased);
-          const formatted = current.toLocaleString();
-          if (smallHTML) {
-            entry.target.innerHTML = formatted + smallHTML;
-          } else {
-            entry.target.textContent = formatted;
-          }
-          if (progress < 1) requestAnimationFrame(animate);
-          else {
-            const final = target.toLocaleString();
-            if (smallHTML) {
-              entry.target.innerHTML = final + smallHTML;
-            } else {
-              entry.target.textContent = final;
-            }
-          }
-        }
-        requestAnimationFrame(animate);
-      }
-    });
-  }, { threshold: 0.4 });
-
-  numEls.forEach(el => numObserver.observe(el));
 })();
 
 const themeToggle = document.getElementById('themeToggle');
