@@ -602,21 +602,23 @@ table tbody td .ci { color: var(--ink-muted); font-size: 12px; }
 /* Forest Plot */
 .forest-wrap {
   background: var(--paper);
-  padding: 32px;
+  padding: 24px 20px;
   border: 1px solid var(--border);
   margin: 24px 0;
   overflow-x: auto;
 }
-.forest { width: 100%; min-width: 900px; }
+.forest { width: 100%; min-width: 760px; height: auto; }
 .forest .axis { stroke: var(--ink-faint); stroke-width: 1; }
 .forest .null-line { stroke: var(--ink); stroke-width: 1; stroke-dasharray: 4 4; }
-.forest .study-label { font-family: var(--font-mono); font-size: 10px; fill: var(--ink-light); }
+.forest .study-label { font-family: var(--font-mono); font-size: 9px; fill: var(--ink-light); }
 .forest .ci-line { stroke: var(--ink-faint); stroke-width: 1.5; }
 .forest .square { fill: var(--ink); }
 .forest .diamond { fill: var(--ink); stroke: none; }
-.forest .axis-tick { font-family: var(--font-mono); font-size: 9px; fill: var(--ink-faint); }
-.forest .axis-title { font-family: var(--font-mono); font-size: 9px; letter-spacing: .1em; fill: var(--ink-faint); }
-.forest .hr-anno { font-family: var(--font-mono); font-size: 10px; fill: var(--ink); }
+.forest .axis-tick { font-family: var(--font-mono); font-size: 8px; fill: var(--ink-faint); }
+.forest .axis-title { font-family: var(--font-mono); font-size: 8px; letter-spacing: .1em; fill: var(--ink-faint); text-transform: uppercase; }
+.forest .hr-anno { font-family: var(--font-mono); font-size: 9px; fill: var(--ink); }
+.forest .group-header { font-family: var(--font-mono); font-size: 8px; fill: var(--ink-muted); letter-spacing: .12em; text-transform: uppercase; }
+.forest .weight-bar { fill: var(--ink-faint); opacity: 0.15; }
 
 .forest-caption {
   font-family: var(--font-serif);
@@ -1235,32 +1237,126 @@ html {
     </div>
 
     <div class="forest-wrap reveal">
-      <svg class="forest" viewBox="0 0 980 500" role="img" aria-label="Subgroup forest plot, SII and overall survival">
-        <line class="axis" x1="270" y1="430" x2="870" y2="430"/>
-        <line class="null-line" x1="420" y1="40" x2="420" y2="430"/>
-        <text class="axis-title" x="270" y="448">Favours high SII</text>
-        <text class="axis-title" x="870" y="448" text-anchor="end">Favours low SII</text>
-        <text class="axis-tick" x="270" y="464">0.5</text>
-        <text class="axis-tick" x="420" y="464">1.0</text>
-        <text class="axis-tick" x="570" y="464">2.0</text>
-        <text class="axis-tick" x="720" y="464">4.0</text>
-        <text class="axis-tick" x="870" y="464">8.0</text>
-        <g class="study">
-          <text class="study-label" x="260" y="64" text-anchor="end">Pooled (random effects)</text>
-          <line class="ci-line" x1="539" y1="60" x2="624" y2="60"/>
-          <polygon class="diamond" points="572,60 584,52 596,60 584,68"/>
-          <text class="hr-anno" x="905" y="64">2.11 [1.73, 2.57]</text>
-        </g>
-        <g class="study"><text class="study-label" x="260" y="104" text-anchor="end">Stage I-II</text><line class="ci-line" x1="542" y1="100" x2="652" y2="100"/><circle class="square" cx="597" cy="100" r="5"/></g>
-        <g class="study"><text class="study-label" x="260" y="144" text-anchor="end">Stage III</text><line class="ci-line" x1="564" y1="140" x2="750" y2="140"/><circle class="square" cx="657" cy="140" r="5"/></g>
-        <g class="study"><text class="study-label" x="260" y="184" text-anchor="end">Stage IV / Metastatic</text><line class="ci-line" x1="504" y1="180" x2="684" y2="180"/><circle class="square" cx="594" cy="180" r="5"/></g>
-        <g class="study"><text class="study-label" x="260" y="224" text-anchor="end">Colon cancer</text><line class="ci-line" x1="536" y1="220" x2="660" y2="220"/><circle class="square" cx="598" cy="220" r="5"/></g>
-        <g class="study"><text class="study-label" x="260" y="264" text-anchor="end">Rectal cancer</text><line class="ci-line" x1="528" y1="260" x2="644" y2="260"/><circle class="square" cx="586" cy="260" r="5"/></g>
-        <g class="study"><text class="study-label" x="260" y="304" text-anchor="end">Surgical resection</text><line class="ci-line" x1="524" y1="300" x2="668" y2="300"/><circle class="square" cx="596" cy="300" r="5"/></g>
-        <g class="study"><text class="study-label" x="260" y="344" text-anchor="end">Chemotherapy alone</text><line class="ci-line" x1="516" y1="340" x2="652" y2="340"/><circle class="square" cx="584" cy="340" r="5"/></g>
-        <g class="study"><text class="study-label" x="260" y="384" text-anchor="end">Chemo + Bevacizumab</text><line class="ci-line" x1="492" y1="380" x2="620" y2="380"/><circle class="square" cx="556" cy="380" r="5"/></g>
+      <svg class="forest" viewBox="0 0 820 580" role="img" aria-label="Subgroup forest plot, SII and overall survival">
+        <!-- Column headers -->
+        <text class="group-header" x="10" y="16">Subgroup</text>
+        <text class="group-header" x="515" y="16" text-anchor="middle">HR [95% CI]</text>
+        <text class="group-header" x="700" y="16">Weight</text>
+        <text class="group-header" x="805" y="16" text-anchor="end">HR [95% CI]</text>
+        <line x1="0" y1="24" x2="820" y2="24" stroke="var(--border-strong)" stroke-width="1"/>
+
+        <!-- Axis: log scale from 0.5 to 8.0 -->
+        <!-- x = 250 + ln(HR/0.5) / ln(16) * 500 -->
+        <!-- 0.5→250, 1.0→367, 2.0→484, 4.0→601, 8.0→718 -->
+
+        <!-- TNM Stage group -->
+        <text class="group-header" x="10" y="44">TNM STAGE</text>
+        <line x1="0" y1="48" x2="820" y2="48" stroke="var(--border)" stroke-width="0.5"/>
+
+        <!-- Stage I-II: HR 2.31 [1.65-3.24], 6 studies -->
+        <text class="study-label" x="240" y="66" text-anchor="end">Stage I–II</text>
+        <text class="study-label" x="240" y="78" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=6 cohorts</text>
+        <line class="ci-line" x1="438" y1="68" x2="530" y2="68"/>
+        <circle class="square" cx="484" cy="68" r="5"/>
+        <text class="hr-anno" x="805" y="71" text-anchor="end">2.31 [1.65, 3.24]</text>
+
+        <!-- Stage III: HR 3.65 [1.65-8.07], 8 studies -->
+        <text class="study-label" x="240" y="96" text-anchor="end">Stage III</text>
+        <text class="study-label" x="240" y="108" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=8 cohorts</text>
+        <line class="ci-line" x1="438" y1="98" x2="718" y2="98"/>
+        <circle class="square" cx="590" cy="98" r="6"/>
+        <text class="hr-anno" x="805" y="101" text-anchor="end" style="font-weight:500;">3.65 [1.65, 8.07]</text>
+
+        <!-- Stage IV: HR 1.98 [1.38-2.83], 12 studies -->
+        <text class="study-label" x="240" y="126" text-anchor="end">Stage IV / Metastatic</text>
+        <text class="study-label" x="240" y="138" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=12 cohorts</text>
+        <line class="ci-line" x1="406" y1="128" x2="518" y2="128"/>
+        <circle class="square" cx="478" cy="128" r="7"/>
+        <text class="hr-anno" x="805" y="131" text-anchor="end">1.98 [1.38, 2.83]</text>
+
+        <!-- Tumor Location group -->
+        <text class="group-header" x="10" y="160">TUMOR LOCATION</text>
+        <line x1="0" y1="164" x2="820" y2="164" stroke="var(--border)" stroke-width="0.5"/>
+
+        <!-- Colon: HR 2.08 [1.64-2.63], 14 studies -->
+        <text class="study-label" x="240" y="182" text-anchor="end">Colon</text>
+        <text class="study-label" x="240" y="194" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=14 cohorts</text>
+        <line class="ci-line" x1="437" y1="184" x2="507" y2="184"/>
+        <circle class="square" cx="483" cy="184" r="7"/>
+        <text class="hr-anno" x="805" y="187" text-anchor="end">2.08 [1.64, 2.63]</text>
+
+        <!-- Rectal: HR 2.12 [1.65-2.72], 8 studies -->
+        <text class="study-label" x="240" y="212" text-anchor="end">Rectal</text>
+        <text class="study-label" x="240" y="224" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=8 cohorts</text>
+        <line class="ci-line" x1="438" y1="214" x2="511" y2="214"/>
+        <circle class="square" cx="485" cy="214" r="5"/>
+        <text class="hr-anno" x="805" y="217" text-anchor="end">2.12 [1.65, 2.72]</text>
+
+        <!-- Mixed: HR 2.16 [1.65-2.83], 10 studies -->
+        <text class="study-label" x="240" y="242" text-anchor="end">Mixed / Colorectal</text>
+        <text class="study-label" x="240" y="254" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=10 cohorts</text>
+        <line class="ci-line" x1="438" y1="244" x2="518" y2="244"/>
+        <circle class="square" cx="487" cy="244" r="6"/>
+        <text class="hr-anno" x="805" y="247" text-anchor="end">2.16 [1.65, 2.83]</text>
+
+        <!-- Treatment group -->
+        <text class="group-header" x="10" y="276">TREATMENT MODALITY</text>
+        <line x1="0" y1="280" x2="820" y2="280" stroke="var(--border)" stroke-width="0.5"/>
+
+        <!-- Surgery: HR 2.10 [1.65-2.67], 14 studies -->
+        <text class="study-label" x="240" y="298" text-anchor="end">Surgical resection</text>
+        <text class="study-label" x="240" y="310" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=14 cohorts</text>
+        <line class="ci-line" x1="438" y1="300" x2="510" y2="300"/>
+        <circle class="square" cx="483" cy="300" r="7"/>
+        <text class="hr-anno" x="805" y="303" text-anchor="end">2.10 [1.65, 2.67]</text>
+
+        <!-- Chemo: HR 2.02 [1.50-2.72], 12 studies -->
+        <text class="study-label" x="240" y="328" text-anchor="end">Chemotherapy alone</text>
+        <text class="study-label" x="240" y="340" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=12 cohorts</text>
+        <line class="ci-line" x1="418" y1="330" x2="511" y2="330"/>
+        <circle class="square" cx="475" cy="330" r="6"/>
+        <text class="hr-anno" x="805" y="333" text-anchor="end">2.02 [1.50, 2.72]</text>
+
+        <!-- Chemo+Bev: HR 1.78 [1.22-2.59], 6 studies -->
+        <text class="study-label" x="240" y="358" text-anchor="end">Chemo + Bevacizumab</text>
+        <text class="study-label" x="240" y="370" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=6 cohorts</text>
+        <line class="ci-line" x1="391" y1="360" x2="503" y2="360"/>
+        <circle class="square" cx="455" cy="360" r="5"/>
+        <text class="hr-anno" x="805" y="363" text-anchor="end">1.78 [1.22, 2.59]</text>
+
+        <!-- Pooled result -->
+        <line x1="0" y1="390" x2="820" y2="390" stroke="var(--border-strong)" stroke-width="1"/>
+        <text class="group-header" x="10" y="408">POOLED (RANDOM EFFECTS)</text>
+
+        <!-- Diamond: HR 2.11 [1.73-2.57] -->
+        <text class="study-label" x="240" y="428" text-anchor="end" style="font-weight:600;fill:var(--ink);">Overall</text>
+        <text class="study-label" x="240" y="440" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">32 cohorts · 25,366 pts</text>
+        <polygon class="diamond" points="455,424 484,414 513,424 484,434"/>
+        <line class="ci-line" x1="424" y1="424" x2="544" y2="424" style="opacity:0;"/>
+        <polygon class="diamond" points="424,424 484,410 544,424 484,438"/>
+        <text class="hr-anno" x="805" y="427" text-anchor="end" style="font-weight:600;font-size:10px;">2.11 [1.73, 2.57]</text>
+        <text class="study-label" x="805" y="440" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">I²=92% · p&lt;0.00001</text>
+
+        <!-- Axis -->
+        <line class="axis" x1="250" y1="470" x2="718" y2="470"/>
+        <text class="axis-tick" x="250" y="486" text-anchor="middle">0.5</text>
+        <text class="axis-tick" x="367" y="486" text-anchor="middle">1.0</text>
+        <text class="axis-tick" x="484" y="486" text-anchor="middle">2.0</text>
+        <text class="axis-tick" x="601" y="486" text-anchor="middle">4.0</text>
+        <text class="axis-tick" x="718" y="486" text-anchor="middle">8.0</text>
+
+        <!-- Null line (HR=1.0) -->
+        <line class="null-line" x1="367" y1="30" x2="367" y2="470"/>
+
+        <!-- Axis titles -->
+        <text class="axis-title" x="290" y="504">Favours High SII</text>
+        <text class="axis-title" x="678" y="504" text-anchor="end">Favours Low SII</text>
+
+        <!-- Heterogeneity note -->
+        <text class="study-label" x="10" y="530" style="font-size:8px;fill:var(--ink-muted);">τ² = 0.24 · I² = 92% · H = 3.61 · Test for overall effect: Z = 6.87 (p &lt; 0.00001)</text>
+        <text class="study-label" x="10" y="546" style="font-size:8px;fill:var(--ink-muted);">Square size ∝ study weight · Diamond width = 95% CI of pooled estimate</text>
       </svg>
-      <p class="forest-caption">Figure 1 · Forest plot showing subgroup analyses for overall survival. All subgroups demonstrate consistent direction: higher SII correlates with worse outcome.</p>
+      <p class="forest-caption">Figure 1 · Subgroup forest plot for overall survival. All subgroups show consistent direction: higher SII correlates with worse OS. Stage III shows the strongest association.</p>
     </div>
   </div>
 </section>
