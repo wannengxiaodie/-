@@ -119,6 +119,36 @@ body { overflow-x: hidden; }
 }
 .theme-toggle svg { width: 14px; height: 14px; }
 
+.lang-toggle {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .25s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-muted);
+  margin-left: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+.lang-toggle:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.lang-toggle .active { color: var(--ink); font-weight: 500; }
+.lang-toggle .sep { color: var(--ink-faint); }
+
+/* Bilingual */
+.zh { display: none; }
+body.lang-zh .zh { display: inline; }
+body.lang-zh .en { display: none; }
+body.lang-zh .zh.block { display: block; }
+body.lang-zh .zh.flex { display: flex; }
+
 /* Progress Dots */
 .dots {
   position: fixed; right: 32px; top: 50%; transform: translateY(-50%);
@@ -974,14 +1004,19 @@ html {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
-    <div class="meta">Frontiers in Oncology · 2026</div>
+    <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+      <span class="en active">EN</span>
+      <span class="sep">/</span>
+      <span class="zh">中</span>
+    </button>
+    <div class="meta"><span class="en">Frontiers in Oncology · 2026</span><span class="zh">肿瘤学前沿 · 2026</span></div>
   </div>
 </nav>
 
 <nav class="dots" id="dots" aria-label="Section navigation"></nav>
 
 <div class="hint">
-  <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
+  <span><kbd>↑</kbd> <kbd>↓</kbd> <span class="en">navigate</span><span class="zh">翻页</span></span>
   <span id="pgcounter">01 / 15</span>
 </div>
 
@@ -991,22 +1026,20 @@ html {
 <section id="s1" class="cover" data-title="Cover">
   <div class="cover-inner">
     <div class="topline">
-      <div class="journal"><b>Frontiers in Oncology</b> · Meta-Analysis</div>
-      <div class="vol">Vol. 16 · 2026</div>
+      <div class="journal"><b><span class="en">Frontiers in Oncology</span><span class="zh">肿瘤学前沿</span></b> · <span class="en">Meta-Analysis</span><span class="zh">Meta 分析</span></div>
+      <div class="vol"><span class="en">Vol. 16 · 2026</span><span class="zh">第 16 卷 · 2026</span></div>
     </div>
     <div class="center">
       <div class="dna-strand"><canvas id="dnaCanvas"></canvas></div>
-      <div class="kicker reveal">A Systematic Review & Meta-Analysis</div>
-      <h1 class="reveal">Prognostic Value of the Systemic <em>Immune-Inflammation Index</em> for Colorectal Cancer.</h1>
+      <div class="kicker reveal"><span class="en">A Systematic Review & Meta-Analysis</span><span class="zh">系统综述与 Meta 分析</span></div>
+      <h1 class="reveal"><span class="en">Prognostic Value of the Systemic <em>Immune-Inflammation Index</em> for Colorectal Cancer.</span><span class="zh">系统<em>免疫炎症指数</em>对结直肠癌预后价值的研究</span></h1>
       <div class="decor-line reveal"></div>
-      <p class="deck reveal">A pooled analysis of 35 studies and 26,812 patients clarifies where SII predicts survival, and where it does not.
-        <span class="zh">系统免疫炎症指数对结直肠癌预后价值的系统综述与 Meta 分析</span>
-      </p>
+      <p class="deck reveal"><span class="en">A pooled analysis of 35 studies and 26,812 patients clarifies where SII predicts survival, and where it does not.</span><span class="zh">汇集 35 项研究、26,812 例患者，明确 SII 在哪些场景下可预测生存，哪些场景下价值有限。</span></p>
     </div>
     <div class="bottom reveal">
       <div class="authors">
         <b>Pengfei Wang</b>* · Huiying Jiang
-        <span class="aff">Clinical Laboratory, Beijing Jingmei Group General Hospital, Beijing, China</span>
+        <span class="aff"><span class="en">Clinical Laboratory, Beijing Jingmei Group General Hospital, Beijing, China</span><span class="zh">北京京煤集团总医院检验科，中国北京</span></span>
       </div>
       <div class="doi">
         <b>DOI</b>
@@ -1022,35 +1055,34 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">01</div>
       <div class="sec-title reveal">
-        <h2>The Clinical Challenge.</h2>
-        <span class="zh">临床问题与知识缺口</span>
+        <h2><span class="en">The Clinical Challenge.</span><span class="zh">临床挑战与问题</span></h2>
       </div>
     </div>
 
     <div class="two-col">
       <div class="col reveal">
-        <p>Colorectal cancer remains a leading cause of cancer-related mortality worldwide. TNM staging alone cannot account for the wide inter-individual variability in prognosis, and systemic inflammation is now understood to drive tumor progression, metastasis, and treatment resistance.</p>
-        <p>Existing inflammatory markers such as NLR and PLR show promise but capture only part of the inflammatory-immune axis. The Systemic Immune-Inflammation Index (SII) combines three compartments into a single composite read. Prior SII studies in CRC, however, report inconsistent findings due to methodological heterogeneity and undefined cut-off values.</p>
+        <p><span class="en">Colorectal cancer remains a leading cause of cancer-related mortality worldwide. TNM staging alone cannot account for the wide inter-individual variability in prognosis, and systemic inflammation is now understood to drive tumor progression, metastasis, and treatment resistance.</span><span class="zh">结直肠癌仍是全球癌症相关死亡的主要原因之一。仅靠 TNM 分期难以解释个体间广泛的预后差异，而系统性炎症已被证实驱动肿瘤进展、转移和治疗耐药。</span></p>
+        <p><span class="en">Existing inflammatory markers such as NLR and PLR show promise but capture only part of the inflammatory-immune axis. The Systemic Immune-Inflammation Index (SII) combines three compartments into a single composite read. Prior SII studies in CRC, however, report inconsistent findings due to methodological heterogeneity and undefined cut-off values.</span><span class="zh">NLR、PLR 等已有炎症指标具有一定价值，但仅反映了炎症-免疫轴的部分维度。系统免疫炎症指数（SII）将三大血细胞整合为单一复合指标。然而，既往 CRC 中 SII 研究因方法学异质性和临界值不统一，结论存在分歧。</span></p>
 
         <div class="formula">
-          <div class="label">SII · Composite Index</div>
+          <div class="label">SII · <span class="en">Composite Index</span><span class="zh">复合指数</span></div>
           <div class="eq">
             SII <span class="x">=</span>
             <span class="frac">
-              <span class="num">Platelet <span class="x">×</span> Neutrophil</span>
-              <span class="den">Lymphocyte</span>
+              <span class="num"><span class="en">Platelet <span class="x">×</span> Neutrophil</span><span class="zh">血小板 <span class="x">×</span> 中性粒细胞</span></span>
+              <span class="den"><span class="en">Lymphocyte</span><span class="zh">淋巴细胞</span></span>
             </span>
           </div>
         </div>
       </div>
 
       <div class="col reveal">
-        <h3>Knowledge Gap</h3>
+        <h3><span class="en">Knowledge Gap</span><span class="zh">知识缺口</span></h3>
         <ul>
-          <li>Optimal SII cut-off values remain undefined across the literature.</li>
-          <li>Prognostic value varies by treatment modality, TNM stage, and tumor location.</li>
-          <li>No comprehensive meta-analysis with sufficient subgroup granularity exists.</li>
-          <li>The most recent prior analysis (Tan et al., 2025) was limited to 27 studies, searched to March 2024.</li>
+          <li><span class="en">Optimal SII cut-off values remain undefined across the literature.</span><span class="zh">文献中 SII 最佳临界值尚未统一。</span></li>
+          <li><span class="en">Prognostic value varies by treatment modality, TNM stage, and tumor location.</span><span class="zh">预后价值因治疗方式、TNM 分期和肿瘤部位而异。</span></li>
+          <li><span class="en">No comprehensive meta-analysis with sufficient subgroup granularity exists.</span><span class="zh">尚无具备足够亚组颗粒度的全面 Meta 分析。</span></li>
+          <li><span class="en">The most recent prior analysis (Tan et al., 2025) was limited to 27 studies, searched to March 2024.</span><span class="zh">最新既往分析（Tan 等，2025）仅纳入 27 项研究，检索至 2024 年 3 月。</span></li>
         </ul>
       </div>
     </div>
@@ -1063,44 +1095,39 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">02</div>
       <div class="sec-title reveal">
-        <h2>Study Objectives.</h2>
-        <span class="zh">研究目标与设计</span>
+        <h2><span class="en">Study Objectives.</span><span class="zh">研究目标</span></h2>
       </div>
     </div>
 
     <div class="two-col equal">
       <div class="col reveal">
-        <h3>Primary Objective</h3>
-        <p>To clarify the prognostic value of SII for overall survival (OS) and progression-free survival (PFS) in colorectal cancer through a comprehensive meta-analysis.</p>
-        <h3 style="margin-top:28px;">Secondary Objectives</h3>
+        <h3><span class="en">Primary Objective</span><span class="zh">主要目标</span></h3>
+        <p><span class="en">To clarify the prognostic value of SII for overall survival (OS) and progression-free survival (PFS) in colorectal cancer through a comprehensive meta-analysis.</span><span class="zh">通过全面的 Meta 分析，明确 SII 对结直肠癌总生存期（OS）和无进展生存期（PFS）的预后价值。</span></p>
+        <h3 style="margin-top:28px;"><span class="en">Secondary Objectives</span><span class="zh">次要目标</span></h3>
         <ul>
-          <li>Explore heterogeneity sources via subgroup analyses: TNM stage, tumor location, treatment, geography, timing of SII measurement.</li>
-          <li>Assess whether variability in SII cut-off value moderates prognostic estimates via meta-regression.</li>
-          <li>Compare findings with previous meta-analyses and provide updated evidence through November 2025.</li>
+          <li><span class="en">Explore heterogeneity sources via subgroup analyses: TNM stage, tumor location, treatment, geography, timing of SII measurement.</span><span class="zh">通过亚组分析探索异质性来源：TNM 分期、肿瘤部位、治疗方式、地域、SII 检测时机。</span></li>
+          <li><span class="en">Assess whether variability in SII cut-off value moderates prognostic estimates via meta-regression.</span><span class="zh">通过 Meta 回归评估 SII 临界值差异是否影响预后效应量。</span></li>
+          <li><span class="en">Compare findings with previous meta-analyses and provide updated evidence through November 2025.</span><span class="zh">与既往 Meta 分析比较，提供截至 2025 年 11 月的最新证据。</span></li>
         </ul>
       </div>
       <div class="col reveal">
-        <div class="label" style="margin-bottom:20px;">Key Features · This Meta-Analysis</div>
+        <div class="label" style="margin-bottom:20px;"><span class="en">Key Features · This Meta-Analysis</span><span class="zh">本 Meta 分析核心特征</span></div>
         <div class="metrics">
           <div class="metric reveal">
             <div class="num" data-no-anim>35</div>
-            <div class="lbl">Studies</div>
-            <span class="zh">纳入研究</span>
+            <div class="lbl"><span class="en">Studies</span><span class="zh">纳入研究</span></div>
           </div>
           <div class="metric reveal">
             <div class="num" data-no-anim>26,812</div>
-            <div class="lbl">Patients</div>
-            <span class="zh">总患者数</span>
+            <div class="lbl"><span class="en">Patients</span><span class="zh">总患者数</span></div>
           </div>
           <div class="metric reveal">
             <div class="num" data-no-anim>Nov<small>2025</small></div>
-            <div class="lbl">Search Updated</div>
-            <span class="zh">检索截止</span>
+            <div class="lbl"><span class="en">Search Updated</span><span class="zh">检索截止</span></div>
           </div>
           <div class="metric reveal">
             <div class="num" data-no-anim>6</div>
-            <div class="lbl">Subgroup Strata</div>
-            <span class="zh">亚组维度</span>
+            <div class="lbl"><span class="en">Subgroup Strata</span><span class="zh">亚组维度</span></div>
           </div>
         </div>
       </div>
@@ -1114,75 +1141,74 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">03</div>
       <div class="sec-title reveal">
-        <h2>Methods & Search.</h2>
-        <span class="zh">研究设计与文献检索 · PRISMA 2020</span>
+        <h2><span class="en">Methods & Search.</span><span class="zh">研究方法与文献检索</span></h2>
       </div>
     </div>
 
     <div class="prisma">
       <div class="reveal">
-        <div class="label" style="margin-bottom:16px;">Protocol & Registration</div>
-        <p style="margin-bottom:20px;"><strong>PRISMA 2020</strong> guidelines. PROSPERO registration <span class="count">CRD420251010606</span>. Databases: PubMed, Embase, Cochrane Library, Web of Science. Search deadline: November 2025.</p>
-        <div class="label" style="margin-bottom:12px;">Inclusion Criteria</div>
+        <div class="label" style="margin-bottom:16px;"><span class="en">Protocol & Registration</span><span class="zh">研究方案与注册</span></div>
+        <p style="margin-bottom:20px;"><span class="en"><strong>PRISMA 2020</strong> guidelines. PROSPERO registration <span class="count">CRD420251010606</span>. Databases: PubMed, Embase, Cochrane Library, Web of Science. Search deadline: November 2025.</span><span class="zh"><strong>PRISMA 2020</strong> 指南。PROSPERO 注册号：<span class="count">CRD420251010606</span>。检索数据库：PubMed、Embase、Cochrane Library、Web of Science。检索截止日期：2025 年 11 月。</span></p>
+        <div class="label" style="margin-bottom:12px;"><span class="en">Inclusion Criteria</span><span class="zh">纳入标准</span></div>
         <ul class="crit-list">
-          <li>Pathologically confirmed CRC.</li>
-          <li>Surgery, chemotherapy, or combined treatment.</li>
-          <li>SII evaluated for OS or PFS.</li>
-          <li>Hazard ratio with 95% CI available or derivable.</li>
+          <li><span class="en">Pathologically confirmed CRC.</span><span class="zh">经病理证实的结直肠癌。</span></li>
+          <li><span class="en">Surgery, chemotherapy, or combined treatment.</span><span class="zh">接受手术、化疗或联合治疗。</span></li>
+          <li><span class="en">SII evaluated for OS or PFS.</span><span class="zh">评估 SII 与 OS 或 PFS 的相关性。</span></li>
+          <li><span class="en">Hazard ratio with 95% CI available or derivable.</span><span class="zh">提供或可推导风险比（HR）及 95% 置信区间。</span></li>
         </ul>
       </div>
       <div class="reveal">
         <svg class="prisma-svg" viewBox="0 0 520 560" role="img" aria-label="PRISMA 2020 flow diagram">
-          <text class="stage" x="20" y="14">Identification</text>
+          <text class="stage" x="20" y="14"><tspan class="en">Identification</tspan><tspan class="zh">识别</tspan></text>
           <rect class="box" x="20" y="22" width="240" height="88" rx="4"/>
-          <text x="32" y="46">Records identified</text>
+          <text x="32" y="46"><tspan class="en">Records identified</tspan><tspan class="zh">检出文献</tspan></text>
           <text x="32" y="76" style="font-size:22px;font-weight:500">349</text>
-          <text x="32" y="94" style="font-size:9px;">PubMed 142 · Embase 105</text>
-          <text x="32" y="106" style="font-size:9px;">Cochrane 8 · WoS 94</text>
+          <text x="32" y="94" style="font-size:9px;"><tspan class="en">PubMed 142 · Embase 105</tspan><tspan class="zh">PubMed 142 篇 · Embase 105 篇</tspan></text>
+          <text x="32" y="106" style="font-size:9px;"><tspan class="en">Cochrane 8 · WoS 94</tspan><tspan class="zh">Cochrane 8 篇 · WoS 94 篇</tspan></text>
           <rect class="box" x="300" y="22" width="200" height="88" rx="4"/>
-          <text x="312" y="46">After duplicate removal</text>
+          <text x="312" y="46"><tspan class="en">After duplicate removal</tspan><tspan class="zh">去重后</tspan></text>
           <text x="312" y="76" style="font-size:22px;font-weight:500">198</text>
-          <text x="312" y="94" style="font-size:9px;">151 duplicates removed</text>
+          <text x="312" y="94" style="font-size:9px;"><tspan class="en">151 duplicates removed</tspan><tspan class="zh">去除 151 篇重复</tspan></text>
           <path class="arrow" d="M260,66 L300,66"/>
           <polygon class="arrow-head" points="300,66 294,63 294,69"/>
           <path class="arrow" d="M140,110 L140,142"/>
           <polygon class="arrow-head" points="140,142 137,136 143,136"/>
-          <text class="stage" x="20" y="134">Screening</text>
+          <text class="stage" x="20" y="134"><tspan class="en">Screening</tspan><tspan class="zh">筛选</tspan></text>
           <rect class="box" x="20" y="142" width="240" height="68" rx="4"/>
-          <text x="32" y="166">Title/Abstract screened</text>
+          <text x="32" y="166"><tspan class="en">Title/Abstract screened</tspan><tspan class="zh">标题/摘要筛选</tspan></text>
           <text x="32" y="194" style="font-size:22px;font-weight:500">198</text>
           <rect class="box" x="300" y="142" width="200" height="68" rx="4"/>
-          <text x="312" y="166">Excluded</text>
+          <text x="312" y="166"><tspan class="en">Excluded</tspan><tspan class="zh">排除</tspan></text>
           <text x="312" y="194" style="font-size:22px;font-weight:500">131</text>
           <path class="arrow" d="M260,176 L300,176"/>
           <polygon class="arrow-head" points="300,176 294,173 294,179"/>
           <path class="arrow" d="M140,210 L140,242"/>
           <polygon class="arrow-head" points="140,242 137,236 143,236"/>
-          <text class="stage" x="20" y="234">Eligibility</text>
+          <text class="stage" x="20" y="234"><tspan class="en">Eligibility</tspan><tspan class="zh">合格性</tspan></text>
           <rect class="box" x="20" y="242" width="240" height="68" rx="4"/>
-          <text x="32" y="266">Full-text assessed</text>
+          <text x="32" y="266"><tspan class="en">Full-text assessed</tspan><tspan class="zh">全文评估</tspan></text>
           <text x="32" y="294" style="font-size:22px;font-weight:500">67</text>
           <rect class="box" x="300" y="242" width="200" height="68" rx="4"/>
-          <text x="312" y="266">Excluded with reasons</text>
-          <text x="312" y="290" style="font-size:9px;">No SII data: 18</text>
-          <text x="312" y="302" style="font-size:9px;">No HR/CI: 9 · Overlap: 5</text>
+          <text x="312" y="266"><tspan class="en">Excluded with reasons</tspan><tspan class="zh">排除及原因</tspan></text>
+          <text x="312" y="290" style="font-size:9px;"><tspan class="en">No SII data: 18</tspan><tspan class="zh">无 SII 数据：18</tspan></text>
+          <text x="312" y="302" style="font-size:9px;"><tspan class="en">No HR/CI: 9 · Overlap: 5</tspan><tspan class="zh">无 HR/CI：9 · 重复：5</tspan></text>
           <path class="arrow" d="M260,276 L300,276"/>
           <polygon class="arrow-head" points="300,276 294,273 294,279"/>
           <path class="arrow" d="M140,310 L140,342"/>
           <polygon class="arrow-head" points="140,342 137,336 143,336"/>
-          <text class="stage" x="20" y="334">Included</text>
+          <text class="stage" x="20" y="334"><tspan class="en">Included</tspan><tspan class="zh">纳入</tspan></text>
           <rect class="box-final" x="20" y="342" width="480" height="68" rx="4"/>
-          <text x="32" y="368" fill="white">Studies included in meta-analysis</text>
+          <text x="32" y="368" fill="white"><tspan class="en">Studies included in meta-analysis</tspan><tspan class="zh">纳入 Meta 分析的研究</tspan></text>
           <text x="32" y="396" style="font-size:22px;font-weight:500;fill:white">35</text>
-          <text x="300" y="368" style="font-size:10px;fill:rgba(255,255,255,.6)">Patients</text>
+          <text x="300" y="368" style="font-size:10px;fill:rgba(255,255,255,.6)"><tspan class="en">Patients</tspan><tspan class="zh">患者数</tspan></text>
           <text x="300" y="396" style="font-size:22px;font-weight:500;fill:white">26,812</text>
           <path class="arrow" d="M140,410 L140,442"/>
           <polygon class="arrow-head" points="140,442 137,436 143,436"/>
           <rect class="box" x="20" y="442" width="480" height="56" rx="4" style="fill:var(--paper);stroke:var(--border-strong);stroke-dasharray:4 3;"/>
-          <text x="32" y="466" style="font-size:10px;">Quantitative synthesis</text>
-          <text x="32" y="486" style="font-size:16px;font-weight:500">OS: 32 studies · PFS: 23 studies</text>
-          <text x="280" y="466" style="font-size:10px;">Subgroup analyses</text>
-          <text x="280" y="486" style="font-size:9px;">TNM · Location · Treatment · Timing</text>
+          <text x="32" y="466" style="font-size:10px;"><tspan class="en">Quantitative synthesis</tspan><tspan class="zh">定量合成</tspan></text>
+          <text x="32" y="486" style="font-size:16px;font-weight:500"><tspan class="en">OS: 32 studies · PFS: 23 studies</tspan><tspan class="zh">OS：32 项 · PFS：23 项</tspan></text>
+          <text x="280" y="466" style="font-size:10px;"><tspan class="en">Subgroup analyses</tspan><tspan class="zh">亚组分析</tspan></text>
+          <text x="280" y="486" style="font-size:9px;"><tspan class="en">TNM · Location · Treatment · Timing</tspan><tspan class="zh">TNM · 部位 · 治疗 · 时机</tspan></text>
         </svg>
       </div>
     </div>
@@ -1195,22 +1221,21 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">04</div>
       <div class="sec-title reveal">
-        <h2>Study Characteristics.</h2>
-        <span class="zh">纳入研究基线特征</span>
+        <h2><span class="en">Study Characteristics.</span><span class="zh">纳入研究特征</span></h2>
       </div>
     </div>
 
     <div class="tbl-wrap reveal">
       <table>
-        <thead><tr><th>Characteristic</th><th>Details</th></tr></thead>
+        <thead><tr><th><span class="en">Characteristic</span><span class="zh">特征</span></th><th><span class="en">Details</span><span class="zh">详情</span></th></tr></thead>
         <tbody>
-          <tr><td>Geographic Regions</td><td>Asia (China, Japan), Europe (Italy, Hungary, Spain, Turkey), North America (USA)</td></tr>
-          <tr><td>Study Design</td><td>38 retrospective cohorts; 2 prospective cohorts</td></tr>
-          <tr><td>TNM Stages</td><td>Stage I–IV; including metastatic CRC, early-stage, and mixed populations</td></tr>
-          <tr><td>Treatment Modalities</td><td>Surgery, chemotherapy, chemo + bevacizumab, immunotherapy (anti-PD-1), TARE</td></tr>
-          <tr><td>SII Cut-off Range</td><td><span class="count">340 – 1,505</span> <span class="ci">wide variation across studies</span></td></tr>
-          <tr><td>Timing of SII</td><td>Baseline / preoperative (majority); post-treatment (8 cohorts)</td></tr>
-          <tr><td>Quality Assessment</td><td>Newcastle-Ottawa Scale; mean score <span class="count">7.8 / 9</span> (high quality, 7–9)</td></tr>
+          <tr><td><span class="en">Geographic Regions</span><span class="zh">地域分布</span></td><td><span class="en">Asia (China, Japan), Europe (Italy, Hungary, Spain, Turkey), North America (USA)</span><span class="zh">亚洲（中国、日本），欧洲（意大利、匈牙利、西班牙、土耳其），北美（美国）</span></td></tr>
+          <tr><td><span class="en">Study Design</span><span class="zh">研究设计</span></td><td><span class="en">38 retrospective cohorts; 2 prospective cohorts</span><span class="zh">38 项回顾性队列；2 项前瞻性队列</span></td></tr>
+          <tr><td><span class="en">TNM Stages</span><span class="zh">TNM 分期</span></td><td><span class="en">Stage I–IV; including metastatic CRC, early-stage, and mixed populations</span><span class="zh">I–IV 期；含转移性 CRC、早期及混合人群</span></td></tr>
+          <tr><td><span class="en">Treatment Modalities</span><span class="zh">治疗方式</span></td><td><span class="en">Surgery, chemotherapy, chemo + bevacizumab, immunotherapy (anti-PD-1), TARE</span><span class="zh">手术、化疗、化疗+贝伐珠单抗、免疫治疗（抗 PD-1）、TARE</span></td></tr>
+          <tr><td><span class="en">SII Cut-off Range</span><span class="zh">SII 临界值范围</span></td><td><span class="count">340 – 1,505</span> <span class="ci"><span class="en">wide variation across studies</span><span class="zh">各研究差异较大</span></span></td></tr>
+          <tr><td><span class="en">Timing of SII</span><span class="zh">SII 检测时机</span></td><td><span class="en">Baseline / preoperative (majority); post-treatment (8 cohorts)</span><span class="zh">基线/术前（大多数）；治疗后（8 个队列）</span></td></tr>
+          <tr><td><span class="en">Quality Assessment</span><span class="zh">质量评价</span></td><td><span class="en">Newcastle-Ottawa Scale; mean score</span> <span class="count">7.8 / 9</span> <span class="en">(high quality, 7–9)</span><span class="zh">纽卡斯尔-渥太华量表；平均分</span> <span class="count">7.8 / 9</span> <span class="zh">（高质量，7–9 分）</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -1223,16 +1248,16 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">05</div>
       <div class="sec-title reveal">
-        <h2>SII & Overall Survival.</h2>
-        <span class="zh">主要结果 · 总生存期</span>
+        <h2><span class="en">SII & Overall Survival.</span><span class="zh">SII 与总生存期</span></h2>
       </div>
     </div>
 
     <div class="result-callout reveal">
-      <div class="big">2.11<small>HR · pooled</small></div>
+      <div class="big">2.11<small>HR · <span class="en">pooled</span><span class="zh">合并</span></small></div>
       <div class="desc">
-        Elevated SII is significantly associated with <b>worse overall survival</b> in colorectal cancer.
-        <span class="ci-line">95% CI 1.73 – 2.57 · p < 0.00001 · 32 cohorts · 25,366 patients · I² = 92%</span>
+        <span class="en">Elevated SII is significantly associated with <b>worse overall survival</b> in colorectal cancer.</span>
+        <span class="zh">SII 升高与结直肠癌<b>更差的总生存期</b>显著相关。</span>
+        <span class="ci-line">95% CI 1.73 – 2.57 · p &lt; 0.00001 · 32 <span class="en">cohorts</span><span class="zh">个队列</span> · 25,366 <span class="en">patients</span><span class="zh">例患者</span> · I² = 92%</span>
       </div>
     </div>
 
@@ -1356,7 +1381,7 @@ html {
         <text class="study-label" x="10" y="530" style="font-size:8px;fill:var(--ink-muted);">τ² = 0.24 · I² = 92% · H = 3.61 · Test for overall effect: Z = 6.87 (p &lt; 0.00001)</text>
         <text class="study-label" x="10" y="546" style="font-size:8px;fill:var(--ink-muted);">Square size ∝ study weight · Diamond width = 95% CI of pooled estimate</text>
       </svg>
-      <p class="forest-caption">Figure 1 · Subgroup forest plot for overall survival. All subgroups show consistent direction: higher SII correlates with worse OS. Stage III shows the strongest association.</p>
+      <p class="forest-caption"><span class="en">Figure 1 · Subgroup forest plot for overall survival. All subgroups show consistent direction: higher SII correlates with worse OS. Stage III shows the strongest association.</span><span class="zh">图 1 · 总生存期亚组森林图。所有亚组方向一致：SII 越高，OS 越差。III 期关联最强。</span></p>
     </div>
   </div>
 </section>
@@ -1367,42 +1392,42 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">06</div>
       <div class="sec-title reveal">
-        <h2>SII & Progression-Free Survival.</h2>
-        <span class="zh">主要结果 · 无进展生存期</span>
+        <h2><span class="en">SII & Progression-Free Survival.</span><span class="zh">SII 与无进展生存期</span></h2>
       </div>
     </div>
 
     <div class="result-callout reveal">
-      <div class="big">2.16<small>HR · pooled</small></div>
+      <div class="big">2.16<small>HR · <span class="en">pooled</span><span class="zh">合并</span></small></div>
       <div class="desc">
-        Elevated SII is significantly associated with <b>shorter progression-free survival</b>.
-        <span class="ci-line">95% CI 1.83 – 2.54 · p < 0.00001 · 24 cohorts · 19,402 patients · I² = 73%</span>
+        <span class="en">Elevated SII is significantly associated with <b>shorter progression-free survival</b>.</span>
+        <span class="zh">SII 升高与<b>更短的无进展生存期</b>显著相关。</span>
+        <span class="ci-line">95% CI 1.83 – 2.54 · p &lt; 0.00001 · 24 <span class="en">cohorts</span><span class="zh">个队列</span> · 19,402 <span class="en">patients</span><span class="zh">例患者</span> · I² = 73%</span>
       </div>
     </div>
 
     <div class="two-col equal" style="margin-top:16px;">
       <div class="col reveal">
-        <h3>Key Subgroup Findings: PFS</h3>
+        <h3><span class="en">Key Subgroup Findings: PFS</span><span class="zh">PFS 主要亚组结果</span></h3>
         <div class="tbl-wrap">
           <table>
-            <thead><tr><th>Subgroup</th><th class="r">HR</th><th class="r">Studies</th></tr></thead>
+            <thead><tr><th><span class="en">Subgroup</span><span class="zh">亚组</span></th><th class="r">HR</th><th class="r"><span class="en">Studies</span><span class="zh">研究数</span></th></tr></thead>
             <tbody>
-              <tr class="overall"><td>Stage III</td><td class="r hr"><span class="count">3.64</span></td><td class="r"><span class="count">6</span></td></tr>
-              <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">2.23</span></td><td class="r"><span class="count">12</span></td></tr>
-              <tr><td>Colon cancer</td><td class="r"><span class="count">2.24</span></td><td class="r"><span class="count">10</span></td></tr>
-              <tr><td>Rectal cancer</td><td class="r"><span class="count">1.89</span></td><td class="r"><span class="count">6</span></td></tr>
-              <tr><td>Surgical resection</td><td class="r"><span class="count">2.18</span></td><td class="r"><span class="count">12</span></td></tr>
-              <tr><td>Chemotherapy alone</td><td class="r"><span class="count">2.01</span></td><td class="r"><span class="count">10</span></td></tr>
-              <tr><td>Chemo + Bevacizumab</td><td class="r"><span class="count">1.41</span></td><td class="r"><span class="count">4</span></td></tr>
+              <tr class="overall"><td><span class="en">Stage III</span><span class="zh">III 期</span></td><td class="r hr"><span class="count">3.64</span></td><td class="r"><span class="count">6</span></td></tr>
+              <tr><td><span class="en">Stage IV / Metastatic</span><span class="zh">IV 期 / 转移性</span></td><td class="r"><span class="count">2.23</span></td><td class="r"><span class="count">12</span></td></tr>
+              <tr><td><span class="en">Colon cancer</span><span class="zh">结肠癌</span></td><td class="r"><span class="count">2.24</span></td><td class="r"><span class="count">10</span></td></tr>
+              <tr><td><span class="en">Rectal cancer</span><span class="zh">直肠癌</span></td><td class="r"><span class="count">1.89</span></td><td class="r"><span class="count">6</span></td></tr>
+              <tr><td><span class="en">Surgical resection</span><span class="zh">手术切除</span></td><td class="r"><span class="count">2.18</span></td><td class="r"><span class="count">12</span></td></tr>
+              <tr><td><span class="en">Chemotherapy alone</span><span class="zh">单纯化疗</span></td><td class="r"><span class="count">2.01</span></td><td class="r"><span class="count">10</span></td></tr>
+              <tr><td><span class="en">Chemo + Bevacizumab</span><span class="zh">化疗 + 贝伐珠单抗</span></td><td class="r"><span class="count">1.41</span></td><td class="r"><span class="count">4</span></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="forest-caption" style="border-top:none;padding-top:0;margin-top:8px;">* Bevacizumab subgroup not statistically significant (p = 0.07); prospective cohorts underpowered.</p>
+        <p class="forest-caption" style="border-top:none;padding-top:0;margin-top:8px;"><span class="en">* Bevacizumab subgroup not statistically significant (p = 0.07); prospective cohorts underpowered.</span><span class="zh">* 贝伐珠单抗亚组无统计学意义（p = 0.07）；前瞻性队列样本量不足。</span></p>
       </div>
       <div class="col reveal">
         <div class="mech-summary">
-          The Stage III signal replicates (PFS HR 3.64), mirroring OS. The bevacizumab-treated subgroup attenuates toward the null, hinting at anti-inflammatory modulation by VEGF blockade.
-          <span class="zh">III 期信号在 PFS 中重现；贝伐珠单抗亚组效应减弱，提示抗血管生成治疗的抗炎修饰。</span>
+          <span class="en">The Stage III signal replicates (PFS HR 3.64), mirroring OS. The bevacizumab-treated subgroup attenuates toward the null, hinting at anti-inflammatory modulation by VEGF blockade.</span>
+          <span class="zh">III 期信号在 PFS 中重现（HR 3.64），与 OS 一致。贝伐珠单抗亚组效应减弱，提示 VEGF 阻断的抗炎调节作用。</span>
         </div>
       </div>
     </div>
@@ -1415,32 +1440,31 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">07</div>
       <div class="sec-title reveal">
-        <h2>Subgroup Analysis: OS.</h2>
-        <span class="zh">亚组分析 · 总生存期</span>
+        <h2><span class="en">Subgroup Analysis: OS.</span><span class="zh">OS 亚组分析</span></h2>
       </div>
     </div>
 
     <div class="tbl-wrap reveal">
       <table>
-        <thead><tr><th>Subgroup</th><th class="r">N</th><th class="r">HR (95% CI)</th><th class="r">I²</th><th class="r">P-value</th></tr></thead>
+        <thead><tr><th><span class="en">Subgroup</span><span class="zh">亚组</span></th><th class="r">N</th><th class="r">HR (95% CI)</th><th class="r">I²</th><th class="r">P-value</th></tr></thead>
         <tbody>
-          <tr class="overall"><td>Overall</td><td class="r"><span class="count">32</span></td><td class="r hr"><span class="count">2.11</span> <span class="ci">(1.73–2.57)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
-          <tr class="section"><td colspan="5">TNM Stage</td></tr>
-          <tr><td>Stage I–II</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">2.31</span> <span class="ci">(1.65–3.24)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">0.0002</span></td></tr>
-          <tr class="overall"><td>Stage III</td><td class="r"><span class="count">8</span></td><td class="r hr"><span class="count">3.65</span> <span class="ci">(1.65–8.07)</span></td><td class="r"><span class="count">94</span></td><td class="r"><span class="count">0.002</span></td></tr>
-          <tr><td>Stage IV / Metastatic</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">1.98</span> <span class="ci">(1.38–2.83)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count">0.0004</span></td></tr>
-          <tr class="section"><td colspan="5">Tumor Location</td></tr>
-          <tr><td>Colon</td><td class="r"><span class="count">14</span></td><td class="r"><span class="count">2.08</span> <span class="ci">(1.64–2.63)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
-          <tr><td>Rectal</td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">2.12</span> <span class="ci">(1.65–2.72)</span></td><td class="r"><span class="count">89</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
-          <tr><td>Mixed / Colorectal</td><td class="r"><span class="count">10</span></td><td class="r"><span class="count">2.16</span> <span class="ci">(1.65–2.83)</span></td><td class="r"><span class="count">93</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
-          <tr class="section"><td colspan="5">Treatment</td></tr>
-          <tr><td>Surgical resection</td><td class="r"><span class="count">14</span></td><td class="r"><span class="count">2.10</span> <span class="ci">(1.65–2.67)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
-          <tr><td>Chemotherapy alone</td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.02</span> <span class="ci">(1.50–2.72)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count"><0.00001</span></td></tr>
-          <tr><td>Chemo + Bevacizumab</td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.78</span> <span class="ci">(1.22–2.59)</span></td><td class="r"><span class="count">88</span></td><td class="r"><span class="count">0.002</span></td></tr>
+          <tr class="overall"><td><span class="en">Overall</span><span class="zh">总体</span></td><td class="r"><span class="count">32</span></td><td class="r hr"><span class="count">2.11</span> <span class="ci">(1.73–2.57)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="section"><td colspan="5"><span class="en">TNM Stage</span><span class="zh">TNM 分期</span></td></tr>
+          <tr><td><span class="en">Stage I–II</span><span class="zh">I–II 期</span></td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">2.31</span> <span class="ci">(1.65–3.24)</span></td><td class="r"><span class="count">78</span></td><td class="r"><span class="count">0.0002</span></td></tr>
+          <tr class="overall"><td><span class="en">Stage III</span><span class="zh">III 期</span></td><td class="r"><span class="count">8</span></td><td class="r hr"><span class="count">3.65</span> <span class="ci">(1.65–8.07)</span></td><td class="r"><span class="count">94</span></td><td class="r"><span class="count">0.002</span></td></tr>
+          <tr><td><span class="en">Stage IV / Metastatic</span><span class="zh">IV 期 / 转移性</span></td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">1.98</span> <span class="ci">(1.38–2.83)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count">0.0004</span></td></tr>
+          <tr class="section"><td colspan="5"><span class="en">Tumor Location</span><span class="zh">肿瘤部位</span></td></tr>
+          <tr><td><span class="en">Colon</span><span class="zh">结肠</span></td><td class="r"><span class="count">14</span></td><td class="r"><span class="count">2.08</span> <span class="ci">(1.64–2.63)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td><span class="en">Rectal</span><span class="zh">直肠</span></td><td class="r"><span class="count">8</span></td><td class="r"><span class="count">2.12</span> <span class="ci">(1.65–2.72)</span></td><td class="r"><span class="count">89</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td><span class="en">Mixed / Colorectal</span><span class="zh">混合 / 结直肠</span></td><td class="r"><span class="count">10</span></td><td class="r"><span class="count">2.16</span> <span class="ci">(1.65–2.83)</span></td><td class="r"><span class="count">93</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr class="section"><td colspan="5"><span class="en">Treatment</span><span class="zh">治疗方式</span></td></tr>
+          <tr><td><span class="en">Surgical resection</span><span class="zh">手术切除</span></td><td class="r"><span class="count">14</span></td><td class="r"><span class="count">2.10</span> <span class="ci">(1.65–2.67)</span></td><td class="r"><span class="count">91</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td><span class="en">Chemotherapy alone</span><span class="zh">单纯化疗</span></td><td class="r"><span class="count">12</span></td><td class="r"><span class="count">2.02</span> <span class="ci">(1.50–2.72)</span></td><td class="r"><span class="count">92</span></td><td class="r"><span class="count">&lt;0.00001</span></td></tr>
+          <tr><td><span class="en">Chemo + Bevacizumab</span><span class="zh">化疗 + 贝伐珠单抗</span></td><td class="r"><span class="count">6</span></td><td class="r"><span class="count">1.78</span> <span class="ci">(1.22–2.59)</span></td><td class="r"><span class="count">88</span></td><td class="r"><span class="count">0.002</span></td></tr>
         </tbody>
       </table>
     </div>
-    <p class="forest-caption">Table 2 · Stage III shows the strongest association (OS HR 3.65), consistent with prior literature on inflammatory markers in locally advanced disease.</p>
+    <p class="forest-caption"><span class="en">Table 2 · Stage III shows the strongest association (OS HR 3.65), consistent with prior literature on inflammatory markers in locally advanced disease.</span><span class="zh">表 2 · III 期关联最强（OS HR 3.65），与既往炎症标志物在局部晚期疾病中的文献一致。</span></p>
   </div>
 </section>
 
@@ -1450,33 +1474,32 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">08</div>
       <div class="sec-title reveal">
-        <h2>Meta-Regression.</h2>
-        <span class="zh">Meta 回归分析</span>
+        <h2><span class="en">Meta-Regression.</span><span class="zh">Meta 回归分析</span></h2>
       </div>
     </div>
 
     <div class="two-col equal">
       <div class="col reveal">
-        <h3>Cut-off Value as Moderator</h3>
-        <p>Meta-regression examined whether SII cut-off value moderates effect size. Results indicate cut-off does not significantly moderate prognostic estimates for either OS or PFS.</p>
+        <h3><span class="en">Cut-off Value as Moderator</span><span class="zh">临界值作为调节变量</span></h3>
+        <p><span class="en">Meta-regression examined whether SII cut-off value moderates effect size. Results indicate cut-off does not significantly moderate prognostic estimates for either OS or PFS.</span><span class="zh">Meta 回归探讨 SII 临界值是否调节效应量。结果显示，临界值对 OS 和 PFS 的预后估计均无显著调节作用。</span></p>
         <div class="tbl-wrap">
           <table>
-            <thead><tr><th>Outcome</th><th>Predictor</th><th class="r">Coefficient</th><th class="r">p-value</th><th class="r">N</th></tr></thead>
+            <thead><tr><th><span class="en">Outcome</span><span class="zh">结局</span></th><th><span class="en">Predictor</span><span class="zh">预测因子</span></th><th class="r"><span class="en">Coefficient</span><span class="zh">系数</span></th><th class="r">p-value</th><th class="r">N</th></tr></thead>
             <tbody>
               <tr><td>OS</td><td>ln(Cut-off)</td><td class="r"><span class="count">0.003</span></td><td class="r"><span class="count">0.98</span></td><td class="r"><span class="count">31</span></td></tr>
               <tr><td>PFS</td><td>ln(Cut-off)</td><td class="r"><span class="count">-0.002</span></td><td class="r"><span class="count">0.97</span></td><td class="r"><span class="count">23</span></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="forest-caption" style="border-top:none;padding-top:0;">Table 3 · All p-values far from significance; cut-off value does not moderate effect size.</p>
+        <p class="forest-caption" style="border-top:none;padding-top:0;"><span class="en">Table 3 · All p-values far from significance; cut-off value does not moderate effect size.</span><span class="zh">表 3 · 所有 p 值均远离显著性；临界值不调节效应量。</span></p>
       </div>
       <div class="col reveal">
-        <h3>Other Moderators</h3>
-        <p>Age (≥65 vs <65) emerged as a significant moderator for OS (p = 0.041), with stronger effect in elderly populations. This may reflect cumulative inflammatory burden with aging.</p>
-        <p>Publication year, sample size, and geographic region did not reach statistical significance as moderators.</p>
+        <h3><span class="en">Other Moderators</span><span class="zh">其他调节变量</span></h3>
+        <p><span class="en">Age (≥65 vs &lt;65) emerged as a significant moderator for OS (p = 0.041), with stronger effect in elderly populations. This may reflect cumulative inflammatory burden with aging.</span><span class="zh">年龄（≥65 vs &lt;65）是 OS 的显著调节因素（p = 0.041），老年人群效应更强。这可能反映随年龄增长累积的炎症负荷。</span></p>
+        <p><span class="en">Publication year, sample size, and geographic region did not reach statistical significance as moderators.</span><span class="zh">发表年份、样本量和地域作为调节因素均未达统计学意义。</span></p>
         <div class="metrics" style="grid-template-columns:1fr 1fr;margin-top:24px;">
-          <div class="metric"><div class="num" style="font-size:28px;">0.041</div><div class="lbl">Age · p-value</div></div>
-          <div class="metric"><div class="num" style="font-size:28px;">0.89</div><div class="lbl">Year · p-value</div></div>
+          <div class="metric"><div class="num" style="font-size:28px;">0.041</div><div class="lbl"><span class="en">Age · p-value</span><span class="zh">年龄 · p 值</span></div></div>
+          <div class="metric"><div class="num" style="font-size:28px;">0.89</div><div class="lbl"><span class="en">Year · p-value</span><span class="zh">年份 · p 值</span></div></div>
         </div>
       </div>
     </div>
@@ -1489,17 +1512,16 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">09</div>
       <div class="sec-title reveal">
-        <h2>Robustness & Bias.</h2>
-        <span class="zh">敏感性分析 · 发表偏倚</span>
+        <h2><span class="en">Robustness & Bias.</span><span class="zh">稳健性与偏倚</span></h2>
       </div>
     </div>
 
     <div class="two-col equal">
       <div class="col reveal">
-        <h3>Sensitivity Analysis</h3>
-        <p>Leave-one-out analysis sequentially excluded each study. Pooled HR remained stable for both OS and PFS; no single study exerted disproportionate influence.</p>
-        <h3 style="margin-top:28px;">Publication Bias</h3>
-        <p>Funnel plots showed approximately symmetric distribution. Egger's regression confirmed no significant bias:</p>
+        <h3><span class="en">Sensitivity Analysis</span><span class="zh">敏感性分析</span></h3>
+        <p><span class="en">Leave-one-out analysis sequentially excluded each study. Pooled HR remained stable for both OS and PFS; no single study exerted disproportionate influence.</span><span class="zh">逐一剔除法敏感性分析依次排除每项研究。OS 和 PFS 的合并 HR 均保持稳定；无单一研究产生不成比例的影响。</span></p>
+        <h3 style="margin-top:28px;"><span class="en">Publication Bias</span><span class="zh">发表偏倚</span></h3>
+        <p><span class="en">Funnel plots showed approximately symmetric distribution. Egger's regression confirmed no significant bias:</span><span class="zh">漏斗图呈近似对称分布。Egger 回归检验证实无显著偏倚：</span></p>
         <div class="metrics" style="grid-template-columns:1fr 1fr;margin-top:16px;">
           <div class="metric"><div class="num" style="font-size:32px;">0.669</div><div class="lbl">Egger · OS · p</div></div>
           <div class="metric"><div class="num" style="font-size:32px;">0.261</div><div class="lbl">Egger · PFS · p</div></div>
@@ -1507,7 +1529,7 @@ html {
       </div>
       <div class="col reveal">
         <div class="formula" style="margin-top:0;">
-          <div class="label">Funnel Plot · OS (lnHR vs SE)</div>
+          <div class="label"><span class="en">Funnel Plot · OS (lnHR vs SE)</span><span class="zh">漏斗图 · OS（lnHR vs SE）</span></div>
           <svg viewBox="0 0 480 380" style="width:100%;margin-top:12px;">
             <!-- Background -->
             <rect x="0" y="0" width="480" height="380" fill="var(--paper)"/>
@@ -1624,47 +1646,43 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">10</div>
       <div class="sec-title reveal">
-        <h2>Biological Mechanisms.</h2>
-        <span class="zh">生物学机制</span>
+        <h2><span class="en">Biological Mechanisms.</span><span class="zh">生物学机制</span></h2>
       </div>
     </div>
 
     <div class="mech-grid">
       <div class="mech-cell reveal">
         <div class="ico"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="18" r="4" fill="currentColor"/></svg></div>
-        <h3>Neutrophilia</h3>
-        <span class="zh">中性粒细胞升高</span>
+        <h3><span class="en">Neutrophilia</span><span class="zh">中性粒细胞升高</span></h3>
         <ul>
-          <li>Release of VEGF & MMPs</li>
-          <li>Promote angiogenesis</li>
-          <li>Facilitate metastasis</li>
+          <li><span class="en">Release of VEGF & MMPs</span><span class="zh">释放 VEGF 和 MMP</span></li>
+          <li><span class="en">Promote angiogenesis</span><span class="zh">促进血管生成</span></li>
+          <li><span class="en">Facilitate metastasis</span><span class="zh">辅助转移</span></li>
         </ul>
       </div>
       <div class="mech-cell reveal">
         <div class="ico"><svg viewBox="0 0 36 36" fill="none"><ellipse cx="18" cy="18" rx="15" ry="8" stroke="currentColor" stroke-width="1.5"/><ellipse cx="18" cy="18" rx="8" ry="15" stroke="currentColor" stroke-width="1.5"/></svg></div>
-        <h3>Thrombocytosis</h3>
-        <span class="zh">血小板增多</span>
+        <h3><span class="en">Thrombocytosis</span><span class="zh">血小板增多</span></h3>
         <ul>
-          <li>Platelet-tumor aggregates</li>
-          <li>Protect circulating tumor cells</li>
-          <li>Enhance tumor cell survival</li>
+          <li><span class="en">Platelet-tumor aggregates</span><span class="zh">血小板-肿瘤聚集</span></li>
+          <li><span class="en">Protect circulating tumor cells</span><span class="zh">保护循环肿瘤细胞</span></li>
+          <li><span class="en">Enhance tumor cell survival</span><span class="zh">增强肿瘤细胞存活</span></li>
         </ul>
       </div>
       <div class="mech-cell reveal">
         <div class="ico"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/></svg></div>
-        <h3>Lymphocytopenia</h3>
-        <span class="zh">淋巴细胞减少</span>
+        <h3><span class="en">Lymphocytopenia</span><span class="zh">淋巴细胞减少</span></h3>
         <ul>
-          <li>Impaired CD8+ T-cell function</li>
-          <li>Reduced antitumor immunity</li>
-          <li>Treg & MDSC infiltration</li>
+          <li><span class="en">Impaired CD8+ T-cell function</span><span class="zh">CD8+ T 细胞功能受损</span></li>
+          <li><span class="en">Reduced antitumor immunity</span><span class="zh">抗肿瘤免疫降低</span></li>
+          <li><span class="en">Treg & MDSC infiltration</span><span class="zh">Treg 和 MDSC 浸润</span></li>
         </ul>
       </div>
     </div>
 
     <div class="mech-summary reveal">
-      The combined effect of elevated neutrophils and platelets with reduced lymphocytes creates a pro-tumor microenvironment. SII captures all three compartments in a single composite index.
-      <span class="zh">炎性-免疫失衡驱动肿瘤微环境重塑；SII 同时捕获三个维度的复合信息。</span>
+      <span class="en">The combined effect of elevated neutrophils and platelets with reduced lymphocytes creates a pro-tumor microenvironment. SII captures all three compartments in a single composite index.</span>
+      <span class="zh">中性粒细胞、血小板升高伴淋巴细胞减少的联合效应构建了促肿瘤微环境。SII 将三个维度整合为单一复合指标。</span>
     </div>
   </div>
 </section>
@@ -1675,35 +1693,35 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">11</div>
       <div class="sec-title reveal">
-        <h2>Clinical Implications.</h2>
-        <span class="zh">讨论 · 临床意义</span>
+        <h2><span class="en">Clinical Implications.</span><span class="zh">临床意义</span></h2>
       </div>
     </div>
 
     <div class="two-col">
       <div class="col reveal">
-        <h3>Proposed Clinical Framework</h3>
+        <h3><span class="en">Proposed Clinical Framework</span><span class="zh">建议的临床应用框架</span></h3>
         <ul>
-          <li>Baseline SII at diagnosis for risk stratification.</li>
-          <li>Serial SII monitoring every 3 months.</li>
-          <li>Integrate with TNM staging, especially in Stage III.</li>
-          <li>Treatment intensification if SII persistently elevated.</li>
+          <li><span class="en">Baseline SII at diagnosis for risk stratification.</span><span class="zh">诊断时基线 SII 用于风险分层。</span></li>
+          <li><span class="en">Serial SII monitoring every 3 months.</span><span class="zh">每 3 个月动态监测 SII。</span></li>
+          <li><span class="en">Integrate with TNM staging, especially in Stage III.</span><span class="zh">与 TNM 分期整合，尤其 III 期。</span></li>
+          <li><span class="en">Treatment intensification if SII persistently elevated.</span><span class="zh">SII 持续升高者考虑强化治疗。</span></li>
         </ul>
         <div class="mech-summary" style="font-size:15px;font-style:normal;margin-top:24px;">
-          <strong>Stage III</strong> shows the strongest association (OS HR 3.65). <strong>Post-treatment SII</strong> (OS HR 2.44 vs 1.98) supports dynamic monitoring. <strong>Bevacizumab</strong> attenuates the signal, suggesting anti-inflammatory properties.
+          <span class="en"><strong>Stage III</strong> shows the strongest association (OS HR 3.65). <strong>Post-treatment SII</strong> (OS HR 2.44 vs 1.98) supports dynamic monitoring. <strong>Bevacizumab</strong> attenuates the signal, suggesting anti-inflammatory properties.</span>
+          <span class="zh"><strong>III 期</strong>关联最强（OS HR 3.65）。<strong>治疗后 SII</strong>（OS HR 2.44 vs 1.98）支持动态监测。<strong>贝伐珠单抗</strong>减弱效应，提示其抗炎特性。</span>
         </div>
       </div>
       <div class="col reveal">
-        <h3>Innovations vs. Previous Meta-Analyses</h3>
+        <h3><span class="en">Innovations vs. Previous Meta-Analyses</span><span class="zh">相较既往 Meta 分析的创新</span></h3>
         <div class="tbl-wrap">
           <table>
-            <thead><tr><th>Feature</th><th>This Study</th><th>Tan et al. 2025</th></tr></thead>
+            <thead><tr><th><span class="en">Feature</span><span class="zh">特征</span></th><th><span class="en">This Study</span><span class="zh">本研究</span></th><th>Tan et al. 2025</th></tr></thead>
             <tbody>
-              <tr><td>Studies</td><td class="hr"><span class="count">35</span></td><td><span class="count">27</span></td></tr>
-              <tr><td>Patients</td><td class="hr"><span class="count">26,812</span></td><td><span class="count">18,420</span></td></tr>
-              <tr><td>Search updated</td><td class="hr">Nov 2025</td><td>Mar 2024</td></tr>
-              <tr><td>TNM subgroup</td><td class="hr">Yes (detailed)</td><td>Partial</td></tr>
-              <tr><td>Cut-off meta-regression</td><td class="hr">Yes</td><td>No</td></tr>
+              <tr><td><span class="en">Studies</span><span class="zh">研究数</span></td><td class="hr"><span class="count">35</span></td><td><span class="count">27</span></td></tr>
+              <tr><td><span class="en">Patients</span><span class="zh">患者数</span></td><td class="hr"><span class="count">26,812</span></td><td><span class="count">18,420</span></td></tr>
+              <tr><td><span class="en">Search updated</span><span class="zh">检索更新</span></td><td class="hr">Nov 2025</td><td>Mar 2024</td></tr>
+              <tr><td><span class="en">TNM subgroup</span><span class="zh">TNM 亚组</span></td><td class="hr"><span class="en">Yes (detailed)</span><span class="zh">是（详细）</span></td><td><span class="en">Partial</span><span class="zh">部分</span></td></tr>
+              <tr><td><span class="en">Cut-off meta-regression</span><span class="zh">临界值 Meta 回归</span></td><td class="hr"><span class="en">Yes</span><span class="zh">有</span></td><td><span class="en">No</span><span class="zh">无</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -1718,17 +1736,16 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">12</div>
       <div class="sec-title reveal">
-        <h2>Limitations.</h2>
-        <span class="zh">研究局限性</span>
+        <h2><span class="en">Limitations.</span><span class="zh">研究局限性</span></h2>
       </div>
     </div>
 
     <div class="lim-grid">
-      <div class="lim reveal"><div class="n">01</div><h3>Cut-off Heterogeneity</h3><span class="zh">截断值异质性</span><p>SII cut-off values ranged from 340 to 1,505, limiting cross-study comparability.</p></div>
-      <div class="lim reveal"><div class="n">02</div><h3>Study Design Imbalance</h3><span class="zh">研究设计失衡</span><p>38 retrospective vs 2 prospective cohorts; prospective data underpowered.</p></div>
-      <div class="lim reveal"><div class="n">03</div><h3>Geographic Bias</h3><span class="zh">地域偏倚</span><p>Most studies from Asia; findings may not generalize to non-Asian populations.</p></div>
-      <div class="lim reveal"><div class="n">04</div><h3>Tumor Location Granularity</h3><span class="zh">肿瘤部位分辨率不足</span><p>Limited data on right-sided vs left-sided CRC differences.</p></div>
-      <div class="lim reveal"><div class="n">05</div><h3>High Heterogeneity</h3><span class="zh">高异质性</span><p>I² = 92% for OS and 73% for PFS warrants cautious interpretation.</p></div>
+      <div class="lim reveal"><div class="n">01</div><h3><span class="en">Cut-off Heterogeneity</span><span class="zh">临界值异质性</span></h3><p><span class="en">SII cut-off values ranged from 340 to 1,505, limiting cross-study comparability.</span><span class="zh">SII 临界值范围 340–1,505，限制了研究间可比性。</span></p></div>
+      <div class="lim reveal"><div class="n">02</div><h3><span class="en">Study Design Imbalance</span><span class="zh">研究设计失衡</span></h3><p><span class="en">38 retrospective vs 2 prospective cohorts; prospective data underpowered.</span><span class="zh">38 项回顾性 vs 2 项前瞻性队列；前瞻性数据效力不足。</span></p></div>
+      <div class="lim reveal"><div class="n">03</div><h3><span class="en">Geographic Bias</span><span class="zh">地域偏倚</span></h3><p><span class="en">Most studies from Asia; findings may not generalize to non-Asian populations.</span><span class="zh">多数研究来自亚洲；结论可能不适用于非亚洲人群。</span></p></div>
+      <div class="lim reveal"><div class="n">04</div><h3><span class="en">Tumor Location Granularity</span><span class="zh">肿瘤部位颗粒度不足</span></h3><p><span class="en">Limited data on right-sided vs left-sided CRC differences.</span><span class="zh">右半与左半结肠癌差异数据有限。</span></p></div>
+      <div class="lim reveal"><div class="n">05</div><h3><span class="en">High Heterogeneity</span><span class="zh">高异质性</span></h3><p><span class="en">I² = 92% for OS and 73% for PFS warrants cautious interpretation.</span><span class="zh">OS I² = 92%，PFS I² = 73%，需谨慎解读。</span></p></div>
     </div>
   </div>
 </section>
@@ -1739,28 +1756,27 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">13</div>
       <div class="sec-title reveal">
-        <h2>Conclusions & Future Directions.</h2>
-        <span class="zh">结论与未来方向</span>
+        <h2><span class="en">Conclusions & Future Directions.</span><span class="zh">结论与未来方向</span></h2>
       </div>
     </div>
 
     <div class="conc-split">
       <div class="conc-block reveal">
-        <h3>Conclusions</h3>
+        <h3><span class="en">Conclusions</span><span class="zh">结论</span></h3>
         <ul>
-          <li>Elevated pre-treatment SII predicts worse OS (<span class="count">HR 2.11</span>) and PFS (<span class="count">HR 2.16</span>).</li>
-          <li>SII is a robust, accessible prognostic biomarker from routine blood counts.</li>
-          <li>Strongest in Stage III disease (<span class="count">OS HR 3.65</span>).</li>
-          <li>Post-treatment SII may offer superior prognostic precision.</li>
+          <li><span class="en">Elevated pre-treatment SII predicts worse OS (<span class="count">HR 2.11</span>) and PFS (<span class="count">HR 2.16</span>).</span><span class="zh">治疗前 SII 升高预测更差的 OS（<span class="count">HR 2.11</span>）和 PFS（<span class="count">HR 2.16</span>）。</span></li>
+          <li><span class="en">SII is a robust, accessible prognostic biomarker from routine blood counts.</span><span class="zh">SII 是一种稳健、可及的预后生物标志物，来自常规血常规。</span></li>
+          <li><span class="en">Strongest in Stage III disease (<span class="count">OS HR 3.65</span>).</span><span class="zh">III 期疾病中效应最强（<span class="count">OS HR 3.65</span>）。</span></li>
+          <li><span class="en">Post-treatment SII may offer superior prognostic precision.</span><span class="zh">治疗后 SII 可能提供更优的预后精准度。</span></li>
         </ul>
       </div>
       <div class="conc-block reveal">
-        <h3>Future Research</h3>
+        <h3><span class="en">Future Research</span><span class="zh">未来研究方向</span></h3>
         <ul>
-          <li>Large-scale prospective multicenter studies with standardized protocols.</li>
-          <li>ROC-based validation of optimal SII cut-off values.</li>
-          <li>Integration with molecular subtyping (MSI, KRAS, BRAF).</li>
-          <li>Development of nomograms for personalized prognostication.</li>
+          <li><span class="en">Large-scale prospective multicenter studies with standardized protocols.</span><span class="zh">标准化方案的大规模前瞻性多中心研究。</span></li>
+          <li><span class="en">ROC-based validation of optimal SII cut-off values.</span><span class="zh">基于 ROC 的 SII 最佳临界值验证。</span></li>
+          <li><span class="en">Integration with molecular subtyping (MSI, KRAS, BRAF).</span><span class="zh">与分子分型（MSI、KRAS、BRAF）整合。</span></li>
+          <li><span class="en">Development of nomograms for personalized prognostication.</span><span class="zh">开发个体化预后列线图。</span></li>
         </ul>
       </div>
     </div>
@@ -1773,22 +1789,21 @@ html {
     <div class="sec-head">
       <div class="sec-num reveal">14</div>
       <div class="sec-title reveal">
-        <h2>Acknowledgments.</h2>
-        <span class="zh">致谢</span>
+        <h2><span class="en">Acknowledgments.</span><span class="zh">致谢</span></h2>
       </div>
     </div>
 
     <div class="two-col equal">
       <div class="col reveal">
-        <p>Co-author <strong>Huiying Jiang</strong> for supervision, validation, and visualization.</p>
-        <p><strong>Beijing Jingmei Group General Hospital</strong> for institutional support.</p>
-        <p>All investigators of the <strong>35 included studies</strong>, whose work made this synthesis possible.</p>
+        <p><span class="en">Co-author <strong>Huiying Jiang</strong> for supervision, validation, and visualization.</span><span class="zh">共同作者<strong>姜惠颖</strong>负责指导、验证与可视化。</span></p>
+        <p><strong><span class="en">Beijing Jingmei Group General Hospital</span><span class="zh">北京京煤集团总医院</span></strong> <span class="en">for institutional support.</span><span class="zh">提供机构支持。</span></p>
+        <p><span class="en">All investigators of the <strong>35 included studies</strong>, whose work made this synthesis possible.</span><span class="zh">感谢<strong>35 项纳入研究</strong>的所有研究者，他们的工作使本荟萃分析成为可能。</span></p>
       </div>
       <div class="col reveal">
-        <div class="label" style="margin-bottom:14px;">Correspondence</div>
+        <div class="label" style="margin-bottom:14px;"><span class="en">Correspondence</span><span class="zh">通讯作者</span></div>
         <p><strong>Pengfei Wang</strong><br><span class="count">248616795@qq.com</span></p>
-        <div class="label" style="margin-top:28px;margin-bottom:14px;">Published In</div>
-        <p>Frontiers in Oncology, Volume 16, 2026</p>
+        <div class="label" style="margin-top:28px;margin-bottom:14px;"><span class="en">Published In</span><span class="zh">发表期刊</span></div>
+        <p><span class="en">Frontiers in Oncology, Volume 16, 2026</span><span class="zh">肿瘤学前沿，第 16 卷，2026</span></p>
       </div>
     </div>
   </div>
@@ -1797,8 +1812,8 @@ html {
 <!-- FOOTER -->
 <footer>
   <div class="left">
-    SII × CRC Meta-Analysis
-    <span class="zh">系统免疫炎症指数对结直肠癌预后价值的 Meta 分析</span>
+    <span class="en">SII × CRC Meta-Analysis</span>
+    <span class="zh">SII × CRC 荟萃分析</span>
   </div>
   <div class="right">
     <b>DOI</b>
@@ -1956,6 +1971,34 @@ setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
 themeToggle.addEventListener('click', () => {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+});
+
+/* === Language Toggle === */
+const langToggle = document.getElementById('langToggle');
+const enLabel = langToggle.querySelector('.en');
+const zhLabel = langToggle.querySelector('.zh');
+
+function setLang(lang) {
+  if (lang === 'zh') {
+    document.body.classList.add('lang-zh');
+    enLabel.classList.remove('active');
+    zhLabel.classList.add('active');
+    document.documentElement.setAttribute('lang', 'zh-CN');
+  } else {
+    document.body.classList.remove('lang-zh');
+    enLabel.classList.add('active');
+    zhLabel.classList.remove('active');
+    document.documentElement.setAttribute('lang', 'en');
+  }
+  localStorage.setItem('lang', lang);
+}
+
+const savedLang = localStorage.getItem('lang');
+setLang(savedLang || 'en');
+
+langToggle.addEventListener('click', () => {
+  const isZh = document.body.classList.contains('lang-zh');
+  setLang(isZh ? 'en' : 'zh');
 });
 
 const SECTIONS = Array.from(document.querySelectorAll('main > section'));
