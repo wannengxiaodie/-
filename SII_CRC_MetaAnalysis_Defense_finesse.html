@@ -284,7 +284,7 @@ hr.divider {
   top: 50%;
   transform: translateY(-50%);
   width: 220px;
-  height: 320px;
+  height: 360px;
   pointer-events: none;
   opacity: 0;
   animation: dnaFadeIn 1.5s ease 0.8s forwards;
@@ -1713,100 +1713,111 @@ html {
 </main>
 
 <script>
-/* === Pixel DNA Strand Animation === */
+/* === DNA Double Helix Animation === */
 (function() {
   const canvas = document.getElementById('dnaCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const DPR = window.devicePixelRatio || 1;
-  const W = 220, H = 320;
+  const W = 220, H = 360;
   canvas.width = W * DPR;
   canvas.height = H * DPR;
   canvas.style.width = W + 'px';
   canvas.style.height = H + 'px';
   ctx.scale(DPR, DPR);
 
-  const COLS = 11;
-  const CELL = W / COLS;
-  const ROWS = Math.ceil(H / CELL);
-  const PIXEL = CELL;
-
-  // Nucleotide bases: A-T, G-C pairs
+  const CX = W / 2;
+  const AMPLITUDE = 38;
+  const STEP = 16;
+  const N = Math.ceil(H / STEP) + 2;
   const bases = ['A', 'T', 'G', 'C'];
   const pairMap = { 'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G' };
 
-  // Initialize grid
-  const grid = [];
-  for (let r = 0; r < ROWS; r++) {
-    const row = [];
-    for (let c = 0; c < COLS; c++) {
-      row.push({ base: null, alpha: 0, life: 0 });
-    }
-    grid.push(row);
+  const pairs = [];
+  for (let i = 0; i < N; i++) {
+    const b = bases[Math.floor(Math.random() * 4)];
+    pairs.push({ left: b, right: pairMap[b] });
   }
 
-  let phase = 0;
-
-  function getInkColor() {
+  function getColor() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    return isDark ? '210,210,210' : '26,26,26';
+    return isDark ? '220,220,220' : '26,26,26';
   }
 
-  function tick() {
+  let t = 0;
+
+  function draw() {
     ctx.clearRect(0, 0, W, H);
-    const ink = getInkColor();
+    const ink = getColor();
 
-    // Generate new base pairs at center column, flowing downward
-    const centerCol = Math.floor(COLS / 2);
-    if (phase % 18 === 0) {
-      const r = Math.floor(phase / 18) % ROWS;
-      const base = bases[Math.floor(Math.random() * 4)];
-      const pair = pairMap[base];
+    // Collect all points with depth for z-sorting
+    const items = [];
 
-      // Left strand
-      grid[r][centerCol - 2] = { base: base, alpha: 1, life: 1 };
-      // Right strand
-      grid[r][centerCol + 2] = { base: pair, alpha: 1, life: 1 };
+    for (let i = 0; i < N; i++) {
+      const y = i * STEP - 10;
+      const angle = i * 0.35 + t;
+      const x1 = CX + Math.cos(angle) * AMPLITUDE;
+      const z1 = Math.sin(angle);
+      const x2 = CX + Math.cos(angle + Math.PI) * AMPLITUDE;
+      const z2 = Math.sin(angle + Math.PI);
 
-      // Connection pixels (the "rungs" of the DNA ladder)
-      grid[r][centerCol - 1] = { base: '·', alpha: 0.5, life: 1 };
-      grid[r][centerCol] = { base: '·', alpha: 0.5, life: 1 };
-      grid[r][centerCol + 1] = { base: '·', alpha: 0.5, life: 1 };
+      // Backbone points
+      items.push({ type: 'dot', x: x1, y: y, z: z1, strand: 0 });
+      items.push({ type: 'dot', x: x2, y: y, z: z2, strand: 1 });
+
+      // Base pair connection (rung)
+      items.push({ type: 'rung', x1: x1, y1: y, z1: z1, x2: x2, y2: y, z2: z2, base: pairs[i] });
     }
 
-    // Draw grid
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        const cell = grid[r][c];
-        if (cell.alpha > 0.01) {
-          const x = c * CELL;
-          const y = r * CELL;
-          const alpha = cell.alpha;
+    // Sort by z (back to front)
+    items.sort(function(a, b) {
+      const za = a.type === 'rung' ? (a.z1 + a.z2) / 2 : a.z;
+      const zb = b.type === 'rung' ? (b.z1 + b.z2) / 2 : b.z;
+      return za - zb;
+    });
 
-          if (cell.base === '·') {
-            // Connection rung - small pixel
-            ctx.fillStyle = 'rgba(' + ink + ',' + (alpha * 0.3) + ')';
-            ctx.fillRect(x + CELL * 0.35, y + CELL * 0.4, CELL * 0.3, CELL * 0.2);
-          } else {
-            // Base letter
-            ctx.fillStyle = 'rgba(' + ink + ',' + alpha + ')';
-            ctx.font = '600 ' + Math.floor(CELL * 0.55) + 'px "JetBrains Mono", monospace';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(cell.base, x + CELL / 2, y + CELL / 2);
-          }
+    // Draw sorted items
+    for (var k = 0; k < items.length; k++) {
+      var item = items[k];
+      if (item.type === 'rung') {
+        var avgZ = (item.z1 + item.z2) / 2;
+        var alpha = 0.15 + (avgZ + 1) * 0.15;
 
-          cell.alpha *= 0.985;
-          cell.life *= 0.995;
-        }
+        // Rung line
+        ctx.strokeStyle = 'rgba(' + ink + ',' + alpha + ')';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(item.x1, item.y1);
+        ctx.lineTo(item.x2, item.y2);
+        ctx.stroke();
+
+        // Base letters at each end
+        var a1 = 0.3 + (item.z1 + 1) * 0.25;
+        var a2 = 0.3 + (item.z2 + 1) * 0.25;
+        ctx.font = '600 8px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(' + ink + ',' + a1 + ')';
+        ctx.fillText(item.base.left, item.x1, item.y1);
+        ctx.fillStyle = 'rgba(' + ink + ',' + a2 + ')';
+        ctx.fillText(item.base.right, item.x2, item.y2);
+      } else {
+        var scale = 0.6 + (item.z + 1) * 0.35;
+        var alpha = 0.3 + (item.z + 1) * 0.28;
+        var radius = 2 + (item.z + 1) * 1.5;
+
+        ctx.fillStyle = 'rgba(' + ink + ',' + alpha + ')';
+        ctx.beginPath();
+        ctx.arc(item.x, item.y, Math.max(0.5, radius * scale * 0.6), 0, Math.PI * 2);
+        ctx.fill();
       }
     }
 
-    phase++;
-    requestAnimationFrame(tick);
+    t += 0.008;
+    requestAnimationFrame(draw);
   }
 
-  tick();
+  draw();
 })();
 
 /* === Enhanced Reveal Animations (MiMo-style) === */
