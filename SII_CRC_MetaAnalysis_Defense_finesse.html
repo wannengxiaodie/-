@@ -1852,41 +1852,47 @@ html {
     headObserver.observe(head);
   });
 
-  // Number count-up animation for metrics
+  // Number count-up animation only for pure integers
   const numEls = document.querySelectorAll('.metric .num, .result-callout .big');
   const numObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !entry.target.dataset.animated) {
         entry.target.dataset.animated = '1';
-        const text = entry.target.textContent.trim();
-        const match = text.match(/^([\d,]+)/);
-        if (match) {
-          const target = parseInt(match[1].replace(/,/g, ''));
-          const suffix = text.slice(match[1].length);
-          const small = entry.target.querySelector('small');
-          const smallHTML = small ? small.outerHTML : '';
-          if (small) small.remove();
+        const small = entry.target.querySelector('small');
+        const smallHTML = small ? small.outerHTML : '';
+        const rawText = entry.target.textContent.replace(/\s+/g, '').trim();
+        // Only animate pure integers (with optional commas), skip decimals and non-numeric
+        const intMatch = rawText.match(/^([\d,]+)$/);
+        if (!intMatch) return;
 
-          let current = 0;
-          const duration = 1200;
-          const startTime = performance.now();
+        const target = parseInt(rawText.replace(/,/g, ''));
+        if (isNaN(target) || target < 1) return;
 
-          function animate(now) {
-            const elapsed = now - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            current = Math.floor(target * eased);
-            const formatted = current.toLocaleString();
-            entry.target.firstChild.textContent = formatted;
-            if (smallHTML) entry.target.innerHTML = formatted + smallHTML;
-            if (progress < 1) requestAnimationFrame(animate);
-            else {
-              entry.target.firstChild.textContent = target.toLocaleString();
-              if (smallHTML) entry.target.innerHTML = target.toLocaleString() + smallHTML;
+        const duration = 1200;
+        const startTime = performance.now();
+
+        function animate(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(target * eased);
+          const formatted = current.toLocaleString();
+          if (smallHTML) {
+            entry.target.innerHTML = formatted + smallHTML;
+          } else {
+            entry.target.textContent = formatted;
+          }
+          if (progress < 1) requestAnimationFrame(animate);
+          else {
+            const final = target.toLocaleString();
+            if (smallHTML) {
+              entry.target.innerHTML = final + smallHTML;
+            } else {
+              entry.target.textContent = final;
             }
           }
-          requestAnimationFrame(animate);
         }
+        requestAnimationFrame(animate);
       }
     });
   }, { threshold: 0.4 });
