@@ -1386,21 +1386,110 @@ html {
       </div>
       <div class="col reveal">
         <div class="formula" style="margin-top:0;">
-          <div class="label">Funnel Plot · OS</div>
-          <svg viewBox="0 0 300 200" style="width:100%;margin-top:12px;">
-            <path d="M40 180 L40 60 Q150 10 260 60 L260 180 Z" fill="var(--paper)" stroke="var(--border-strong)" stroke-width="1"/>
-            <line x1="150" y1="40" x2="150" y2="180" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 4"/>
-            <circle cx="150" cy="50" r="4" fill="var(--ink)"/>
-            <circle cx="135" cy="65" r="5" fill="var(--ink)"/>
-            <circle cx="165" cy="65" r="5" fill="var(--ink)"/>
-            <circle cx="125" cy="80" r="6" fill="var(--ink)"/>
-            <circle cx="175" cy="80" r="6" fill="var(--ink)"/>
-            <circle cx="115" cy="95" r="7" fill="var(--ink)"/>
-            <circle cx="185" cy="95" r="7" fill="var(--ink)"/>
-            <circle cx="105" cy="110" r="8" fill="var(--ink)"/>
-            <circle cx="195" cy="110" r="8" fill="var(--ink)"/>
-            <circle cx="95" cy="130" r="9" fill="var(--ink)"/>
-            <circle cx="205" cy="130" r="9" fill="var(--ink)"/>
+          <div class="label">Funnel Plot · OS (lnHR vs SE)</div>
+          <svg viewBox="0 0 480 380" style="width:100%;margin-top:12px;">
+            <!-- Background -->
+            <rect x="0" y="0" width="480" height="380" fill="var(--paper)"/>
+
+            <!-- Y axis -->
+            <line x1="60" y1="20" x2="60" y2="320" stroke="var(--ink-faint)" stroke-width="1"/>
+            <!-- X axis -->
+            <line x1="60" y1="320" x2="440" y2="320" stroke="var(--ink-faint)" stroke-width="1"/>
+
+            <!-- Y axis ticks -->
+            <text x="50" y="324" text-anchor="end" style="font-size:8px;fill:var(--ink-muted);">0.0</text>
+            <text x="50" y="274" text-anchor="end" style="font-size:8px;fill:var(--ink-muted);">0.2</text>
+            <text x="50" y="224" text-anchor="end" style="font-size:8px;fill:var(--ink-muted);">0.4</text>
+            <text x="50" y="174" text-anchor="end" style="font-size:8px;fill:var(--ink-muted);">0.6</text>
+            <text x="50" y="124" text-anchor="end" style="font-size:8px;fill:var(--ink-muted);">0.8</text>
+            <text x="50" y="74" text-anchor="end" style="font-size:8px;fill:var(--ink-muted);">1.0</text>
+            <line x1="57" y1="270" x2="60" y2="270" stroke="var(--ink-faint)"/>
+            <line x1="57" y1="220" x2="60" y2="220" stroke="var(--ink-faint)"/>
+            <line x1="57" y1="170" x2="60" y2="170" stroke="var(--ink-faint)"/>
+            <line x1="57" y1="120" x2="60" y2="120" stroke="var(--ink-faint)"/>
+            <line x1="57" y1="70" x2="60" y2="70" stroke="var(--ink-faint)"/>
+
+            <!-- X axis ticks (lnHR scale: 0.5 to 3.5 → ln: -0.69 to 1.25) -->
+            <text x="80" y="336" text-anchor="middle" style="font-size:8px;fill:var(--ink-muted);">0.5</text>
+            <text x="150" y="336" text-anchor="middle" style="font-size:8px;fill:var(--ink-muted);">1.0</text>
+            <text x="220" y="336" text-anchor="middle" style="font-size:8px;fill:var(--ink-muted);">1.5</text>
+            <text x="290" y="336" text-anchor="middle" style="font-size:8px;fill:var(--ink-muted);">2.0</text>
+            <text x="360" y="336" text-anchor="middle" style="font-size:8px;fill:var(--ink-muted);">2.5</text>
+            <text x="420" y="336" text-anchor="middle" style="font-size:8px;fill:var(--ink-muted);">3.0</text>
+            <line x1="80" y1="320" x2="80" y2="323" stroke="var(--ink-faint)"/>
+            <line x1="150" y1="320" x2="150" y2="323" stroke="var(--ink-faint)"/>
+            <line x1="220" y1="320" x2="220" y2="323" stroke="var(--ink-faint)"/>
+            <line x1="290" y1="320" x2="290" y2="323" stroke="var(--ink-faint)"/>
+            <line x1="360" y1="320" x2="360" y2="323" stroke="var(--ink-faint)"/>
+            <line x1="420" y1="320" x2="420" y2="323" stroke="var(--ink-faint)"/>
+
+            <!-- Axis labels -->
+            <text x="250" y="356" text-anchor="middle" style="font-size:9px;fill:var(--ink-light);">Hazard Ratio (ln scale)</text>
+            <text x="20" y="170" text-anchor="middle" style="font-size:9px;fill:var(--ink-light);" transform="rotate(-90 20 170)">Standard Error</text>
+
+            <!-- Funnel region (pseudo 95% CI) -->
+            <!-- Pooled lnHR ≈ ln(2.11) ≈ 0.747, at x≈202 -->
+            <!-- Funnel converes to point at top (SE=1.0, y=70) -->
+            <!-- Left boundary: from (202,70) to (60,320) -->
+            <!-- Right boundary: from (202,70) to (344,320) -->
+            <polygon points="202,70 60,320 344,320" fill="var(--ink-faint)" opacity="0.06"/>
+            <line x1="202" y1="70" x2="60" y2="320" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+            <line x1="202" y1="70" x2="344" y2="320" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+
+            <!-- Pooled effect line (lnHR = 0.747 → x≈202) -->
+            <line x1="202" y1="70" x2="202" y2="320" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="206" y="62" style="font-size:8px;fill:var(--ink);font-weight:500;">lnHR=0.75</text>
+            <text x="206" y="52" style="font-size:8px;fill:var(--ink-muted);">HR=2.11</text>
+
+            <!-- Null effect line (HR=1.0, lnHR=0 → x≈150) -->
+            <line x1="150" y1="70" x2="150" y2="320" stroke="var(--ink-faint)" stroke-width="0.8" stroke-dasharray="2 4"/>
+
+            <!-- Study points (scattered within funnel, sized by weight) -->
+            <!-- Top (high SE = small studies, wide spread) -->
+            <circle cx="185" cy="85" r="3" fill="var(--ink)" opacity="0.7"/>
+            <circle cx="220" cy="90" r="3" fill="var(--ink)" opacity="0.7"/>
+            <circle cx="170" cy="100" r="3.5" fill="var(--ink)" opacity="0.7"/>
+            <circle cx="235" cy="105" r="3" fill="var(--ink)" opacity="0.7"/>
+            <!-- Upper-mid -->
+            <circle cx="195" cy="120" r="4" fill="var(--ink)" opacity="0.75"/>
+            <circle cx="210" cy="130" r="4" fill="var(--ink)" opacity="0.75"/>
+            <circle cx="178" cy="135" r="3.5" fill="var(--ink)" opacity="0.7"/>
+            <circle cx="225" cy="140" r="3.5" fill="var(--ink)" opacity="0.7"/>
+            <circle cx="188" cy="145" r="4" fill="var(--ink)" opacity="0.75"/>
+            <!-- Mid -->
+            <circle cx="205" cy="160" r="4.5" fill="var(--ink)" opacity="0.8"/>
+            <circle cx="198" cy="170" r="5" fill="var(--ink)" opacity="0.8"/>
+            <circle cx="212" cy="175" r="4.5" fill="var(--ink)" opacity="0.8"/>
+            <circle cx="192" cy="180" r="4" fill="var(--ink)" opacity="0.75"/>
+            <circle cx="218" cy="185" r="4" fill="var(--ink)" opacity="0.75"/>
+            <!-- Lower-mid (larger studies) -->
+            <circle cx="203" cy="200" r="5" fill="var(--ink)" opacity="0.85"/>
+            <circle cx="210" cy="215" r="5.5" fill="var(--ink)" opacity="0.85"/>
+            <circle cx="196" cy="220" r="5" fill="var(--ink)" opacity="0.85"/>
+            <circle cx="206" cy="235" r="5.5" fill="var(--ink)" opacity="0.85"/>
+            <circle cx="200" cy="245" r="5" fill="var(--ink)" opacity="0.85"/>
+            <!-- Bottom (largest studies, tight near center) -->
+            <circle cx="204" cy="265" r="6" fill="var(--ink)" opacity="0.9"/>
+            <circle cx="201" cy="280" r="6" fill="var(--ink)" opacity="0.9"/>
+            <circle cx="206" cy="295" r="6.5" fill="var(--ink)" opacity="0.9"/>
+            <circle cx="202" cy="305" r="6" fill="var(--ink)" opacity="0.9"/>
+            <circle cx="205" cy="312" r="6" fill="var(--ink)" opacity="0.9"/>
+
+            <!-- Legend -->
+            <rect x="345" y="30" width="90" height="58" fill="var(--paper)" stroke="var(--border-strong)" stroke-width="1" rx="3"/>
+            <circle cx="356" cy="44" r="5" fill="var(--ink)" opacity="0.85"/>
+            <text x="366" y="47" style="font-size:8px;fill:var(--ink-light);">Study (n=32)</text>
+            <line x1="351" y1="58" x2="361" y2="58" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="366" y="61" style="font-size:8px;fill:var(--ink-light);">Pooled HR</text>
+            <line x1="351" y1="72" x2="361" y2="72" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="366" y="75" style="font-size:8px;fill:var(--ink-light);">95% CI</text>
+
+            <!-- Egger's test result -->
+            <text x="345" y="104" style="font-size:9px;fill:var(--ink-muted);">Egger's test:</text>
+            <text x="345" y="116" style="font-size:9px;fill:var(--ink);font-weight:500;">p = 0.669 (NS)</text>
+
+            <!-- Symmetry annotation -->
+            <text x="150" y="340" text-anchor="middle" style="font-size:8px;fill:var(--ink-faint);font-style:italic;">Approximately symmetric · No significant publication bias</text>
           </svg>
         </div>
       </div>
