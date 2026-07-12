@@ -167,6 +167,8 @@ section {
   flex-direction: column;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 html { scroll-snap-type: y proximity; }
 
@@ -233,12 +235,13 @@ hr.divider {
 .cover-inner {
   position: relative;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 140px clamp(48px, 8vw, 96px) 60px;
+  box-sizing: border-box;
 }
 .cover .topline {
   display: flex;
@@ -1002,7 +1005,7 @@ html {
         <p>Colorectal cancer remains a leading cause of cancer-related mortality worldwide. TNM staging alone cannot account for the wide inter-individual variability in prognosis, and systemic inflammation is now understood to drive tumor progression, metastasis, and treatment resistance.</p>
         <p>Existing inflammatory markers such as NLR and PLR show promise but capture only part of the inflammatory-immune axis. The Systemic Immune-Inflammation Index (SII) combines three compartments into a single composite read. Prior SII studies in CRC, however, report inconsistent findings due to methodological heterogeneity and undefined cut-off values.</p>
 
-        <div class="formula reveal">
+        <div class="formula">
           <div class="label">SII · Composite Index</div>
           <div class="eq">
             SII <span class="x">=</span>
