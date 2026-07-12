@@ -1081,22 +1081,22 @@ html {
         <div class="label" style="margin-bottom:20px;">Key Features · This Meta-Analysis</div>
         <div class="metrics">
           <div class="metric reveal">
-            <div class="num">35</div>
+            <div class="num" data-no-anim>35</div>
             <div class="lbl">Studies</div>
             <span class="zh">纳入研究</span>
           </div>
           <div class="metric reveal">
-            <div class="num">26,812</div>
+            <div class="num" data-no-anim>26,812</div>
             <div class="lbl">Patients</div>
             <span class="zh">总患者数</span>
           </div>
           <div class="metric reveal">
-            <div class="num">Nov<small>2025</small></div>
+            <div class="num" data-no-anim>Nov<small>2025</small></div>
             <div class="lbl">Search Updated</div>
             <span class="zh">检索截止</span>
           </div>
           <div class="metric reveal">
-            <div class="num">6</div>
+            <div class="num" data-no-anim>6</div>
             <div class="lbl">Subgroup Strata</div>
             <span class="zh">亚组维度</span>
           </div>
@@ -1867,7 +1867,7 @@ html {
   const numEls = document.querySelectorAll('.metric .num, .result-callout .big');
   const numObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting && !entry.target.dataset.animated) {
+      if (entry.isIntersecting && !entry.target.dataset.animated && !entry.target.dataset.noAnim) {
         entry.target.dataset.animated = '1';
         const small = entry.target.querySelector('small');
         const smallHTML = small ? small.outerHTML : '';
