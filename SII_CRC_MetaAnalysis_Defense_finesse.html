@@ -153,8 +153,8 @@ body.lang-zh svg text.zh { display: block; }
 body.lang-zh svg text.en { display: none; }
 
 /* Section language transition: EN -> ZH on enter */
-section { transition: opacity 0.4s ease; }
-section.lang-switching { opacity: 0.15; }
+section { transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), filter 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+section.lang-switching { opacity: 0.55; filter: blur(5px); }
 section.show-en .en { display: inline !important; }
 section.show-en .zh { display: none !important; }
 section.show-en svg text.en { display: block !important; }
@@ -2191,8 +2191,11 @@ const langObserver = new IntersectionObserver((entries) => {
         setTimeout(() => {
           if (langGen.get(sec) !== gen) return;
           sec.classList.remove('show-en');
-          sec.classList.remove('lang-switching');
-        }, 400);
+          setTimeout(() => {
+            if (langGen.get(sec) !== gen) return;
+            sec.classList.remove('lang-switching');
+          }, 60);
+        }, 700);
       }, 1500);
     } else {
       sec.classList.remove('show-en', 'lang-switching');
