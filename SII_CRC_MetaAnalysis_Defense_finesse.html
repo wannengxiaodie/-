@@ -1409,31 +1409,114 @@ html {
       </div>
     </div>
 
-    <div class="two-col equal" style="margin-top:16px;">
-      <div class="col reveal">
-        <h3><span class="en">Key Subgroup Findings: PFS</span><span class="zh">PFS 主要亚组结果</span></h3>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th><span class="en">Subgroup</span><span class="zh">亚组</span></th><th class="r">HR</th><th class="r"><span class="en">Studies</span><span class="zh">研究数</span></th></tr></thead>
-            <tbody>
-              <tr class="overall"><td><span class="en">Stage III</span><span class="zh">III 期</span></td><td class="r hr"><span class="count">3.64</span></td><td class="r"><span class="count">6</span></td></tr>
-              <tr><td><span class="en">Stage IV / Metastatic</span><span class="zh">IV 期 / 转移性</span></td><td class="r"><span class="count">2.23</span></td><td class="r"><span class="count">12</span></td></tr>
-              <tr><td><span class="en">Colon cancer</span><span class="zh">结肠癌</span></td><td class="r"><span class="count">2.24</span></td><td class="r"><span class="count">10</span></td></tr>
-              <tr><td><span class="en">Rectal cancer</span><span class="zh">直肠癌</span></td><td class="r"><span class="count">1.89</span></td><td class="r"><span class="count">6</span></td></tr>
-              <tr><td><span class="en">Surgical resection</span><span class="zh">手术切除</span></td><td class="r"><span class="count">2.18</span></td><td class="r"><span class="count">12</span></td></tr>
-              <tr><td><span class="en">Chemotherapy alone</span><span class="zh">单纯化疗</span></td><td class="r"><span class="count">2.01</span></td><td class="r"><span class="count">10</span></td></tr>
-              <tr><td><span class="en">Chemo + Bevacizumab</span><span class="zh">化疗 + 贝伐珠单抗</span></td><td class="r"><span class="count">1.41</span></td><td class="r"><span class="count">4</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="forest-caption" style="border-top:none;padding-top:0;margin-top:8px;"><span class="en">* Bevacizumab subgroup not statistically significant (p = 0.07); prospective cohorts underpowered.</span><span class="zh">* 贝伐珠单抗亚组无统计学意义（p = 0.07）；前瞻性队列样本量不足。</span></p>
-      </div>
-      <div class="col reveal">
-        <div class="mech-summary">
-          <span class="en">The Stage III signal replicates (PFS HR 3.64), mirroring OS. The bevacizumab-treated subgroup attenuates toward the null, hinting at anti-inflammatory modulation by VEGF blockade.</span>
-          <span class="zh">III 期信号在 PFS 中重现（HR 3.64），与 OS 一致。贝伐珠单抗亚组效应减弱，提示 VEGF 阻断的抗炎调节作用。</span>
-        </div>
-      </div>
+    <div class="forest-wrap reveal" style="margin-top:16px;">
+      <svg class="forest" viewBox="0 0 820 560" role="img" aria-label="Subgroup forest plot, SII and progression-free survival">
+        <!-- Column headers -->
+        <text class="group-header" x="10" y="16">Subgroup</text>
+        <text class="group-header" x="515" y="16" text-anchor="middle">HR [95% CI]</text>
+        <text class="group-header" x="700" y="16">Weight</text>
+        <text class="group-header" x="805" y="16" text-anchor="end">HR [95% CI]</text>
+        <line x1="0" y1="24" x2="820" y2="24" stroke="var(--border-strong)" stroke-width="1"/>
+
+        <!-- Axis: log scale from 0.5 to 8.0 -->
+        <!-- x = 250 + ln(HR/0.5) / ln(16) * 500 -->
+        <!-- 0.5→250, 1.0→367, 2.0→484, 4.0→601, 8.0→718 -->
+
+        <!-- TNM Stage group -->
+        <text class="group-header" x="10" y="44">TNM STAGE</text>
+        <line x1="0" y1="48" x2="820" y2="48" stroke="var(--border)" stroke-width="0.5"/>
+
+        <!-- Stage III: HR 3.64 [2.01-6.59], 6 studies -->
+        <text class="study-label" x="240" y="66" text-anchor="end"><span class="en">Stage III</span><span class="zh">III 期</span></text>
+        <text class="study-label" x="240" y="78" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=6 cohorts</span><span class="zh">n=6 个队列</span></text>
+        <line class="ci-line" x1="470" y1="68" x2="658" y2="68"/>
+        <circle class="square" cx="590" cy="68" r="3"/>
+        <text class="hr-anno" x="805" y="71" text-anchor="end" style="font-weight:500;">3.64 [2.01, 6.59]</text>
+
+        <!-- Stage IV: HR 2.23 [1.68-2.96], 12 studies -->
+        <text class="study-label" x="240" y="96" text-anchor="end"><span class="en">Stage IV / Metastatic</span><span class="zh">IV 期 / 转移性</span></text>
+        <text class="study-label" x="240" y="108" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=12 cohorts</span><span class="zh">n=12 个队列</span></text>
+        <line class="ci-line" x1="448" y1="98" x2="540" y2="98"/>
+        <circle class="square" cx="496" cy="98" r="4.5"/>
+        <text class="hr-anno" x="805" y="101" text-anchor="end">2.23 [1.68, 2.96]</text>
+
+        <!-- Tumor Location group -->
+        <text class="group-header" x="10" y="140">TUMOR LOCATION</text>
+        <line x1="0" y1="144" x2="820" y2="144" stroke="var(--border)" stroke-width="0.5"/>
+
+        <!-- Colon: HR 2.24 [1.70-2.95], 10 studies -->
+        <text class="study-label" x="240" y="162" text-anchor="end"><span class="en">Colon</span><span class="zh">结肠癌</span></text>
+        <text class="study-label" x="240" y="174" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=10 cohorts</span><span class="zh">n=10 个队列</span></text>
+        <line class="ci-line" x1="449" y1="164" x2="539" y2="164"/>
+        <circle class="square" cx="497" cy="164" r="4"/>
+        <text class="hr-anno" x="805" y="167" text-anchor="end">2.24 [1.70, 2.95]</text>
+
+        <!-- Rectal: HR 1.89 [1.38-2.59], 6 studies -->
+        <text class="study-label" x="240" y="192" text-anchor="end"><span class="en">Rectal</span><span class="zh">直肠癌</span></text>
+        <text class="study-label" x="240" y="204" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=6 cohorts</span><span class="zh">n=6 个队列</span></text>
+        <line class="ci-line" x1="415" y1="194" x2="503" y2="194"/>
+        <circle class="square" cx="465" cy="194" r="3"/>
+        <text class="hr-anno" x="805" y="197" text-anchor="end">1.89 [1.38, 2.59]</text>
+
+        <!-- Treatment group -->
+        <text class="group-header" x="10" y="236">TREATMENT MODALITY</text>
+        <line x1="0" y1="240" x2="820" y2="240" stroke="var(--border)" stroke-width="0.5"/>
+
+        <!-- Surgery: HR 2.18 [1.66-2.86], 12 studies -->
+        <text class="study-label" x="240" y="258" text-anchor="end"><span class="en">Surgical resection</span><span class="zh">手术切除</span></text>
+        <text class="study-label" x="240" y="270" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=12 cohorts</span><span class="zh">n=12 个队列</span></text>
+        <line class="ci-line" x1="443" y1="260" x2="535" y2="260"/>
+        <circle class="square" cx="492" cy="260" r="4.5"/>
+        <text class="hr-anno" x="805" y="263" text-anchor="end">2.18 [1.66, 2.86]</text>
+
+        <!-- Chemo: HR 2.01 [1.52-2.66], 10 studies -->
+        <text class="study-label" x="240" y="288" text-anchor="end"><span class="en">Chemotherapy alone</span><span class="zh">单纯化疗</span></text>
+        <text class="study-label" x="240" y="300" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=10 cohorts</span><span class="zh">n=10 个队列</span></text>
+        <line class="ci-line" x1="418" y1="290" x2="505" y2="290"/>
+        <circle class="square" cx="470" cy="290" r="4"/>
+        <text class="hr-anno" x="805" y="293" text-anchor="end">2.01 [1.52, 2.66]</text>
+
+        <!-- Chemo+Bev: HR 1.41 [0.97-2.05], 4 studies -->
+        <text class="study-label" x="240" y="318" text-anchor="end"><span class="en">Chemo + Bevacizumab</span><span class="zh">化疗 + 贝伐珠单抗</span></text>
+        <text class="study-label" x="240" y="330" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=4 cohorts</span><span class="zh">n=4 个队列</span></text>
+        <line class="ci-line" x1="345" y1="320" x2="468" y2="320"/>
+        <circle class="square" cx="406" cy="320" r="3"/>
+        <text class="hr-anno" x="805" y="323" text-anchor="end" style="font-style:italic;fill:var(--ink-muted);">1.41 [0.97, 2.05] *</text>
+
+        <!-- Pooled result -->
+        <line x1="0" y1="350" x2="820" y2="350" stroke="var(--border-strong)" stroke-width="1"/>
+        <text class="group-header" x="10" y="368">POOLED (RANDOM EFFECTS)</text>
+
+        <!-- Diamond: HR 2.16 [1.83-2.54] -->
+        <text class="study-label" x="240" y="388" text-anchor="end" style="font-weight:600;fill:var(--ink);"><span class="en">Overall</span><span class="zh">总体</span></text>
+        <text class="study-label" x="240" y="400" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">24 cohorts · 19,402 pts</span><span class="zh">24 个队列 · 19,402 例</span></text>
+        <polygon class="diamond" points="449,384 489,378 529,384 489,390"/>
+        <line class="ci-line" x1="412" y1="384" x2="566" y2="384" style="opacity:0;"/>
+        <polygon class="diamond" points="412,384 489,375 566,384 489,393"/>
+        <text class="hr-anno" x="805" y="387" text-anchor="end" style="font-weight:600;font-size:10px;">2.16 [1.83, 2.54]</text>
+        <text class="study-label" x="805" y="400" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">I²=73% · p&lt;0.00001</text>
+
+        <!-- Axis -->
+        <line class="axis" x1="250" y1="430" x2="718" y2="430"/>
+        <text class="axis-tick" x="250" y="446" text-anchor="middle">0.5</text>
+        <text class="axis-tick" x="367" y="446" text-anchor="middle">1.0</text>
+        <text class="axis-tick" x="484" y="446" text-anchor="middle">2.0</text>
+        <text class="axis-tick" x="601" y="446" text-anchor="middle">4.0</text>
+        <text class="axis-tick" x="718" y="446" text-anchor="middle">8.0</text>
+
+        <!-- Null line (HR=1.0) -->
+        <line class="null-line" x1="367" y1="30" x2="367" y2="430"/>
+
+        <!-- Axis titles -->
+        <text class="axis-title" x="290" y="464"><span class="en">Favours High SII</span><span class="zh">高 SII 有利</span></text>
+        <text class="axis-title" x="678" y="464" text-anchor="end"><span class="en">Favours Low SII</span><span class="zh">低 SII 有利</span></text>
+
+        <!-- Heterogeneity note -->
+        <text class="study-label" x="10" y="494" style="font-size:8px;fill:var(--ink-muted);"><span class="en">τ² = 0.11 · I² = 73% · H = 1.93 · Test for overall effect: Z = 8.62 (p &lt; 0.00001)</span><span class="zh">τ² = 0.11 · I² = 73% · H = 1.93 · 总体效应检验：Z = 8.62 (p &lt; 0.00001)</span></text>
+        <text class="study-label" x="10" y="510" style="font-size:8px;fill:var(--ink-muted);"><span class="en">Square size ∝ study weight · Diamond width = 95% CI of pooled estimate</span><span class="zh">方块大小 ∝ 研究权重 · 菱形宽度 = 合并估计值 95% CI</span></text>
+        <text class="study-label" x="10" y="526" style="font-size:8px;fill:var(--ink-muted);"><span class="en">* Bevacizumab subgroup not statistically significant (p = 0.07)</span><span class="zh">* 贝伐珠单抗亚组无统计学意义（p = 0.07）</span></text>
+      </svg>
+      <p class="forest-caption"><span class="en">Figure 2 · Subgroup forest plot for progression-free survival. Stage III shows the strongest prognostic signal. Bevacizumab subgroup attenuates toward null, consistent with VEGF blockade modulating inflammatory pathways.</span><span class="zh">图 2 · 无进展生存期亚组森林图。III 期预后信号最强。贝伐珠单抗亚组效应接近零，与 VEGF 阻断调节炎症通路的机制一致。</span></p>
     </div>
   </div>
 </section>
