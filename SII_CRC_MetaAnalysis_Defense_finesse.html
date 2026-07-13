@@ -152,16 +152,6 @@ svg text.zh { display: none; }
 body.lang-zh svg text.zh { display: block; }
 body.lang-zh svg text.en { display: none; }
 
-/* Section language transition: EN -> ZH on enter */
-section { transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-section.fade-out { opacity: 0; }
-section.show-en .en { display: inline !important; }
-section.show-en .zh { display: none !important; }
-section.show-en svg text.en { display: block !important; }
-section.show-en svg text.zh { display: none !important; }
-section.show-en .zh.block { display: none !important; }
-section.show-en .zh.flex { display: none !important; }
-
 /* Progress Dots */
 .dots {
   position: fixed; right: 32px; top: 50%; transform: translateY(-50%);
@@ -2126,14 +2116,12 @@ function setLang(lang) {
     enLabel.classList.add('active');
     zhLabel.classList.remove('active');
     document.documentElement.setAttribute('lang', 'en');
-    /* Clear any lingering transition states when switching to EN */
-    document.querySelectorAll('main > section').forEach(s => s.classList.remove('show-en', 'fade-out'));
   }
   localStorage.setItem('lang', lang);
 }
 
 const savedLang = localStorage.getItem('lang');
-setLang(savedLang || 'zh');
+setLang(savedLang || 'en');
 
 langToggle.addEventListener('click', () => {
   const isZh = document.body.classList.contains('lang-zh');
@@ -2173,32 +2161,6 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 SECTIONS.forEach(s => io.observe(s));
-
-/* Section language transition: EN -> ZH */
-const langGen = new Map();
-const langObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    const sec = entry.target;
-    const gen = (langGen.get(sec) || 0) + 1;
-    langGen.set(sec, gen);
-
-    if (entry.isIntersecting && document.body.classList.contains('lang-zh')) {
-      sec.classList.add('show-en');
-      setTimeout(() => {
-        if (langGen.get(sec) !== gen) return;
-        sec.classList.add('fade-out');
-        setTimeout(() => {
-          if (langGen.get(sec) !== gen) return;
-          sec.classList.remove('show-en');
-          sec.classList.remove('fade-out');
-        }, 400);
-      }, 1500);
-    } else {
-      sec.classList.remove('show-en', 'fade-out');
-    }
-  });
-}, { threshold: 0.3 });
-SECTIONS.forEach(s => langObserver.observe(s));
 
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
