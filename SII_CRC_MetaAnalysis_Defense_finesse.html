@@ -908,10 +908,26 @@ footer .right b { color: var(--ink-muted); display: block; }
 }
 .reveal-scale.active { opacity: 1; transform: scale(1); }
 
-.reveal-delay-1 { transition-delay: 0.12s; }
-.reveal-delay-2 { transition-delay: 0.24s; }
-.reveal-delay-3 { transition-delay: 0.36s; }
-.reveal-delay-4 { transition-delay: 0.48s; }
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+.reveal-delay-5 { transition-delay: 0.75s; }
+
+.mech-grid .mech-cell { transition-delay: 0s; }
+.mech-grid .mech-cell:nth-child(2) { transition-delay: 0.12s; }
+.mech-grid .mech-cell:nth-child(3) { transition-delay: 0.24s; }
+
+.lim-grid .lim { transition-delay: 0s; }
+.lim-grid .lim:nth-child(2) { transition-delay: 0.08s; }
+.lim-grid .lim:nth-child(3) { transition-delay: 0.16s; }
+.lim-grid .lim:nth-child(4) { transition-delay: 0.24s; }
+.lim-grid .lim:nth-child(5) { transition-delay: 0.32s; }
+
+.metrics .metric { transition-delay: 0s; }
+.metrics .metric:nth-child(2) { transition-delay: 0.1s; }
+.metrics .metric:nth-child(3) { transition-delay: 0.2s; }
+.metrics .metric:nth-child(4) { transition-delay: 0.3s; }
 
 /* Number Animation */
 .animate-num {
@@ -1120,19 +1136,19 @@ html {
       <div class="col">
         <div class="label" style="margin-bottom:20px;"><span class="en">Key Features · This Meta-Analysis</span><span class="zh">本 Meta 分析核心特征</span></div>
         <div class="metrics reveal reveal-delay-1" style="grid-template-columns:1fr 1fr;gap:20px;">
-          <div class="metric">
+          <div class="metric reveal">
             <div class="num" data-no-anim>35</div>
             <div class="lbl"><span class="en">Studies</span><span class="zh">纳入研究</span></div>
           </div>
-          <div class="metric">
+          <div class="metric reveal">
             <div class="num" data-no-anim>26,812</div>
             <div class="lbl"><span class="en">Patients</span><span class="zh">总患者数</span></div>
           </div>
-          <div class="metric">
+          <div class="metric reveal">
             <div class="num" data-no-anim>Nov<small>2025</small></div>
             <div class="lbl"><span class="en">Search Updated</span><span class="zh">检索截止</span></div>
           </div>
-          <div class="metric">
+          <div class="metric reveal">
             <div class="num" data-no-anim>6</div>
             <div class="lbl"><span class="en">Subgroup Strata</span><span class="zh">亚组维度</span></div>
           </div>
@@ -1609,8 +1625,8 @@ html {
         <p><span class="en">Age (≥65 vs &lt;65) emerged as a significant moderator for OS (p = 0.041), with stronger effect in elderly populations. This may reflect cumulative inflammatory burden with aging.</span><span class="zh">年龄（≥65 vs &lt;65）是 OS 的显著调节因素（p = 0.041），老年人群效应更强。这可能反映随年龄增长累积的炎症负荷。</span></p>
         <p><span class="en">Publication year, sample size, and geographic region did not reach statistical significance as moderators.</span><span class="zh">发表年份、样本量和地域作为调节因素均未达统计学意义。</span></p>
         <div class="metrics reveal reveal-delay-2" style="grid-template-columns:1fr 1fr;margin-top:24px;">
-          <div class="metric"><div class="num" style="font-size:28px;">0.041</div><div class="lbl"><span class="en">Age · p-value</span><span class="zh">年龄 · p 值</span></div></div>
-          <div class="metric"><div class="num" style="font-size:28px;">0.89</div><div class="lbl"><span class="en">Year · p-value</span><span class="zh">年份 · p 值</span></div></div>
+          <div class="metric reveal"><div class="num" style="font-size:28px;">0.041</div><div class="lbl"><span class="en">Age · p-value</span><span class="zh">年龄 · p 值</span></div></div>
+          <div class="metric reveal"><div class="num" style="font-size:28px;">0.89</div><div class="lbl"><span class="en">Year · p-value</span><span class="zh">年份 · p 值</span></div></div>
         </div>
       </div>
     </div>
@@ -1633,9 +1649,9 @@ html {
         <p><span class="en">Leave-one-out analysis sequentially excluded each study. Pooled HR remained stable for both OS and PFS; no single study exerted disproportionate influence.</span><span class="zh">逐一剔除法敏感性分析依次排除每项研究。OS 和 PFS 的合并 HR 均保持稳定；无单一研究产生不成比例的影响。</span></p>
         <h3 style="margin-top:28px;"><span class="en">Publication Bias</span><span class="zh">发表偏倚</span></h3>
         <p><span class="en">Funnel plots showed approximately symmetric distribution. Egger's regression confirmed no significant bias:</span><span class="zh">漏斗图呈近似对称分布。Egger 回归检验证实无显著偏倚：</span></p>
-        <div class="metrics reveal" style="grid-template-columns:1fr 1fr;margin-top:16px;">
-          <div class="metric"><div class="num" style="font-size:32px;">0.669</div><div class="lbl">Egger · OS · p</div></div>
-          <div class="metric"><div class="num" style="font-size:32px;">0.261</div><div class="lbl">Egger · PFS · p</div></div>
+        <div class="metrics" style="grid-template-columns:1fr 1fr;margin-top:16px;">
+          <div class="metric reveal"><div class="num" style="font-size:32px;">0.669</div><div class="lbl">Egger · OS · p</div></div>
+          <div class="metric reveal"><div class="num" style="font-size:32px;">0.261</div><div class="lbl">Egger · PFS · p</div></div>
         </div>
       </div>
       <div class="col">
@@ -1761,8 +1777,8 @@ html {
       </div>
     </div>
 
-    <div class="mech-grid reveal">
-      <div class="mech-cell">
+    <div class="mech-grid">
+      <div class="mech-cell reveal">
         <div class="ico"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="18" r="4" fill="currentColor"/></svg></div>
         <h3><span class="en">Neutrophilia</span><span class="zh">中性粒细胞升高</span></h3>
         <ul>
@@ -1771,7 +1787,7 @@ html {
           <li><span class="en">Facilitate metastasis</span><span class="zh">辅助转移</span></li>
         </ul>
       </div>
-      <div class="mech-cell">
+      <div class="mech-cell reveal">
         <div class="ico"><svg viewBox="0 0 36 36" fill="none"><ellipse cx="18" cy="18" rx="15" ry="8" stroke="currentColor" stroke-width="1.5"/><ellipse cx="18" cy="18" rx="8" ry="15" stroke="currentColor" stroke-width="1.5"/></svg></div>
         <h3><span class="en">Thrombocytosis</span><span class="zh">血小板增多</span></h3>
         <ul>
@@ -1780,7 +1796,7 @@ html {
           <li><span class="en">Enhance tumor cell survival</span><span class="zh">增强肿瘤细胞存活</span></li>
         </ul>
       </div>
-      <div class="mech-cell">
+      <div class="mech-cell reveal">
         <div class="ico"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/></svg></div>
         <h3><span class="en">Lymphocytopenia</span><span class="zh">淋巴细胞减少</span></h3>
         <ul>
@@ -1851,12 +1867,12 @@ html {
       </div>
     </div>
 
-    <div class="lim-grid reveal">
-      <div class="lim"><div class="n">01</div><h3><span class="en">Cut-off Heterogeneity</span><span class="zh">临界值异质性</span></h3><p><span class="en">SII cut-off values ranged from 340 to 1,505, limiting cross-study comparability.</span><span class="zh">SII 临界值范围 340–1,505，限制了研究间可比性。</span></p></div>
-      <div class="lim"><div class="n">02</div><h3><span class="en">Study Design Imbalance</span><span class="zh">研究设计失衡</span></h3><p><span class="en">38 retrospective vs 2 prospective cohorts; prospective data underpowered.</span><span class="zh">38 项回顾性 vs 2 项前瞻性队列；前瞻性数据效力不足。</span></p></div>
-      <div class="lim"><div class="n">03</div><h3><span class="en">Geographic Bias</span><span class="zh">地域偏倚</span></h3><p><span class="en">Most studies from Asia; findings may not generalize to non-Asian populations.</span><span class="zh">多数研究来自亚洲；结论可能不适用于非亚洲人群。</span></p></div>
-      <div class="lim"><div class="n">04</div><h3><span class="en">Tumor Location Granularity</span><span class="zh">肿瘤部位颗粒度不足</span></h3><p><span class="en">Limited data on right-sided vs left-sided CRC differences.</span><span class="zh">右半与左半结肠癌差异数据有限。</span></p></div>
-      <div class="lim"><div class="n">05</div><h3><span class="en">High Heterogeneity</span><span class="zh">高异质性</span></h3><p><span class="en">I² = 92% for OS and 73% for PFS warrants cautious interpretation.</span><span class="zh">OS I² = 92%，PFS I² = 73%，需谨慎解读。</span></p></div>
+    <div class="lim-grid">
+      <div class="lim reveal"><div class="n">01</div><h3><span class="en">Cut-off Heterogeneity</span><span class="zh">临界值异质性</span></h3><p><span class="en">SII cut-off values ranged from 340 to 1,505, limiting cross-study comparability.</span><span class="zh">SII 临界值范围 340–1,505，限制了研究间可比性。</span></p></div>
+      <div class="lim reveal"><div class="n">02</div><h3><span class="en">Study Design Imbalance</span><span class="zh">研究设计失衡</span></h3><p><span class="en">38 retrospective vs 2 prospective cohorts; prospective data underpowered.</span><span class="zh">38 项回顾性 vs 2 项前瞻性队列；前瞻性数据效力不足。</span></p></div>
+      <div class="lim reveal"><div class="n">03</div><h3><span class="en">Geographic Bias</span><span class="zh">地域偏倚</span></h3><p><span class="en">Most studies from Asia; findings may not generalize to non-Asian populations.</span><span class="zh">多数研究来自亚洲；结论可能不适用于非亚洲人群。</span></p></div>
+      <div class="lim reveal"><div class="n">04</div><h3><span class="en">Tumor Location Granularity</span><span class="zh">肿瘤部位颗粒度不足</span></h3><p><span class="en">Limited data on right-sided vs left-sided CRC differences.</span><span class="zh">右半与左半结肠癌差异数据有限。</span></p></div>
+      <div class="lim reveal"><div class="n">05</div><h3><span class="en">High Heterogeneity</span><span class="zh">高异质性</span></h3><p><span class="en">I² = 92% for OS and 73% for PFS warrants cautious interpretation.</span><span class="zh">OS I² = 92%，PFS I² = 73%，需谨慎解读。</span></p></div>
     </div>
   </div>
 </section>
