@@ -499,6 +499,8 @@ hr.divider {
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   transition: all .3s ease;
+  min-width: 0;
+  overflow: hidden;
 }
 .metric:hover {
   box-shadow: var(--shadow-md);
@@ -1112,7 +1114,7 @@ html {
       </div>
       <div class="col reveal">
         <div class="label" style="margin-bottom:20px;"><span class="en">Key Features · This Meta-Analysis</span><span class="zh">本 Meta 分析核心特征</span></div>
-        <div class="metrics">
+        <div class="metrics" style="grid-template-columns:1fr 1fr;gap:20px;">
           <div class="metric reveal">
             <div class="num" data-no-anim>35</div>
             <div class="lbl"><span class="en">Studies</span><span class="zh">纳入研究</span></div>
