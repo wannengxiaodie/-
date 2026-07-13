@@ -192,9 +192,8 @@ body.lang-zh svg text.en { display: none; }
 /* Sections */
 main { position: relative; }
 section {
-  aspect-ratio: 16/9;
-  max-height: 95vh;
-  min-height: 600px;
+  min-height: 100vh;
+  min-height: 100dvh;
   scroll-snap-align: start;
   padding: clamp(120px, 15vh, 160px) clamp(48px, 8vw, 96px);
   display: flex;
@@ -261,17 +260,15 @@ hr.divider {
 
 /* Cover Section */
 .cover {
-  aspect-ratio: 16/9;
-  max-height: 95vh;
-  min-height: 600px;
+  min-height: 100vh;
   padding: 0;
   justify-content: flex-start;
 }
 .cover-inner {
   position: relative;
   width: 100%;
-  height: 100%;
-  min-height: 600px;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -973,8 +970,7 @@ html {
   .dots { right: 16px; }
   .hint { left: 24px; bottom: 20px; font-size: 10px; }
   
-  section { padding: clamp(80px, 10vh, 120px) 24px; aspect-ratio: auto; max-height: none; min-height: 100vh; }
-  .cover { aspect-ratio: auto; max-height: none; min-height: 100vh; }
+  section { padding: clamp(80px, 10vh, 120px) 24px; }
   
   .sec-head { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 32px; }
   .sec-title h2 { font-size: clamp(24px, 5vw, 36px); }
