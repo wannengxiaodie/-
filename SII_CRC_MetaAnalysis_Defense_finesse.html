@@ -673,6 +673,8 @@ table tbody td .ci { color: var(--ink-muted); font-size: 12px; }
 .prisma-svg .box { fill: var(--paper); stroke: var(--border-strong); stroke-width: 1; rx: 4; }
 .prisma-svg .box-final { fill: var(--ink); stroke: none; rx: 4; }
 .prisma-svg .box-final text { fill: var(--bg); }
+.prisma-svg text.box-final-label { fill: var(--bg); }
+.prisma-svg text.box-final-muted { fill: var(--bg); opacity: .55; }
 .prisma-svg text { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-light); }
 .prisma-svg .arrow { stroke: var(--ink-faint); stroke-width: 1; fill: none; }
 .prisma-svg .arrow-head { fill: var(--ink-faint); }
@@ -1200,10 +1202,10 @@ html {
           <polygon class="arrow-head" points="140,342 137,336 143,336"/>
           <text class="stage" x="20" y="334"><tspan class="en">Included</tspan><tspan class="zh">纳入</tspan></text>
           <rect class="box-final" x="20" y="342" width="480" height="68" rx="4"/>
-          <text x="32" y="368" fill="white"><tspan class="en">Studies included in meta-analysis</tspan><tspan class="zh">纳入 Meta 分析的研究</tspan></text>
-          <text x="32" y="396" style="font-size:22px;font-weight:500;fill:white">35</text>
-          <text x="300" y="368" style="font-size:10px;fill:rgba(255,255,255,.6)"><tspan class="en">Patients</tspan><tspan class="zh">患者数</tspan></text>
-          <text x="300" y="396" style="font-size:22px;font-weight:500;fill:white">26,812</text>
+          <text class="box-final-label" x="32" y="368"><tspan class="en">Studies included in meta-analysis</tspan><tspan class="zh">纳入 Meta 分析的研究</tspan></text>
+          <text class="box-final-label" x="32" y="396" style="font-size:22px;font-weight:500">35</text>
+          <text class="box-final-muted" x="300" y="368" style="font-size:10px;"><tspan class="en">Patients</tspan><tspan class="zh">患者数</tspan></text>
+          <text class="box-final-label" x="300" y="396" style="font-size:22px;font-weight:500">26,812</text>
           <path class="arrow" d="M140,410 L140,442"/>
           <polygon class="arrow-head" points="140,442 137,436 143,436"/>
           <rect class="box" x="20" y="442" width="480" height="56" rx="4" style="fill:var(--paper);stroke:var(--border-strong);stroke-dasharray:4 3;"/>
