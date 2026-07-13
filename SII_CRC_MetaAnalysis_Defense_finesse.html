@@ -153,6 +153,8 @@ body.lang-zh svg text.zh { display: block; }
 body.lang-zh svg text.en { display: none; }
 
 /* Section language transition: EN -> ZH on enter */
+section { transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+section.fade-out { opacity: 0; }
 section.show-en .en { display: inline !important; }
 section.show-en .zh { display: none !important; }
 section.show-en svg text.en { display: block !important; }
@@ -2125,7 +2127,7 @@ function setLang(lang) {
     zhLabel.classList.remove('active');
     document.documentElement.setAttribute('lang', 'en');
     /* Clear any lingering transition states when switching to EN */
-    document.querySelectorAll('main > section').forEach(s => s.classList.remove('show-en', 'lang-switching'));
+    document.querySelectorAll('main > section').forEach(s => s.classList.remove('show-en', 'fade-out'));
   }
   localStorage.setItem('lang', lang);
 }
@@ -2184,10 +2186,15 @@ const langObserver = new IntersectionObserver((entries) => {
       sec.classList.add('show-en');
       setTimeout(() => {
         if (langGen.get(sec) !== gen) return;
-        sec.classList.remove('show-en');
+        sec.classList.add('fade-out');
+        setTimeout(() => {
+          if (langGen.get(sec) !== gen) return;
+          sec.classList.remove('show-en');
+          sec.classList.remove('fade-out');
+        }, 400);
       }, 1500);
     } else {
-      sec.classList.remove('show-en', 'lang-switching');
+      sec.classList.remove('show-en', 'fade-out');
     }
   });
 }, { threshold: 0.3 });
