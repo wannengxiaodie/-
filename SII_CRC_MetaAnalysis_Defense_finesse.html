@@ -2248,18 +2248,15 @@ function getParticleColor() {
   return isDark ? 0xC0C0C0 : 0x6A6A6A;
 }
 
-const particleCount = 1200;
+const particleCount = 800;
 const positions = new Float32Array(particleCount * 3);
 const basePositions = [];
 
 for (let i = 0; i < particleCount; i++) {
   const i3 = i * 3;
-  const radius = 15 + Math.random() * 35;
-  const theta = Math.random() * Math.PI * 2;
-  const phi = Math.acos(2 * Math.random() - 1);
-  positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-  positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-  positions[i3 + 2] = radius * Math.cos(phi);
+  positions[i3] = (Math.random() - 0.5) * 120;
+  positions[i3 + 1] = (Math.random() - 0.5) * 120;
+  positions[i3 + 2] = (Math.random() - 0.5) * 120;
   basePositions.push({
     speed: 0.0008 + Math.random() * 0.0015,
     phase: Math.random() * Math.PI * 2,
