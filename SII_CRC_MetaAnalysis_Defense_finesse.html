@@ -148,6 +148,9 @@ body.lang-zh .zh { display: inline; }
 body.lang-zh .en { display: none; }
 body.lang-zh .zh.block { display: block; }
 body.lang-zh .zh.flex { display: flex; }
+svg text.zh { display: none; }
+body.lang-zh svg text.zh { display: block; }
+body.lang-zh svg text.en { display: none; }
 
 /* Progress Dots */
 .dots {
@@ -1427,15 +1430,19 @@ html {
         <line x1="0" y1="48" x2="820" y2="48" stroke="var(--border)" stroke-width="0.5"/>
 
         <!-- Stage III: HR 3.64 [2.01-6.59], 6 studies -->
-        <text class="study-label" x="240" y="66" text-anchor="end"><span class="en">Stage III</span><span class="zh">III 期</span></text>
-        <text class="study-label" x="240" y="78" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=6 cohorts</span><span class="zh">n=6 个队列</span></text>
+        <text class="study-label en" x="240" y="66" text-anchor="end">Stage III</text>
+        <text class="study-label zh" x="240" y="66" text-anchor="end">III 期</text>
+        <text class="study-label en" x="240" y="78" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=6 cohorts</text>
+        <text class="study-label zh" x="240" y="78" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=6 个队列</text>
         <line class="ci-line" x1="470" y1="68" x2="658" y2="68"/>
         <circle class="square" cx="590" cy="68" r="3"/>
         <text class="hr-anno" x="805" y="71" text-anchor="end" style="font-weight:500;">3.64 [2.01, 6.59]</text>
 
         <!-- Stage IV: HR 2.23 [1.68-2.96], 12 studies -->
-        <text class="study-label" x="240" y="96" text-anchor="end"><span class="en">Stage IV / Metastatic</span><span class="zh">IV 期 / 转移性</span></text>
-        <text class="study-label" x="240" y="108" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=12 cohorts</span><span class="zh">n=12 个队列</span></text>
+        <text class="study-label en" x="240" y="96" text-anchor="end">Stage IV / Metastatic</text>
+        <text class="study-label zh" x="240" y="96" text-anchor="end">IV 期 / 转移性</text>
+        <text class="study-label en" x="240" y="108" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=12 cohorts</text>
+        <text class="study-label zh" x="240" y="108" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=12 个队列</text>
         <line class="ci-line" x1="448" y1="98" x2="540" y2="98"/>
         <circle class="square" cx="496" cy="98" r="4.5"/>
         <text class="hr-anno" x="805" y="101" text-anchor="end">2.23 [1.68, 2.96]</text>
@@ -1445,15 +1452,19 @@ html {
         <line x1="0" y1="144" x2="820" y2="144" stroke="var(--border)" stroke-width="0.5"/>
 
         <!-- Colon: HR 2.24 [1.70-2.95], 10 studies -->
-        <text class="study-label" x="240" y="162" text-anchor="end"><span class="en">Colon</span><span class="zh">结肠癌</span></text>
-        <text class="study-label" x="240" y="174" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=10 cohorts</span><span class="zh">n=10 个队列</span></text>
+        <text class="study-label en" x="240" y="162" text-anchor="end">Colon</text>
+        <text class="study-label zh" x="240" y="162" text-anchor="end">结肠癌</text>
+        <text class="study-label en" x="240" y="174" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=10 cohorts</text>
+        <text class="study-label zh" x="240" y="174" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=10 个队列</text>
         <line class="ci-line" x1="449" y1="164" x2="539" y2="164"/>
         <circle class="square" cx="497" cy="164" r="4"/>
         <text class="hr-anno" x="805" y="167" text-anchor="end">2.24 [1.70, 2.95]</text>
 
         <!-- Rectal: HR 1.89 [1.38-2.59], 6 studies -->
-        <text class="study-label" x="240" y="192" text-anchor="end"><span class="en">Rectal</span><span class="zh">直肠癌</span></text>
-        <text class="study-label" x="240" y="204" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=6 cohorts</span><span class="zh">n=6 个队列</span></text>
+        <text class="study-label en" x="240" y="192" text-anchor="end">Rectal</text>
+        <text class="study-label zh" x="240" y="192" text-anchor="end">直肠癌</text>
+        <text class="study-label en" x="240" y="204" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=6 cohorts</text>
+        <text class="study-label zh" x="240" y="204" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=6 个队列</text>
         <line class="ci-line" x1="415" y1="194" x2="503" y2="194"/>
         <circle class="square" cx="465" cy="194" r="3"/>
         <text class="hr-anno" x="805" y="197" text-anchor="end">1.89 [1.38, 2.59]</text>
@@ -1463,22 +1474,28 @@ html {
         <line x1="0" y1="240" x2="820" y2="240" stroke="var(--border)" stroke-width="0.5"/>
 
         <!-- Surgery: HR 2.18 [1.66-2.86], 12 studies -->
-        <text class="study-label" x="240" y="258" text-anchor="end"><span class="en">Surgical resection</span><span class="zh">手术切除</span></text>
-        <text class="study-label" x="240" y="270" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=12 cohorts</span><span class="zh">n=12 个队列</span></text>
+        <text class="study-label en" x="240" y="258" text-anchor="end">Surgical resection</text>
+        <text class="study-label zh" x="240" y="258" text-anchor="end">手术切除</text>
+        <text class="study-label en" x="240" y="270" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=12 cohorts</text>
+        <text class="study-label zh" x="240" y="270" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=12 个队列</text>
         <line class="ci-line" x1="443" y1="260" x2="535" y2="260"/>
         <circle class="square" cx="492" cy="260" r="4.5"/>
         <text class="hr-anno" x="805" y="263" text-anchor="end">2.18 [1.66, 2.86]</text>
 
         <!-- Chemo: HR 2.01 [1.52-2.66], 10 studies -->
-        <text class="study-label" x="240" y="288" text-anchor="end"><span class="en">Chemotherapy alone</span><span class="zh">单纯化疗</span></text>
-        <text class="study-label" x="240" y="300" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=10 cohorts</span><span class="zh">n=10 个队列</span></text>
+        <text class="study-label en" x="240" y="288" text-anchor="end">Chemotherapy alone</text>
+        <text class="study-label zh" x="240" y="288" text-anchor="end">单纯化疗</text>
+        <text class="study-label en" x="240" y="300" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=10 cohorts</text>
+        <text class="study-label zh" x="240" y="300" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=10 个队列</text>
         <line class="ci-line" x1="418" y1="290" x2="505" y2="290"/>
         <circle class="square" cx="470" cy="290" r="4"/>
         <text class="hr-anno" x="805" y="293" text-anchor="end">2.01 [1.52, 2.66]</text>
 
         <!-- Chemo+Bev: HR 1.41 [0.97-2.05], 4 studies -->
-        <text class="study-label" x="240" y="318" text-anchor="end"><span class="en">Chemo + Bevacizumab</span><span class="zh">化疗 + 贝伐珠单抗</span></text>
-        <text class="study-label" x="240" y="330" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">n=4 cohorts</span><span class="zh">n=4 个队列</span></text>
+        <text class="study-label en" x="240" y="318" text-anchor="end">Chemo + Bevacizumab</text>
+        <text class="study-label zh" x="240" y="318" text-anchor="end">化疗 + 贝伐珠单抗</text>
+        <text class="study-label en" x="240" y="330" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=4 cohorts</text>
+        <text class="study-label zh" x="240" y="330" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">n=4 个队列</text>
         <line class="ci-line" x1="345" y1="320" x2="468" y2="320"/>
         <circle class="square" cx="406" cy="320" r="3"/>
         <text class="hr-anno" x="805" y="323" text-anchor="end" style="font-style:italic;fill:var(--ink-muted);">1.41 [0.97, 2.05] *</text>
@@ -1488,8 +1505,10 @@ html {
         <text class="group-header" x="10" y="368">POOLED (RANDOM EFFECTS)</text>
 
         <!-- Diamond: HR 2.16 [1.83-2.54] -->
-        <text class="study-label" x="240" y="388" text-anchor="end" style="font-weight:600;fill:var(--ink);"><span class="en">Overall</span><span class="zh">总体</span></text>
-        <text class="study-label" x="240" y="400" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);"><span class="en">24 cohorts · 19,402 pts</span><span class="zh">24 个队列 · 19,402 例</span></text>
+        <text class="study-label en" x="240" y="388" text-anchor="end" style="font-weight:600;fill:var(--ink);">Overall</text>
+        <text class="study-label zh" x="240" y="388" text-anchor="end" style="font-weight:600;fill:var(--ink);">总体</text>
+        <text class="study-label en" x="240" y="400" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">24 cohorts · 19,402 pts</text>
+        <text class="study-label zh" x="240" y="400" text-anchor="end" style="font-size:7px;fill:var(--ink-faint);">24 个队列 · 19,402 例</text>
         <polygon class="diamond" points="449,384 489,378 529,384 489,390"/>
         <line class="ci-line" x1="412" y1="384" x2="566" y2="384" style="opacity:0;"/>
         <polygon class="diamond" points="412,384 489,375 566,384 489,393"/>
@@ -1508,13 +1527,18 @@ html {
         <line class="null-line" x1="367" y1="30" x2="367" y2="430"/>
 
         <!-- Axis titles -->
-        <text class="axis-title" x="290" y="464"><span class="en">Favours High SII</span><span class="zh">高 SII 有利</span></text>
-        <text class="axis-title" x="678" y="464" text-anchor="end"><span class="en">Favours Low SII</span><span class="zh">低 SII 有利</span></text>
+        <text class="axis-title en" x="290" y="464">Favours High SII</text>
+        <text class="axis-title zh" x="290" y="464">高 SII 有利</text>
+        <text class="axis-title en" x="678" y="464" text-anchor="end">Favours Low SII</text>
+        <text class="axis-title zh" x="678" y="464" text-anchor="end">低 SII 有利</text>
 
         <!-- Heterogeneity note -->
-        <text class="study-label" x="10" y="494" style="font-size:8px;fill:var(--ink-muted);"><span class="en">τ² = 0.11 · I² = 73% · H = 1.93 · Test for overall effect: Z = 8.62 (p &lt; 0.00001)</span><span class="zh">τ² = 0.11 · I² = 73% · H = 1.93 · 总体效应检验：Z = 8.62 (p &lt; 0.00001)</span></text>
-        <text class="study-label" x="10" y="510" style="font-size:8px;fill:var(--ink-muted);"><span class="en">Square size ∝ study weight · Diamond width = 95% CI of pooled estimate</span><span class="zh">方块大小 ∝ 研究权重 · 菱形宽度 = 合并估计值 95% CI</span></text>
-        <text class="study-label" x="10" y="526" style="font-size:8px;fill:var(--ink-muted);"><span class="en">* Bevacizumab subgroup not statistically significant (p = 0.07)</span><span class="zh">* 贝伐珠单抗亚组无统计学意义（p = 0.07）</span></text>
+        <text class="study-label en" x="10" y="494" style="font-size:8px;fill:var(--ink-muted);">τ² = 0.11 · I² = 73% · H = 1.93 · Test for overall effect: Z = 8.62 (p &lt; 0.00001)</text>
+        <text class="study-label zh" x="10" y="494" style="font-size:8px;fill:var(--ink-muted);">τ² = 0.11 · I² = 73% · H = 1.93 · 总体效应检验：Z = 8.62 (p &lt; 0.00001)</text>
+        <text class="study-label en" x="10" y="510" style="font-size:8px;fill:var(--ink-muted);">Square size ∝ study weight · Diamond width = 95% CI of pooled estimate</text>
+        <text class="study-label zh" x="10" y="510" style="font-size:8px;fill:var(--ink-muted);">方块大小 ∝ 研究权重 · 菱形宽度 = 合并估计值 95% CI</text>
+        <text class="study-label en" x="10" y="526" style="font-size:8px;fill:var(--ink-muted);">* Bevacizumab subgroup not statistically significant (p = 0.07)</text>
+        <text class="study-label zh" x="10" y="526" style="font-size:8px;fill:var(--ink-muted);">* 贝伐珠单抗亚组无统计学意义（p = 0.07）</text>
       </svg>
       <p class="forest-caption"><span class="en">Figure 2 · Subgroup forest plot for progression-free survival. Stage III shows the strongest prognostic signal. Bevacizumab subgroup attenuates toward null, consistent with VEGF blockade modulating inflammatory pathways.</span><span class="zh">图 2 · 无进展生存期亚组森林图。III 期预后信号最强。贝伐珠单抗亚组效应接近零，与 VEGF 阻断调节炎症通路的机制一致。</span></p>
     </div>
