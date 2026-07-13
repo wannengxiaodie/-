@@ -1071,7 +1071,7 @@ html {
       <div class="vol"><span class="en">Vol. 16 · 2026</span><span class="zh">第 16 卷 · 2026</span></div>
     </div>
     <div class="center">
-      <div class="dna-strand reveal"><canvas id="dnaCanvas3d"></canvas></div>
+      <div class="dna-strand reveal"><canvas id="dnaCanvas"></canvas></div>
       <div class="kicker"><span class="en">A Systematic Review & Meta-Analysis</span><span class="zh">系统综述与 Meta 分析</span></div>
       <h1><span class="en">Prognostic Value of the Systemic <em>Immune-Inflammation Index</em> for Colorectal Cancer.</span><span class="zh">系统<em>免疫炎症指数</em>对结直肠癌预后价值的研究</span></h1>
       <div class="decor-line reveal"></div>
@@ -1968,173 +1968,112 @@ html {
 
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
+/* === DNA Double Helix Animation === */
 (function() {
-  const canvas = document.getElementById('dnaCanvas3d');
+  const canvas = document.getElementById('dnaCanvas');
   if (!canvas) return;
+  const ctx = canvas.getContext('2d');
   const DPR = window.devicePixelRatio || 1;
   const W = 220, H = 360;
+  canvas.width = W * DPR;
+  canvas.height = H * DPR;
   canvas.style.width = W + 'px';
   canvas.style.height = H + 'px';
+  ctx.scale(DPR, DPR);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 200);
-  camera.position.set(0, 0, 26);
+  const CX = W / 2;
+  const AMPLITUDE = 38;
+  const STEP = 16;
+  const N = Math.ceil(H / STEP) + 2;
+  const bases = ['A', 'T', 'G', 'C'];
+  const pairMap = { 'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G' };
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(DPR);
-  renderer.setSize(W, H);
-  renderer.setClearColor(0x000000, 0);
+  const pairs = [];
+  for (let i = 0; i < N; i++) {
+    const b = bases[Math.floor(Math.random() * 4)];
+    pairs.push({ left: b, right: pairMap[b] });
+  }
 
-  function getInkColor() {
+  function getColor() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    return isDark ? 0xe0e0e0 : 0x1a1a1a;
+    return isDark ? '220,220,220' : '26,26,26';
   }
-  function getAccentColor() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    return isDark ? 0xffffff : 0x3d3d3d;
-  }
-
-  const STRAND_COUNT = 3;
-  const HEIGHT = 30;
-  const BASE_RADIUS = 4;
-  const RADIAL_AMP = 1.8;
-  const RADIAL_FREQ = 2.5;
-  const TWIST = 2.2;
-  const SEGMENTS = 160;
-
-  const allTubeMats = [];
-  const allBeadMats = [];
-  const allRungMats = [];
-  const mainGroup = new THREE.Group();
-
-  function buildStrandPoints(strandIdx) {
-    const phaseOffset = (strandIdx / STRAND_COUNT) * Math.PI * 2;
-    const points = [];
-    for (let i = 0; i <= SEGMENTS; i++) {
-      const t = i / SEGMENTS;
-      const y = (t - 0.5) * HEIGHT;
-      const angle = t * TWIST * Math.PI * 2 + phaseOffset;
-      const radius = BASE_RADIUS + Math.sin(t * RADIAL_FREQ * Math.PI * 2 + phaseOffset * 1.3) * RADIAL_AMP;
-      const x = Math.cos(angle) * radius;
-      const z = Math.sin(angle) * radius;
-      points.push(new THREE.Vector3(x, y, z));
-    }
-    return points;
-  }
-
-  const strandCurves = [];
-  for (let s = 0; s < STRAND_COUNT; s++) {
-    const points = buildStrandPoints(s);
-    const curve = new THREE.CatmullRomCurve3(points);
-    strandCurves.push(curve);
-
-    const tubeGeo = new THREE.TubeGeometry(curve, SEGMENTS, 0.22, 10, false);
-    const tubeMat = new THREE.MeshBasicMaterial({
-      color: getInkColor(),
-      transparent: true,
-      opacity: 0.85
-    });
-    const tube = new THREE.Mesh(tubeGeo, tubeMat);
-    allTubeMats.push(tubeMat);
-    mainGroup.add(tube);
-
-    const beadGeo = new THREE.SphereGeometry(0.4, 14, 14);
-    const beadMat = new THREE.MeshBasicMaterial({
-      color: getAccentColor(),
-      transparent: true,
-      opacity: 0.95
-    });
-    allBeadMats.push(beadMat);
-
-    const beadCount = 22;
-    for (let b = 0; b < beadCount; b++) {
-      const bt = b / (beadCount - 1);
-      const pos = curve.getPoint(bt);
-      const bead = new THREE.Mesh(beadGeo, beadMat);
-      bead.position.copy(pos);
-      mainGroup.add(bead);
-    }
-  }
-
-  const rungGeo = new THREE.CylinderGeometry(0.05, 0.05, 1, 6);
-  const rungMat = new THREE.MeshBasicMaterial({
-    color: getInkColor(),
-    transparent: true,
-    opacity: 0.3
-  });
-  allRungMats.push(rungMat);
-
-  const rungCount = 40;
-  const rungMeshes = [];
-  for (let i = 0; i < rungCount; i++) {
-    const rung = new THREE.Mesh(rungGeo, rungMat);
-    rungMeshes.push(rung);
-    mainGroup.add(rung);
-  }
-
-  function updateRungs() {
-    for (let i = 0; i < rungCount; i++) {
-      const t = i / (rungCount - 1);
-      const p0 = strandCurves[0].getPoint(t);
-      const p1 = strandCurves[1].getPoint(t);
-      const p2 = strandCurves[2].getPoint(t);
-
-      const dists = [
-        { a: p0, b: p1, d: p0.distanceTo(p1) },
-        { a: p1, b: p2, d: p1.distanceTo(p2) },
-        { a: p2, b: p0, d: p2.distanceTo(p0) }
-      ];
-      dists.sort((a, b) => a.d - b.d);
-      const pair = dists[0];
-
-      const mid = new THREE.Vector3().addVectors(pair.a, pair.b).multiplyScalar(0.5);
-      rungMeshes[i].position.copy(mid);
-      rungMeshes[i].scale.y = pair.d;
-      rungMeshes[i].lookAt(pair.b);
-      rungMeshes[i].rotateX(Math.PI / 2);
-    }
-  }
-  updateRungs();
-
-  scene.add(mainGroup);
-
-  const targetRot = { x: 0, y: 0 };
-  const currentRot = { x: 0, y: 0 };
-
-  document.addEventListener('mousemove', (e) => {
-    const mx = (e.clientX / window.innerWidth - 0.5) * 2;
-    const my = (e.clientY / window.innerHeight - 0.5) * 2;
-    targetRot.y = mx * 0.5;
-    targetRot.x = -my * 0.3;
-  });
 
   let t = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    t += 0.005;
 
-    currentRot.x += (targetRot.x - currentRot.x) * 0.03;
-    currentRot.y += (targetRot.y - currentRot.y) * 0.03;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const ink = getColor();
 
-    mainGroup.rotation.y = t * 0.8 + currentRot.y;
-    mainGroup.rotation.x = Math.sin(t * 0.4) * 0.12 + currentRot.x;
-    mainGroup.position.y = Math.sin(t * 0.6) * 0.5;
+    // Collect all points with depth for z-sorting
+    const items = [];
 
-    renderer.render(scene, camera);
+    for (let i = 0; i < N; i++) {
+      const y = i * STEP - 10;
+      const angle = i * 0.35 + t;
+      const x1 = CX + Math.cos(angle) * AMPLITUDE;
+      const z1 = Math.sin(angle);
+      const x2 = CX + Math.cos(angle + Math.PI) * AMPLITUDE;
+      const z2 = Math.sin(angle + Math.PI);
+
+      // Backbone points
+      items.push({ type: 'dot', x: x1, y: y, z: z1, strand: 0 });
+      items.push({ type: 'dot', x: x2, y: y, z: z2, strand: 1 });
+
+      // Base pair connection (rung)
+      items.push({ type: 'rung', x1: x1, y1: y, z1: z1, x2: x2, y2: y, z2: z2, base: pairs[i] });
+    }
+
+    // Sort by z (back to front)
+    items.sort(function(a, b) {
+      const za = a.type === 'rung' ? (a.z1 + a.z2) / 2 : a.z;
+      const zb = b.type === 'rung' ? (b.z1 + b.z2) / 2 : b.z;
+      return za - zb;
+    });
+
+    // Draw sorted items
+    for (var k = 0; k < items.length; k++) {
+      var item = items[k];
+      if (item.type === 'rung') {
+        var avgZ = (item.z1 + item.z2) / 2;
+        var alpha = 0.15 + (avgZ + 1) * 0.15;
+
+        // Rung line
+        ctx.strokeStyle = 'rgba(' + ink + ',' + alpha + ')';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(item.x1, item.y1);
+        ctx.lineTo(item.x2, item.y2);
+        ctx.stroke();
+
+        // Base letters at each end
+        var a1 = 0.3 + (item.z1 + 1) * 0.25;
+        var a2 = 0.3 + (item.z2 + 1) * 0.25;
+        ctx.font = '600 8px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(' + ink + ',' + a1 + ')';
+        ctx.fillText(item.base.left, item.x1, item.y1);
+        ctx.fillStyle = 'rgba(' + ink + ',' + a2 + ')';
+        ctx.fillText(item.base.right, item.x2, item.y2);
+      } else {
+        var scale = 0.6 + (item.z + 1) * 0.35;
+        var alpha = 0.3 + (item.z + 1) * 0.28;
+        var radius = 2 + (item.z + 1) * 1.5;
+
+        ctx.fillStyle = 'rgba(' + ink + ',' + alpha + ')';
+        ctx.beginPath();
+        ctx.arc(item.x, item.y, Math.max(0.5, radius * scale * 0.6), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    t += 0.008;
+    requestAnimationFrame(draw);
   }
-  animate();
 
-  function updateThemeColors() {
-    const ink = getInkColor();
-    const accent = getAccentColor();
-    allTubeMats.forEach(m => m.color.setHex(ink));
-    allBeadMats.forEach(m => m.color.setHex(accent));
-    allRungMats.forEach(m => m.color.setHex(ink));
-  }
-  const observer = new MutationObserver(updateThemeColors);
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  draw();
 })();
 
 /* === Enhanced Reveal Animations (MiMo-style) === */
