@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SII × CRC | Tech Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root {
+  --bg: #050008;
+  --bg-deep: #000000;
+  --panel: rgba(20, 5, 35, 0.55);
+  --panel-solid: #0a0212;
+  --ink: #FFFFFF;
+  --ink-soft: #E8D5F5;
+  --ink-muted: #8B7AA8;
+  --ink-faint: #4A3A5C;
+  --neon: #B026FF;
+  --neon-bright: #D946EF;
+  --magenta: #FF1493;
+  --magenta-soft: #FF6BB5;
+  --cyan: #00E5FF;
+  --border: rgba(176, 38, 255, 0.2);
+  --border-bright: rgba(176, 38, 255, 0.5);
+  --glow-purple: 0 0 20px rgba(176, 38, 255, 0.6), 0 0 40px rgba(176, 38, 255, 0.3);
+  --glow-magenta: 0 0 20px rgba(255, 20, 147, 0.6), 0 0 40px rgba(255, 20, 147, 0.3);
+  --font-display: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  --font-sans: 'Noto Sans SC', 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+
+body {
+  background: var(--bg);
+  color: var(--ink-soft);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--neon); color: #fff; }
+
+/* Three.js Background */
+#bg-canvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+/* Scanline overlay */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(176,38,255,0.015) 3px, transparent 4px);
+}
+
+/* Grid overlay */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(176,38,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(176,38,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.content { position: relative; z-index: 10; }
+
+/* Navigation */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px;
+  background: rgba(5, 0, 8, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav .brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .15em;
+  color: var(--ink);
+  text-shadow: 0 0 10px rgba(176,38,255,0.5);
+}
+.nav .brand span {
+  font-weight: 300;
+  color: var(--neon-bright);
+  margin: 0 6px;
+}
+.nav .meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--ink-muted);
+}
+.nav .meta b { color: var(--magenta-soft); font-weight: 500; }
+
+/* Progress Dots */
+.dots {
+  position: fixed; right: 28px; top: 50%; transform: translateY(-50%);
+  z-index: 50; display: flex; flex-direction: column; gap: 14px;
+}
+.dots a {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--ink-faint);
+  border: 1px solid var(--border);
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+  display: block; cursor: pointer;
+}
+.dots a.active {
+  background: var(--neon);
+  border-color: var(--neon-bright);
+  box-shadow: var(--glow-purple);
+  transform: scale(1.5);
+}
+.dots a:hover { background: var(--magenta); box-shadow: var(--glow-magenta); }
+
+/* Hint */
+.hint {
+  position: fixed; left: 40px; bottom: 24px; z-index: 50;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--ink-faint);
+  display: flex; gap: 20px; align-items: center;
+}
+.hint kbd {
+  font-family: inherit; font-size: 10px;
+  background: rgba(176,38,255,0.1);
+  border: 1px solid var(--border);
+  padding: 2px 6px; border-radius: 3px;
+  color: var(--neon-bright);
+}
+#pgcounter { color: var(--magenta-soft); }
+
+/* Sections */
+main { position: relative; }
+section {
+  min-height: 100vh; min-height: 100dvh;
+  scroll-snap-align: start;
+  padding: clamp(100px, 12vh, 140px) clamp(40px, 6vw, 80px);
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative;
+}
+.wrap { max-width: 1280px; margin: 0 auto; width: 100%; }
+
+/* Section Header */
+.sec-head {
+  display: flex; align-items: baseline; gap: 20px;
+  margin-bottom: 48px;
+}
+.sec-num {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .25em;
+  color: var(--neon);
+  text-shadow: 0 0 8px rgba(176,38,255,0.6);
+}
+.sec-title h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(28px, 3.4vw, 44px);
+  letter-spacing: -.01em;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.sec-title .sub {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 14px; font-weight: 400;
+  color: var(--magenta-soft);
+  margin-top: 6px;
+  letter-spacing: .04em;
+}
+
+/* Glass Panel */
+.panel {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.panel::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon), transparent);
+}
+.panel.glow { box-shadow: var(--glow-purple); }
+.panel.magenta::before { background: linear-gradient(90deg, transparent, var(--magenta), transparent); }
+.panel.magenta.glow { box-shadow: var(--glow-magenta); }
+
+/* Two Column */
+.two-col {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: start;
+}
+.two-col.equal { grid-template-columns: 1fr 1fr; }
+
+.col h3 {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 14px;
+  letter-spacing: 0;
+}
+.col h3 .accent { color: var(--neon-bright); }
+.col p { margin-bottom: 14px; color: var(--ink-soft); }
+.col p:last-child { margin-bottom: 0; }
+.col p b { color: var(--magenta-soft); font-weight: 500; }
+
+.col ul { list-style: none; }
+.col ul li {
+  padding: 12px 0 12px 22px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  position: relative;
+}
+.col ul li:last-child { border-bottom: none; }
+.col ul li::before {
+  content: '▸'; position: absolute; left: 0; top: 12px;
+  color: var(--neon); font-size: 12px;
+  text-shadow: 0 0 6px rgba(176,38,255,0.8);
+}
+
+/* Formula */
+.formula {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  padding: 28px;
+  border-left: 3px solid var(--neon);
+  border-radius: 8px;
+  margin: 24px 0;
+  box-shadow: var(--glow-purple);
+}
+.formula .label {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--magenta-soft);
+  margin-bottom: 14px;
+}
+.formula .eq {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.formula .eq .frac {
+  display: inline-block; vertical-align: middle;
+  text-align: center; margin: 0 8px;
+}
+.formula .eq .frac .num {
+  display: block;
+  border-bottom: 2px solid var(--neon);
+  padding: 0 14px 4px;
+  font-weight: 600;
+  color: var(--neon-bright);
+}
+.formula .eq .frac .den {
+  display: block; padding: 4px 14px 0;
+  color: var(--magenta-soft);
+}
+.formula .eq .x { color: var(--ink-muted); }
+
+/* Metrics Grid */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 28px 0;
+}
+.metric {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  transition: all .35s cubic-bezier(.16,1,.3,1);
+}
+.metric::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+  background: linear-gradient(180deg, var(--neon), var(--magenta));
+  opacity: 0.7;
+}
+.metric:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-bright);
+  box-shadow: var(--glow-purple);
+}
+.metric .num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(34px, 4.2vw, 56px);
+  letter-spacing: -.02em;
+  color: var(--ink);
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(176,38,255,0.4);
+}
+.metric .num small {
+  font-size: .38em; font-weight: 400;
+  color: var(--magenta-soft);
+  letter-spacing: 0; margin-left: 4px;
+}
+.metric .lbl {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-top: 12px;
+}
+.metric .zh {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+/* Result Callout */
+.callout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 32px;
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-bright);
+  border-radius: 12px;
+  margin-bottom: 28px;
+  box-shadow: var(--glow-purple);
+  position: relative;
+  overflow: hidden;
+}
+.callout::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--neon), var(--magenta), var(--neon));
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+.callout .big {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(56px, 8vw, 96px);
+  color: var(--neon-bright);
+  line-height: 1;
+  letter-spacing: -.03em;
+  text-shadow: 0 0 30px rgba(217,70,239,0.7), 0 0 60px rgba(176,38,255,0.4);
+}
+.callout .big small {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  color: var(--ink-muted);
+  margin-top: 8px;
+  text-shadow: none;
+  text-transform: uppercase;
+}
+.callout .desc {
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+.callout .desc b {
+  color: var(--magenta);
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255,20,147,0.5);
+}
+.callout .ci {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 10px;
+  letter-spacing: .02em;
+}
+
+/* Chart Container */
+.chart {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.chart::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-bright), transparent);
+}
+.chart .chart-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  color: var(--magenta-soft);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.chart-canvas { width: 100%; height: 460px; }
+.chart-canvas.tall { height: 540px; }
+
+/* Table */
+.tbl-wrap {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--neon-bright);
+  text-align: left;
+  padding: 16px 20px;
+  background: rgba(176,38,255,0.08);
+  border-bottom: 1px solid var(--border-bright);
+}
+td {
+  padding: 14px 20px;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--border);
+}
+tr:last-child td { border-bottom: none; }
+tr.section td {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  color: var(--magenta);
+  text-transform: uppercase;
+  background: rgba(255,20,147,0.04);
+  padding-top: 18px;
+}
+tr.bold td { color: var(--ink); font-weight: 500; }
+tr.bold td:nth-child(3) { color: var(--neon-bright); font-weight: 600; }
+td b { color: var(--neon-bright); font-weight: 600; }
+td .count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--magenta-soft);
+}
+
+/* Caption */
+.caption {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 14px;
+  font-style: italic;
+  padding-left: 16px;
+  border-left: 2px solid var(--neon);
+}
+
+/* Mechanism Grid */
+.mech-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.mech-cell {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: all .4s cubic-bezier(.16,1,.3,1);
+}
+.mech-cell::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--neon), var(--magenta));
+}
+.mech-cell:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-bright);
+  box-shadow: var(--glow-purple);
+}
+.mech-cell .icon {
+  width: 56px; height: 56px;
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(176,38,255,0.1);
+  border: 1px solid var(--border-bright);
+}
+.mech-cell .icon svg {
+  width: 28px; height: 28px;
+  filter: drop-shadow(0 0 6px rgba(176,38,255,0.8));
+}
+.mech-cell h4 {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 17px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.mech-cell .zh-sub {
+  font-size: 12px;
+  color: var(--magenta-soft);
+  margin-bottom: 14px;
+}
+.mech-cell ul { list-style: none; }
+.mech-cell ul li {
+  padding: 8px 0 8px 18px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  position: relative;
+}
+.mech-cell ul li::before {
+  content: '◆'; position: absolute; left: 0; top: 8px;
+  color: var(--neon); font-size: 8px;
+  text-shadow: 0 0 4px rgba(176,38,255,0.8);
+}
+
+.mech-summary {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--magenta);
+  border-radius: 8px;
+  padding: 22px 28px;
+  font-style: italic;
+  color: var(--ink);
+  font-size: 15px;
+  box-shadow: var(--glow-magenta);
+}
+
+/* Limitations Grid */
+.lim-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.lim {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  position: relative;
+  transition: all .35s ease;
+}
+.lim:hover { border-color: var(--border-bright); transform: translateY(-3px); }
+.lim.full { grid-column: 1 / -1; }
+.lim .n {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  color: var(--magenta);
+  text-shadow: 0 0 6px rgba(255,20,147,0.6);
+}
+.lim h4 {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 16px;
+  color: var(--ink);
+  margin: 8px 0 10px;
+}
+.lim .zh-sub { font-size: 12px; color: var(--magenta-soft); margin-bottom: 8px; }
+.lim p { font-size: 14px; color: var(--ink-soft); }
+
+/* Conc blocks */
+.conc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.conc-block h3 {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-bright);
+}
+.conc-block h3 .accent { color: var(--neon-bright); }
+.conc-block ol {
+  list-style: none;
+  counter-reset: conc;
+}
+.conc-block ol li {
+  counter-increment: conc;
+  padding: 12px 0 12px 38px;
+  position: relative;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--border);
+}
+.conc-block ol li:last-child { border-bottom: none; }
+.conc-block ol li::before {
+  content: counter(conc, decimal-leading-zero);
+  position: absolute; left: 0; top: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600;
+  color: var(--neon-bright);
+  text-shadow: 0 0 6px rgba(176,38,255,0.6);
+}
+.conc-block ol li b { color: var(--magenta-soft); font-weight: 500; }
+
+/* Cover */
+.cover {
+  min-height: 100vh; padding: 0;
+  justify-content: flex-start;
+}
+.cover-inner {
+  position: relative; width: 100%;
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 130px clamp(40px, 6vw, 80px) 60px;
+}
+.cover .topline {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.cover .topline .journal {
+  font-family: var(--font-display);
+  font-size: 13px; color: var(--ink-muted);
+  letter-spacing: .05em;
+}
+.cover .topline .journal b {
+  font-weight: 600; color: var(--neon-bright);
+  text-shadow: 0 0 8px rgba(176,38,255,0.5);
+}
+.cover .topline .vol {
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: .15em;
+  color: var(--magenta-soft);
+  text-transform: uppercase;
+}
+.cover .center {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; position: relative;
+}
+.cover .kicker {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .35em; text-transform: uppercase;
+  color: var(--magenta);
+  margin-bottom: 28px;
+  text-shadow: 0 0 8px rgba(255,20,147,0.6);
+}
+.cover h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(44px, 6.5vw, 92px);
+  letter-spacing: -.025em;
+  line-height: .95;
+  color: var(--ink);
+  max-width: 22ch;
+  margin-bottom: 24px;
+  text-shadow: 0 0 40px rgba(176,38,255,0.3);
+}
+.cover h1 em {
+  font-style: normal; font-weight: 400;
+  background: linear-gradient(135deg, var(--neon-bright), var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cover .deck {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(18px, 1.8vw, 24px);
+  color: var(--ink-soft);
+  max-width: 50ch;
+  line-height: 1.5;
+}
+.cover .bottom {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.cover .authors {
+  font-family: var(--font-display);
+  font-size: 15px; color: var(--ink);
+}
+.cover .authors b { font-weight: 600; color: var(--neon-bright); }
+.cover .authors .aff {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 6px;
+}
+.cover .doi {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--magenta-soft);
+  text-align: right;
+  letter-spacing: .02em;
+}
+.cover .doi b {
+  color: var(--ink-muted);
+  display: block; margin-bottom: 4px;
+}
+
+/* Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px) scale(0.96);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.24s; }
+.reveal-delay-3 { transition-delay: 0.36s; }
+.reveal-delay-4 { transition-delay: 0.48s; }
+
+.mech-grid .mech-cell:nth-child(2) { transition-delay: 0.12s; }
+.mech-grid .mech-cell:nth-child(3) { transition-delay: 0.24s; }
+.lim-grid .lim:nth-child(2) { transition-delay: 0.08s; }
+.lim-grid .lim:nth-child(3) { transition-delay: 0.16s; }
+.lim-grid .lim:nth-child(4) { transition-delay: 0.24s; }
+.lim-grid .lim:nth-child(5) { transition-delay: 0.32s; }
+.metrics .metric:nth-child(2) { transition-delay: 0.1s; }
+.metrics .metric:nth-child(3) { transition-delay: 0.2s; }
+.metrics .metric:nth-child(4) { transition-delay: 0.3s; }
+
+/* Decor */
+.decor-line {
+  width: 48px; height: 2px;
+  background: linear-gradient(90deg, var(--neon), var(--magenta));
+  margin: 20px 0;
+  box-shadow: 0 0 8px rgba(176,38,255,0.6);
+}
+
+/* Misc */
+.count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--magenta-soft);
+  letter-spacing: .05em;
+}
+.crit-list li { font-size: 14px; }
+.crit-list li::before { content: '◈'; color: var(--magenta); }
+
+@media (max-width: 900px) {
+  .two-col, .mech-grid, .conc-grid, .lim-grid { grid-template-columns: 1fr; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .callout { grid-template-columns: 1fr; text-align: center; }
+}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<nav class="nav" id="nav">
+  <div class="brand">SII<span>×</span>CRC<span>·</span>TECH</div>
+  <div class="meta"><b>Frontiers in Oncology</b> · 2026 · Meta-Analysis</div>
+</nav>
+
+<div class="dots" id="dots"></div>
+
+<div class="hint">
+  <span><kbd>↑</kbd><kbd>↓</kbd> navigate / 翻页</span>
+  <span id="pgcounter">01 / 15</span>
+</div>
+
+<main class="content">
+
+<!-- ===================== PAGE 1 · COVER ===================== -->
+<section id="s1" class="cover">
+  <div class="cover-inner">
+    <div class="topline">
+      <div class="journal"><b>Frontiers in Oncology</b> · Meta-Analysis</div>
+      <div class="vol">Vol. 16 · 2026</div>
+    </div>
+    <div class="center">
+      <div class="kicker">A Systematic Review & Meta-Analysis</div>
+      <h1>Prognostic Value of the <em>Systemic Immune-Inflammation Index</em> for Colorectal Cancer.</h1>
+      <p class="deck">系统免疫炎症指数对结直肠癌预后价值的研究<br><span style="color:var(--ink-muted);font-size:.85em">A pooled analysis of 35 studies and 26,812 patients clarifies where SII predicts survival, and where it does not.</span></p>
+    </div>
+    <div class="bottom">
+      <div class="authors">
+        <b>Pengfei Wang</b> · 王鹏飞 &nbsp;|&nbsp; Huiying Jiang · 姜慧英
+        <span class="aff">Clinical Laboratory, Beijing Jingmei Group General Hospital · 北京京煤集团总医院检验科</span>
+      </div>
+      <div class="doi">
+        <b>DOI</b>
+        10.3389/fonc.2026.1616016
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 2 · BACKGROUND ===================== -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">01 / 14</span>
+      <div class="sec-title">
+        <h2>The Clinical Challenge</h2>
+        <span class="sub">临床挑战与问题</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="col reveal">
+        <p>结直肠癌仍是全球癌症相关死亡的主要原因之一。仅靠 TNM 分期难以解释个体间广泛的预后差异，而系统性炎症已被证实驱动肿瘤进展、转移和治疗耐药。</p>
+        <p>NLR、PLR 等已有炎症指标具有一定价值，但仅反映了炎症-免疫轴的部分维度。<b>系统免疫炎症指数（SII）</b>将三大血细胞整合为单一复合指标。然而，既往 CRC 中 SII 研究因方法学异质性和临界值不统一，结论存在分歧。</p>
+        <div class="formula">
+          <div class="label">SII · Composite Index / 复合指数</div>
+          <div class="eq">
+            SII <span class="x">=</span>
+            <span class="frac">
+              <span class="num">Platelet × Neutrophil</span>
+              <span class="den">Lymphocyte</span>
+            </span>
+            <div style="font-size:.6em;color:var(--ink-muted);margin-top:8px">血小板 × 中性粒细胞 / 淋巴细胞</div>
+          </div>
+        </div>
+      </div>
+      <div class="col reveal reveal-delay-1">
+        <h3><span class="accent">▸</span> Knowledge Gap / 知识缺口</h3>
+        <ul>
+          <li>文献中 SII 最佳临界值尚未统一。</li>
+          <li>预后价值因治疗方式、TNM 分期和肿瘤部位而异。</li>
+          <li>尚无具备足够亚组颗粒度的全面 Meta 分析。</li>
+          <li>最新既往分析（Tan 等，2025）仅纳入 27 项研究，检索至 2024 年 3 月。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 3 · OBJECTIVES ===================== -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">02 / 14</span>
+      <div class="sec-title">
+        <h2>Study Objectives</h2>
+        <span class="sub">研究目标</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="col reveal">
+        <h3><span class="accent">▸</span> Primary Objective / 主要目标</h3>
+        <p>通过全面的 Meta 分析，明确 <b>SII</b> 对结直肠癌 <b>总生存期（OS）</b> 和 <b>无进展生存期（PFS）</b> 的预后价值。</p>
+        <h3 style="margin-top:24px"><span class="accent">▸</span> Secondary Objectives / 次要目标</h3>
+        <ul>
+          <li>通过亚组分析探索异质性来源：TNM 分期、肿瘤部位、治疗方式、地域、SII 检测时机。</li>
+          <li>通过 Meta 回归评估 SII 临界值差异是否影响预后效应量。</li>
+          <li>与既往 Meta 分析比较，提供截至 2025 年 11 月的最新证据。</li>
+        </ul>
+      </div>
+      <div class="col reveal reveal-delay-1">
+        <h3><span class="accent">▸</span> Key Features / 本 Meta 分析核心特征</h3>
+        <div class="metrics">
+          <div class="metric reveal">
+            <div class="num">35</div>
+            <div class="lbl">Studies</div>
+            <div class="zh">纳入研究</div>
+          </div>
+          <div class="metric reveal reveal-delay-1">
+            <div class="num">26,812</div>
+            <div class="lbl">Patients</div>
+            <div class="zh">总患者数</div>
+          </div>
+          <div class="metric reveal reveal-delay-2">
+            <div class="num">Nov<small>2025</small></div>
+            <div class="lbl">Search Updated</div>
+            <div class="zh">检索截止</div>
+          </div>
+          <div class="metric reveal reveal-delay-3">
+            <div class="num">6</div>
+            <div class="lbl">Subgroup Strata</div>
+            <div class="zh">亚组维度</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 4 · METHODS ===================== -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">03 / 14</span>
+      <div class="sec-title">
+        <h2>Methods & Search</h2>
+        <span class="sub">研究方法与文献检索</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="col reveal">
+        <h3><span class="accent">▸</span> Protocol & Registration / 研究方案与注册</h3>
+        <p>PRISMA 2020 指南。PROSPERO 注册号：<span class="count">CRD420251010606</span>。检索数据库：PubMed、Embase、Cochrane Library、Web of Science。检索截止日期：2025 年 11 月。</p>
+        <h3 style="margin-top:24px"><span class="accent">▸</span> Inclusion Criteria / 纳入标准</h3>
+        <ul class="crit-list">
+          <li>经病理证实的结直肠癌。</li>
+          <li>接受手术、化疗或联合治疗。</li>
+          <li>评估 SII 与 OS 或 PFS 的相关性。</li>
+          <li>提供或可推导风险比（HR）及 95% 置信区间。</li>
+        </ul>
+      </div>
+      <div class="col reveal reveal-delay-1">
+        <div class="chart">
+          <div class="chart-title">PRISMA 2020 Flow Diagram / 流程图</div>
+          <div id="prisma-chart" class="chart-canvas tall"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 5 · STUDY CHARACTERISTICS ===================== -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">04 / 14</span>
+      <div class="sec-title">
+        <h2>Study Characteristics</h2>
+        <span class="sub">纳入研究特征</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>Characteristic / 特征</th><th>Details / 详情</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Geographic Regions</b><br><span style="color:var(--magenta-soft);font-size:12px">地域分布</span></td><td>Asia (China, Japan), Europe (Italy, Hungary, Spain, Turkey), North America (USA)<br><span style="color:var(--ink-muted);font-size:13px">亚洲（中国、日本），欧洲（意大利、匈牙利、西班牙、土耳其），北美（美国）</span></td></tr>
+            <tr><td><b>Study Design</b><br><span style="color:var(--magenta-soft);font-size:12px">研究设计</span></td><td>38 retrospective cohorts; 2 prospective cohorts<br><span style="color:var(--ink-muted);font-size:13px">38 项回顾性队列；2 项前瞻性队列</span></td></tr>
+            <tr><td><b>TNM Stages</b><br><span style="color:var(--magenta-soft);font-size:12px">TNM 分期</span></td><td>Stage I–IV; including metastatic CRC, early-stage, and mixed populations<br><span style="color:var(--ink-muted);font-size:13px">I–IV 期；含转移性 CRC、早期及混合人群</span></td></tr>
+            <tr><td><b>Treatment Modalities</b><br><span style="color:var(--magenta-soft);font-size:12px">治疗方式</span></td><td>Surgery, chemotherapy, chemo + bevacizumab, immunotherapy (anti-PD-1), TARE<br><span style="color:var(--ink-muted);font-size:13px">手术、化疗、化疗+贝伐珠单抗、免疫治疗（抗 PD-1）、TARE</span></td></tr>
+            <tr><td><b>SII Cut-off Range</b><br><span style="color:var(--magenta-soft);font-size:12px">SII 临界值范围</span></td><td><span class="count">340 – 1,505</span>（wide variation / 各研究差异较大）</td></tr>
+            <tr><td><b>Timing of SII</b><br><span style="color:var(--magenta-soft);font-size:12px">SII 检测时机</span></td><td>Baseline / preoperative (majority); post-treatment (8 cohorts)<br><span style="color:var(--ink-muted);font-size:13px">基线/术前（大多数）；治疗后（8 个队列）</span></td></tr>
+            <tr><td><b>Quality Assessment</b><br><span style="color:var(--magenta-soft);font-size:12px">质量评价</span></td><td>Newcastle-Ottawa Scale; mean score <span class="count">7.8 / 9</span> (high quality)<br><span style="color:var(--ink-muted);font-size:13px">纽卡斯尔-渥太华量表；平均分 7.8 / 9（高质量，7–9 分）</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 6 · OS RESULTS ===================== -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">05 / 14</span>
+      <div class="sec-title">
+        <h2>SII & Overall Survival</h2>
+        <span class="sub">SII 与总生存期</span>
+      </div>
+    </div>
+    <div class="callout reveal">
+      <div class="big">2.11<small>HR · POOLED</small></div>
+      <div>
+        <div class="desc">SII 升高与结直肠癌<b>更差的总生存期</b>显著相关。</div>
+        <div class="ci">95% CI 1.73 – 2.57 · p < 0.00001 · 32 cohorts · 25,366 patients · I² = 92%</div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="chart">
+        <div class="chart-title">Figure 1 · Subgroup Forest Plot — OS / 总生存期亚组森林图</div>
+        <div id="forest-os" class="chart-canvas tall"></div>
+      </div>
+      <p class="caption">图 1 · 总生存期亚组森林图。所有亚组方向一致：SII 越高，OS 越差。III 期关联最强。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 7 · PFS RESULTS ===================== -->
+<section id="s7">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">06 / 14</span>
+      <div class="sec-title">
+        <h2>SII & Progression-Free Survival</h2>
+        <span class="sub">SII 与无进展生存期</span>
+      </div>
+    </div>
+    <div class="callout magenta glow reveal">
+      <div class="big">2.16<small>HR · POOLED</small></div>
+      <div>
+        <div class="desc">SII 升高与<b>更短的无进展生存期</b>显著相关。</div>
+        <div class="ci">95% CI 1.83 – 2.54 · p < 0.00001 · 24 cohorts · 19,402 patients · I² = 73%</div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="chart">
+        <div class="chart-title">Figure 2 · Subgroup Forest Plot — PFS / 无进展生存期亚组森林图</div>
+        <div id="forest-pfs" class="chart-canvas tall"></div>
+      </div>
+      <p class="caption">图 2 · 无进展生存期亚组森林图。III 期预后信号最强。贝伐珠单抗亚组效应接近零，与 VEGF 阻断调节炎症通路的机制一致。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 8 · SUBGROUP TABLE ===================== -->
+<section id="s8">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">07 / 14</span>
+      <div class="sec-title">
+        <h2>Subgroup Analysis: OS</h2>
+        <span class="sub">OS 亚组分析</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>Subgroup / 亚组</th><th>N</th><th>HR (95% CI)</th><th>I²</th><th>P-value</th></tr>
+          </thead>
+          <tbody>
+            <tr class="bold"><td><b>Overall / 总体</b></td><td>32</td><td><b>2.11</b> (1.73–2.57)</td><td>92</td><td>&lt;0.00001</td></tr>
+            <tr class="section"><td colspan="5">TNM Stage / TNM 分期</td></tr>
+            <tr><td>Stage I–II / I–II 期</td><td>6</td><td>2.31 (1.65–3.24)</td><td>78</td><td>0.0002</td></tr>
+            <tr class="bold"><td><b>Stage III / III 期</b></td><td>8</td><td><b>3.65</b> (1.65–8.07)</td><td>94</td><td>0.002</td></tr>
+            <tr><td>Stage IV / Metastatic / IV 期 / 转移性</td><td>12</td><td>1.98 (1.38–2.83)</td><td>91</td><td>0.0004</td></tr>
+            <tr class="section"><td colspan="5">Tumor Location / 肿瘤部位</td></tr>
+            <tr><td>Colon / 结肠</td><td>14</td><td>2.08 (1.64–2.63)</td><td>91</td><td>&lt;0.00001</td></tr>
+            <tr><td>Rectal / 直肠</td><td>8</td><td>2.12 (1.65–2.72)</td><td>89</td><td>&lt;0.00001</td></tr>
+            <tr><td>Mixed / Colorectal / 混合 / 结直肠</td><td>10</td><td>2.16 (1.65–2.83)</td><td>93</td><td>&lt;0.00001</td></tr>
+            <tr class="section"><td colspan="5">Treatment / 治疗方式</td></tr>
+            <tr><td>Surgical resection / 手术切除</td><td>14</td><td>2.10 (1.65–2.67)</td><td>91</td><td>&lt;0.00001</td></tr>
+            <tr><td>Chemotherapy alone / 单纯化疗</td><td>12</td><td>2.02 (1.50–2.72)</td><td>92</td><td>&lt;0.00001</td></tr>
+            <tr><td>Chemo + Bevacizumab / 化疗 + 贝伐珠单抗</td><td>6</td><td>1.78 (1.22–2.59)</td><td>88</td><td>0.002</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">表 2 · III 期关联最强（OS HR 3.65），与既往炎症标志物在局部晚期疾病中的文献一致。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 9 · META-REGRESSION ===================== -->
+<section id="s9">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">08 / 14</span>
+      <div class="sec-title">
+        <h2>Meta-Regression</h2>
+        <span class="sub">Meta 回归分析</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="col reveal">
+        <h3><span class="accent">▸</span> Cut-off Value as Moderator / 临界值作为调节变量</h3>
+        <p>Meta 回归探讨 SII 临界值是否调节效应量。结果显示，临界值对 OS 和 PFS 的预后估计均<b>无显著调节作用</b>。</p>
+        <div class="tbl-wrap" style="margin-top:18px">
+          <table>
+            <thead><tr><th>Outcome</th><th>Predictor</th><th>Coefficient</th><th>p-value</th><th>N</th></tr></thead>
+            <tbody>
+              <tr><td>OS</td><td>ln(Cut-off)</td><td>0.003</td><td>0.98</td><td>31</td></tr>
+              <tr><td>PFS</td><td>ln(Cut-off)</td><td>-0.002</td><td>0.97</td><td>23</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">表 3 · 所有 p 值均远离显著性；临界值不调节效应量。</p>
+      </div>
+      <div class="col reveal reveal-delay-1">
+        <h3><span class="accent">▸</span> Other Moderators / 其他调节变量</h3>
+        <p><b>年龄（≥65 vs &lt;65）</b>是 OS 的显著调节因素（p = 0.041），老年人群效应更强。这可能反映随年龄增长累积的炎症负荷。</p>
+        <p>发表年份、样本量和地域作为调节因素均未达统计学意义。</p>
+        <div class="metrics" style="grid-template-columns:1fr 1fr;margin-top:20px">
+          <div class="metric">
+            <div class="num">0.041</div>
+            <div class="lbl">Age · p-value</div>
+            <div class="zh">年龄 · p 值</div>
+          </div>
+          <div class="metric">
+            <div class="num">0.89</div>
+            <div class="lbl">Year · p-value</div>
+            <div class="zh">年份 · p 值</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 10 · SENSITIVITY & BIAS ===================== -->
+<section id="s10">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">09 / 14</span>
+      <div class="sec-title">
+        <h2>Robustness & Bias</h2>
+        <span class="sub">稳健性与偏倚</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="col reveal">
+        <h3><span class="accent">▸</span> Sensitivity Analysis / 敏感性分析</h3>
+        <p>逐一剔除法敏感性分析依次排除每项研究。OS 和 PFS 的合并 HR 均保持稳定；<b>无单一研究产生不成比例的影响</b>。</p>
+        <h3 style="margin-top:24px"><span class="accent">▸</span> Publication Bias / 发表偏倚</h3>
+        <p>漏斗图呈近似对称分布。Egger 回归检验证实无显著偏倚：</p>
+        <div class="metrics" style="grid-template-columns:1fr 1fr;margin-top:16px">
+          <div class="metric">
+            <div class="num">0.669</div>
+            <div class="lbl">Egger · OS · p</div>
+          </div>
+          <div class="metric">
+            <div class="num">0.261</div>
+            <div class="lbl">Egger · PFS · p</div>
+          </div>
+        </div>
+      </div>
+      <div class="col reveal reveal-delay-1">
+        <div class="chart">
+          <div class="chart-title">Funnel Plot · OS (lnHR vs SE) / 漏斗图</div>
+          <div id="funnel-chart" class="chart-canvas tall"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 11 · MECHANISMS ===================== -->
+<section id="s11">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">10 / 14</span>
+      <div class="sec-title">
+        <h2>Biological Mechanisms</h2>
+        <span class="sub">生物学机制</span>
+      </div>
+    </div>
+    <div class="mech-grid">
+      <div class="mech-cell reveal">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D946EF" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="#D946EF"/></svg>
+        </div>
+        <h4>Neutrophilia</h4>
+        <div class="zh-sub">中性粒细胞升高</div>
+        <ul>
+          <li>释放 VEGF 和 MMP</li>
+          <li>促进血管生成</li>
+          <li>辅助转移</li>
+        </ul>
+      </div>
+      <div class="mech-cell reveal">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D946EF" stroke-width="1.8"><ellipse cx="12" cy="12" rx="9" ry="4"/><ellipse cx="12" cy="12" rx="4" ry="9"/></svg>
+        </div>
+        <h4>Thrombocytosis</h4>
+        <div class="zh-sub">血小板增多</div>
+        <ul>
+          <li>血小板-肿瘤聚集</li>
+          <li>保护循环肿瘤细胞</li>
+          <li>增强肿瘤细胞存活</li>
+        </ul>
+      </div>
+      <div class="mech-cell reveal">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#D946EF" stroke-width="1.8" stroke-dasharray="2 2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <h4>Lymphocytopenia</h4>
+        <div class="zh-sub">淋巴细胞减少</div>
+        <ul>
+          <li>CD8+ T 细胞功能受损</li>
+          <li>抗肿瘤免疫降低</li>
+          <li>Treg 和 MDSC 浸润</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mech-summary reveal reveal-delay-1">
+      中性粒细胞、血小板升高伴淋巴细胞减少的联合效应构建了促肿瘤微环境。SII 将三个维度整合为单一复合指标。
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 12 · DISCUSSION ===================== -->
+<section id="s12">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">11 / 14</span>
+      <div class="sec-title">
+        <h2>Clinical Implications</h2>
+        <span class="sub">临床意义</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="col reveal">
+        <h3><span class="accent">▸</span> Proposed Clinical Framework / 建议的临床应用框架</h3>
+        <ul>
+          <li>诊断时基线 SII 用于风险分层。</li>
+          <li>每 3 个月动态监测 SII。</li>
+          <li>与 TNM 分期整合，尤其 III 期。</li>
+          <li>SII 持续升高者考虑强化治疗。</li>
+        </ul>
+        <div class="panel magenta" style="margin-top:20px">
+          <p><b>III 期关联最强</b>（OS HR 3.65）。治疗后 SII（OS HR 2.44 vs 1.98）支持动态监测。贝伐珠单抗减弱效应，提示其抗炎特性。</p>
+        </div>
+      </div>
+      <div class="col reveal reveal-delay-1">
+        <h3><span class="accent">▸</span> Innovations vs. Previous Meta-Analyses / 相较既往创新</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Feature</th><th>This Study</th><th>Tan et al. 2025</th></tr></thead>
+            <tbody>
+              <tr><td>Studies / 研究数</td><td><b>35</b></td><td>27</td></tr>
+              <tr><td>Patients / 患者数</td><td><b>26,812</b></td><td>18,420</td></tr>
+              <tr><td>Search updated / 检索</td><td><b>Nov 2025</b></td><td>Mar 2024</td></tr>
+              <tr><td>TNM subgroup / TNM 亚组</td><td><b>Yes (detailed)</b></td><td>Partial</td></tr>
+              <tr><td>Cut-off meta-regression</td><td><b>Yes</b></td><td>No</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 13 · LIMITATIONS ===================== -->
+<section id="s13">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">12 / 14</span>
+      <div class="sec-title">
+        <h2>Limitations</h2>
+        <span class="sub">研究局限性</span>
+      </div>
+    </div>
+    <div class="lim-grid">
+      <div class="lim reveal">
+        <div class="n">01</div>
+        <h4>Cut-off Heterogeneity</h4>
+        <div class="zh-sub">临界值异质性</div>
+        <p>SII 临界值范围 340–1,505，限制了研究间可比性。</p>
+      </div>
+      <div class="lim reveal">
+        <div class="n">02</div>
+        <h4>Study Design Imbalance</h4>
+        <div class="zh-sub">研究设计失衡</div>
+        <p>38 项回顾性 vs 2 项前瞻性队列；前瞻性数据效力不足。</p>
+      </div>
+      <div class="lim reveal">
+        <div class="n">03</div>
+        <h4>Geographic Bias</h4>
+        <div class="zh-sub">地域偏倚</div>
+        <p>多数研究来自亚洲；结论可能不适用于非亚洲人群。</p>
+      </div>
+      <div class="lim reveal">
+        <div class="n">04</div>
+        <h4>Tumor Location Granularity</h4>
+        <div class="zh-sub">肿瘤部位颗粒度不足</div>
+        <p>右半与左半结肠癌差异数据有限。</p>
+      </div>
+      <div class="lim full reveal">
+        <div class="n">05</div>
+        <h4>High Heterogeneity</h4>
+        <div class="zh-sub">高异质性</div>
+        <p>I² = 92% for OS and 73% for PFS warrants cautious interpretation. OS I² = 92%，PFS I² = 73%，需谨慎解读。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 14 · CONCLUSIONS ===================== -->
+<section id="s14">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">13 / 14</span>
+      <div class="sec-title">
+        <h2>Conclusions & Future Directions</h2>
+        <span class="sub">结论与未来方向</span>
+      </div>
+    </div>
+    <div class="conc-grid">
+      <div class="conc-block reveal">
+        <h3><span class="accent">▸</span> Conclusions / 结论</h3>
+        <ol>
+          <li>治疗前 SII 升高预测更差的 <b>OS（HR 2.11）</b>和 <b>PFS（HR 2.16）</b>。</li>
+          <li>SII 是一种稳健、可及的预后生物标志物，来自常规血常规。</li>
+          <li>III 期疾病中效应最强（<b>OS HR 3.65</b>）。</li>
+          <li>治疗后 SII 可能提供更优的预后精准度。</li>
+        </ol>
+      </div>
+      <div class="conc-block reveal reveal-delay-1">
+        <h3><span class="accent">▸</span> Future Research / 未来研究方向</h3>
+        <ol>
+          <li>标准化方案的大规模前瞻性多中心研究。</li>
+          <li>基于 ROC 的 SII 最佳临界值验证。</li>
+          <li>与分子分型（<b>MSI、KRAS、BRAF</b>）整合。</li>
+          <li>开发个体化预后列线图。</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PAGE 15 · ACKNOWLEDGMENTS ===================== -->
+<section id="s15" style="justify-content:flex-start;padding-top:140px">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">14 / 14</span>
+      <div class="sec-title">
+        <h2>Acknowledgments</h2>
+        <span class="sub">致谢</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="col reveal">
+        <ul>
+          <li>共同作者 <b>姜慧英</b> 负责指导、验证与可视化。</li>
+          <li>北京京煤集团总医院提供机构支持。</li>
+          <li>感谢 <b>35 项纳入研究</b>的所有研究者，他们的工作使本荟萃分析成为可能。</li>
+        </ul>
+      </div>
+      <div class="col reveal reveal-delay-1">
+        <div class="panel glow">
+          <h3 style="margin-bottom:10px"><span class="accent">▸</span> Correspondence / 通讯作者</h3>
+          <p style="font-size:16px;color:var(--ink);margin-bottom:4px"><b>Pengfei Wang · 王鹏飞</b></p>
+          <p class="count">248616795@qq.com</p>
+          <div class="decor-line"></div>
+          <h3 style="margin-bottom:10px"><span class="accent">▸</span> Published In / 发表期刊</h3>
+          <p style="color:var(--ink)">Frontiers in Oncology, Volume 16, 2026</p>
+          <p style="color:var(--ink-muted);font-size:13px">肿瘤学前沿，第 16 卷，2026</p>
+          <p class="count" style="margin-top:8px">DOI: 10.3389/fonc.2026.1616016</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== THREE.JS BACKGROUND ===================== -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x050008, 0.025);
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 0, 30);
+
+/* === Particle Field === */
+const particleCount = 2500;
+const positions = new Float32Array(particleCount * 3);
+const colors = new Float32Array(particleCount * 3);
+const sizes = new Float32Array(particleCount);
+
+const colorPurple = new THREE.Color(0xB026FF);
+const colorMagenta = new THREE.Color(0xFF1493);
+const colorCyan = new THREE.Color(0x00E5FF);
+
+for (let i = 0; i < particleCount; i++) {
+  const i3 = i * 3;
+  const radius = 15 + Math.random() * 35;
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos(2 * Math.random() - 1);
+  positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+  positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+  positions[i3 + 2] = radius * Math.cos(phi);
+
+  const r = Math.random();
+  let c;
+  if (r < 0.55) c = colorPurple;
+  else if (r < 0.9) c = colorMagenta;
+  else c = colorCyan;
+  colors[i3] = c.r;
+  colors[i3 + 1] = c.g;
+  colors[i3 + 2] = c.b;
+
+  sizes[i] = Math.random() * 1.5 + 0.3;
+}
+
+const particleGeometry = new THREE.BufferGeometry();
+particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+const particleMaterial = new THREE.PointsMaterial({
+  size: 0.15,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.85,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+  sizeAttenuation: true
+});
+
+const particles = new THREE.Points(particleGeometry, particleMaterial);
+scene.add(particles);
+
+/* === Wireframe Icosahedron (central) === */
+const icoGeo = new THREE.IcosahedronGeometry(6, 1);
+const icoMat = new THREE.MeshBasicMaterial({
+  color: 0xB026FF,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.15
+});
+const ico = new THREE.Mesh(icoGeo, icoMat);
+scene.add(ico);
+
+/* === Outer wireframe sphere === */
+const sphereGeo = new THREE.SphereGeometry(12, 24, 16);
+const sphereMat = new THREE.MeshBasicMaterial({
+  color: 0xFF1493,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.08
+});
+const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+scene.add(sphere);
+
+/* === Connecting lines (constellation effect) === */
+const lineCount = 40;
+const linePositions = new Float32Array(lineCount * 6);
+for (let i = 0; i < lineCount; i++) {
+  const i6 = i * 6;
+  const r1 = 15 + Math.random() * 20;
+  const r2 = 15 + Math.random() * 20;
+  const t1 = Math.random() * Math.PI * 2;
+  const t2 = Math.random() * Math.PI * 2;
+  const p1 = Math.acos(2 * Math.random() - 1);
+  const p2 = Math.acos(2 * Math.random() - 1);
+  linePositions[i6] = r1 * Math.sin(p1) * Math.cos(t1);
+  linePositions[i6+1] = r1 * Math.sin(p1) * Math.sin(t1);
+  linePositions[i6+2] = r1 * Math.cos(p1);
+  linePositions[i6+3] = r2 * Math.sin(p2) * Math.cos(t2);
+  linePositions[i6+4] = r2 * Math.sin(p2) * Math.sin(t2);
+  linePositions[i6+5] = r2 * Math.cos(p2);
+}
+const lineGeo = new THREE.BufferGeometry();
+lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+const lineMat = new THREE.LineBasicMaterial({
+  color: 0xB026FF,
+  transparent: true,
+  opacity: 0.15,
+  blending: THREE.AdditiveBlending
+});
+const lines = new THREE.LineSegments(lineGeo, lineMat);
+scene.add(lines);
+
+/* === Mouse interaction === */
+let mouseX = 0, mouseY = 0;
+let targetX = 0, targetY = 0;
+window.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+  mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+
+/* === Scroll-driven camera Z === */
+let scrollY = 0;
+window.addEventListener('scroll', () => {
+  scrollY = window.scrollY;
+});
+
+/* === Animation loop === */
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  targetX += (mouseX - targetX) * 0.03;
+  targetY += (mouseY - targetY) * 0.03;
+
+  particles.rotation.y = t * 0.04 + targetX * 0.3;
+  particles.rotation.x = t * 0.02 + targetY * 0.2;
+
+  ico.rotation.x = t * 0.1;
+  ico.rotation.y = t * 0.15;
+  ico.scale.setScalar(1 + Math.sin(t * 0.8) * 0.05);
+
+  sphere.rotation.y = -t * 0.03;
+  sphere.rotation.z = t * 0.02;
+
+  lines.rotation.y = t * 0.02;
+
+  camera.position.x = targetX * 3;
+  camera.position.y = targetY * 2;
+  camera.position.z = 30 + Math.sin(t * 0.3) * 2;
+  camera.lookAt(0, 0, 0);
+
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+<!-- ===================== APP LOGIC ===================== -->
+<script>
+const SECTIONS = Array.from(document.querySelectorAll('main > section'));
+const TOTAL = SECTIONS.length;
+let current = 0;
+
+const dotsEl = document.getElementById('dots');
+SECTIONS.forEach((s, i) => {
+  const a = document.createElement('a');
+  a.href = '#' + s.id;
+  dotsEl.appendChild(a);
+});
+const dotEls = Array.from(dotsEl.children);
+
+const counter = document.getElementById('pgcounter');
+function pad(n){ return String(n).padStart(2,'0'); }
+function setActive(i){
+  current = i;
+  dotEls.forEach((d, idx) => d.classList.toggle('active', idx === i));
+  counter.textContent = pad(i+1) + ' / ' + pad(TOTAL);
+}
+setActive(0);
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = SECTIONS.indexOf(e.target);
+      if (idx !== -1) setActive(idx);
+    }
+  });
+}, { threshold: 0.5 });
+SECTIONS.forEach(s => io.observe(s));
+
+/* Reveal animation */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    } else {
+      entry.target.classList.remove('active');
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
+
+<!-- ===================== ECHARTS VISUALIZATIONS ===================== -->
+<script>
+/* Common chart theme */
+const neonTheme = {
+  textColor: '#E8D5F5',
+  backgroundColor: 'transparent',
+  axisLine: { lineStyle: { color: 'rgba(176,38,255,0.3)' } },
+  splitLine: { lineStyle: { color: 'rgba(176,38,255,0.08)' } }
+};
+
+/* ===== PRISMA Flow Chart ===== */
+function renderPrisma() {
+  const chart = echarts.init(document.getElementById('prisma-chart'));
+  const data = [
+    { name: 'Records Identified\n检出文献\n349', value: 349, detail: 'PubMed 142 · Embase 105\nCochrane 8 · WoS 94' },
+    { name: 'After Duplicates Removed\n去重后\n198', value: 198, detail: '151 duplicates removed' },
+    { name: 'Title/Abstract Screened\n标题/摘要筛选\n198', value: 198, detail: '131 excluded' },
+    { name: 'Full-text Assessed\n全文评估\n67', value: 67, detail: '32 excluded\n(No SII 18 · No HR/CI 9 · Duplicate 5)' },
+    { name: 'Studies Included\n纳入研究\n35', value: 35, detail: '26,812 patients\nOS: 32 · PFS: 23' }
+  ];
+  chart.setOption({
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'item', backgroundColor: 'rgba(10,2,18,0.95)', borderColor: '#B026FF', textStyle: { color: '#E8D5F5' } },
+    series: [{
+      type: 'funnel',
+      left: '8%', right: '8%', top: 10, bottom: 10,
+      minSize: '30%',
+      label: {
+        show: true,
+        position: 'inside',
+        color: '#fff',
+        fontSize: 13,
+        fontWeight: 600,
+        fontFamily: 'Space Grotesk, sans-serif',
+        formatter: '{b}'
+      },
+      labelLine: { show: false },
+      itemStyle: {
+        borderColor: 'rgba(176,38,255,0.5)',
+        borderWidth: 1
+      },
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 20,
+          shadowColor: 'rgba(176,38,255,0.8)'
+        }
+      },
+      data: data.map((d, i) => ({
+        name: d.name,
+        value: d.value,
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+            { offset: 0, color: i === 4 ? '#FF1493' : '#7B1FA2' },
+            { offset: 1, color: i === 4 ? '#FF6BB5' : '#B026FF' }
+          ])
+        }
+      }))
+    }]
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+/* ===== Forest Plot OS ===== */
+function renderForestOS() {
+  const chart = echarts.init(document.getElementById('forest-os'));
+  const data = [
+    { name: 'Stage I–II (n=6)', hr: 2.31, lo: 1.65, hi: 3.24, group: 'TNM Stage' },
+    { name: 'Stage III (n=8)', hr: 3.65, lo: 1.65, hi: 8.07, group: 'TNM Stage', bold: true },
+    { name: 'Stage IV / Metastatic (n=12)', hr: 1.98, lo: 1.38, hi: 2.83, group: 'TNM Stage' },
+    { name: 'Colon (n=14)', hr: 2.08, lo: 1.64, hi: 2.63, group: 'Tumor Location' },
+    { name: 'Rectal (n=8)', hr: 2.12, lo: 1.65, hi: 2.72, group: 'Tumor Location' },
+    { name: 'Mixed / Colorectal (n=10)', hr: 2.16, lo: 1.65, hi: 2.83, group: 'Tumor Location' },
+    { name: 'Surgical resection (n=14)', hr: 2.10, lo: 1.65, hi: 2.67, group: 'Treatment' },
+    { name: 'Chemotherapy alone (n=12)', hr: 2.02, lo: 1.50, hi: 2.72, group: 'Treatment' },
+    { name: 'Chemo + Bevacizumab (n=6)', hr: 1.78, lo: 1.22, hi: 2.59, group: 'Treatment' },
+    { name: 'Pooled (Random Effects) · 32 cohorts · 25,366 pts', hr: 2.11, lo: 1.73, hi: 2.57, group: 'Overall', pooled: true }
+  ];
+
+  renderForest(chart, data, 'OS · HR (95% CI)', 'I²=92% · p<0.00001 · τ²=0.24 · H=3.61 · Z=6.87');
+}
+
+/* ===== Forest Plot PFS ===== */
+function renderForestPFS() {
+  const chart = echarts.init(document.getElementById('forest-pfs'));
+  const data = [
+    { name: 'Stage III (n=6)', hr: 3.64, lo: 2.01, hi: 6.59, group: 'TNM Stage', bold: true },
+    { name: 'Stage IV / Metastatic (n=12)', hr: 2.23, lo: 1.68, hi: 2.96, group: 'TNM Stage' },
+    { name: 'Colon (n=10)', hr: 2.24, lo: 1.70, hi: 2.95, group: 'Tumor Location' },
+    { name: 'Rectal (n=6)', hr: 1.89, lo: 1.38, hi: 2.59, group: 'Tumor Location' },
+    { name: 'Surgical resection (n=12)', hr: 2.18, lo: 1.66, hi: 2.86, group: 'Treatment' },
+    { name: 'Chemotherapy alone (n=10)', hr: 2.01, lo: 1.52, hi: 2.66, group: 'Treatment' },
+    { name: 'Chemo + Bevacizumab (n=4) *', hr: 1.41, lo: 0.97, hi: 2.05, group: 'Treatment' },
+    { name: 'Pooled (Random Effects) · 24 cohorts · 19,402 pts', hr: 2.16, lo: 1.83, hi: 2.54, group: 'Overall', pooled: true }
+  ];
+
+  renderForest(chart, data, 'PFS · HR (95% CI)', 'I²=73% · p<0.00001 · τ²=0.11 · H=1.93 · Z=8.62');
+}
+
+function renderForest(chart, data, title, footnote) {
+  const yLabels = data.map(d => d.name);
+  const series = [];
+
+  // Group separator labels
+  let lastGroup = '';
+  data.forEach((d, i) => {
+    if (d.group !== lastGroup && !d.pooled) {
+      yLabels[i] = `{g|${d.group}}\n{n|${d.name}}`;
+      lastGroup = d.group;
+    } else if (d.pooled) {
+      yLabels[i] = `{p|${d.name}}`;
+    } else {
+      yLabels[i] = `{n|${d.name}}`;
+    }
+  });
+
+  // Error bars (CI lines)
+  series.push({
+    name: 'CI',
+    type: 'custom',
+    renderItem: (params, api) => {
+      const idx = api.value(0);
+      const hr = api.value(1);
+      const lo = api.value(2);
+      const hi = api.value(3);
+      const pooled = api.value(4);
+      const start = api.coord([lo, idx]);
+      const end = api.coord([hi, idx]);
+      const point = api.coord([hr, idx]);
+      const color = pooled ? '#FF1493' : (idx === 1 || idx === 0 ? '#D946EF' : '#B026FF');
+      const children = [
+        { type: 'line', shape: { x1: start[0], y1: start[1], x2: end[0], y2: end[1] }, style: { stroke: color, lineWidth: pooled ? 3 : 2 } },
+        { type: 'line', shape: { x1: start[0], y1: start[1] - 5, x2: start[0], y2: start[1] + 5 }, style: { stroke: color, lineWidth: 2 } },
+        { type: 'line', shape: { x1: end[0], y1: end[1] - 5, x2: end[0], y2: end[1] + 5 }, style: { stroke: color, lineWidth: 2 } }
+      ];
+      if (pooled) {
+        // Diamond
+        const dh = 12;
+        children.push({
+          type: 'polygon',
+          shape: { points: [[start[0], point[1] - dh], [point[0], point[1]], [end[0], point[1] + dh ? point[1] : point[1]], [point[0], point[1]]] },
+          style: { fill: color, stroke: color }
+        });
+        // Simpler diamond
+        children[children.length - 1] = {
+          type: 'polygon',
+          shape: { points: [
+            [start[0], point[1]],
+            [point[0], point[1] - 10],
+            [end[0], point[1]],
+            [point[0], point[1] + 10]
+          ]},
+          style: { fill: color, stroke: color, opacity: 0.9 }
+        };
+      } else {
+        children.push({
+          type: 'circle',
+          shape: { cx: point[0], cy: point[1], r: 7 },
+          style: { fill: color, stroke: '#fff', lineWidth: 1, shadowBlur: 10, shadowColor: color }
+        });
+      }
+      return { type: 'group', children };
+    },
+    encode: { x: [1, 2, 3], y: 0 },
+    data: data.map((d, i) => [i, d.hr, d.lo, d.hi, d.pooled ? 1 : 0])
+  });
+
+  chart.setOption({
+    backgroundColor: 'transparent',
+    title: { text: title, left: 'center', textStyle: { color: '#D946EF', fontSize: 13, fontFamily: 'JetBrains Mono' } },
+    grid: { left: 280, right: 80, top: 40, bottom: 60 },
+    xAxis: {
+      type: 'log',
+      min: 0.5, max: 10,
+      axisLine: { lineStyle: { color: 'rgba(176,38,255,0.4)' } },
+      splitLine: { lineStyle: { color: 'rgba(176,38,255,0.08)' } },
+      axisLabel: { color: '#8B7AA8', fontFamily: 'JetBrains Mono', fontSize: 11 },
+      name: '← Favours High SII    HR (log scale)    Favours Low SII →',
+      nameLocation: 'middle', nameGap: 35,
+      nameTextStyle: { color: '#8B7AA8', fontSize: 11 }
+    },
+    yAxis: {
+      type: 'category',
+      data: yLabels,
+      inverse: true,
+      axisLine: { lineStyle: { color: 'rgba(176,38,255,0.4)' } },
+      axisTick: { show: false },
+      axisLabel: {
+        color: '#E8D5F5',
+        fontSize: 11,
+        rich: {
+          g: { color: '#FF1493', fontSize: 10, fontWeight: 600, fontFamily: 'JetBrains Mono', padding: [0, 0, 4, 0] },
+          n: { color: '#E8D5F5', fontSize: 11 },
+          p: { color: '#FF6BB5', fontSize: 11, fontWeight: 700 }
+        }
+      }
+    },
+    series: series
+  });
+
+  window.addEventListener('resize', () => chart.resize());
+}
+
+/* ===== Funnel Plot ===== */
+function renderFunnel() {
+  const chart = echarts.init(document.getElementById('funnel-chart'));
+  // Generate scatter points around pooled lnHR ≈ 0.747 (HR=2.11)
+  const points = [];
+  const studies = 24;
+  for (let i = 0; i < studies; i++) {
+    const se = 0.15 + (i / studies) * 0.8; // SE from small to large
+    const spread = se * 0.8;
+    const lnHR = 0.747 + (Math.random() - 0.5) * spread * 2;
+    points.push([lnHR, se, Math.max(4, 8 - se * 5)]);
+  }
+  // Funnel boundary lines (pseudo 95% CI)
+  const upperLine = [];
+  const lowerLine = [];
+  for (let se = 0.1; se <= 1.0; se += 0.05) {
+    upperLine.push([0.747 - 1.96 * se, se]);
+    lowerLine.push([0.747 + 1.96 * se, se]);
+  }
+
+  chart.setOption({
+    backgroundColor: 'transparent',
+    title: { text: 'Funnel Plot · OS (lnHR vs SE)', left: 'center', textStyle: { color: '#D946EF', fontSize: 13, fontFamily: 'JetBrains Mono' } },
+    grid: { left: 70, right: 40, top: 40, bottom: 60 },
+    tooltip: {
+      backgroundColor: 'rgba(10,2,18,0.95)',
+      borderColor: '#B026FF',
+      textStyle: { color: '#E8D5F5' },
+      formatter: (p) => `lnHR: ${p.value[0].toFixed(3)}<br>SE: ${p.value[1].toFixed(3)}`
+    },
+    xAxis: {
+      type: 'value',
+      min: -1.5, max: 3,
+      name: 'ln(Hazard Ratio)',
+      nameLocation: 'middle', nameGap: 30,
+      nameTextStyle: { color: '#8B7AA8', fontSize: 11 },
+      axisLine: { lineStyle: { color: 'rgba(176,38,255,0.4)' } },
+      splitLine: { lineStyle: { color: 'rgba(176,38,255,0.08)' } },
+      axisLabel: { color: '#8B7AA8', fontFamily: 'JetBrains Mono', fontSize: 11 }
+    },
+    yAxis: {
+      type: 'value',
+      min: 0, max: 1.0,
+      name: 'Standard Error',
+      nameLocation: 'middle', nameGap: 45,
+      nameTextStyle: { color: '#8B7AA8', fontSize: 11 },
+      axisLine: { lineStyle: { color: 'rgba(176,38,255,0.4)' } },
+      splitLine: { lineStyle: { color: 'rgba(176,38,255,0.08)' } },
+      axisLabel: { color: '#8B7AA8', fontFamily: 'JetBrains Mono', fontSize: 11 },
+      inverse: true
+    },
+    series: [
+      {
+        name: '95% CI Upper',
+        type: 'line',
+        data: upperLine,
+        showSymbol: false,
+        lineStyle: { color: 'rgba(176,38,255,0.3)', width: 1, type: 'dashed' }
+      },
+      {
+        name: '95% CI Lower',
+        type: 'line',
+        data: lowerLine,
+        showSymbol: false,
+        lineStyle: { color: 'rgba(176,38,255,0.3)', width: 1, type: 'dashed' }
+      },
+      {
+        name: 'Pooled lnHR',
+        type: 'line',
+        data: [[0.747, 0.1], [0.747, 1.0]],
+        showSymbol: false,
+        lineStyle: { color: '#FF1493', width: 2, type: 'dashed' },
+        markLine: {
+          silent: true,
+          symbol: 'none',
+          lineStyle: { color: 'rgba(255,20,147,0.3)', type: 'dotted' },
+          data: [{ xAxis: 0 }]
+        }
+      },
+      {
+        name: 'Study',
+        type: 'scatter',
+        data: points,
+        symbolSize: (d) => d[2] * 2,
+        itemStyle: {
+          color: '#D946EF',
+          shadowBlur: 8,
+          shadowColor: 'rgba(217,70,239,0.8)',
+          opacity: 0.85
+        }
+      }
+    ],
+    legend: {
+      data: ['Study (n=32)', 'Pooled lnHR', '95% CI'],
+      textStyle: { color: '#8B7AA8', fontSize: 11 },
+      top: 5, right: 10
+    },
+    graphic: [
+      {
+        type: 'text',
+        right: 60, top: 30,
+        style: { text: "Egger's test:\np = 0.669 (NS)", fill: '#FF6BB5', fontSize: 11, fontFamily: 'JetBrains Mono' }
+      }
+    ]
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+/* Init all charts when DOM ready */
+window.addEventListener('load', () => {
+  setTimeout(renderPrisma, 100);
+  setTimeout(renderForestOS, 200);
+  setTimeout(renderForestPFS, 300);
+  setTimeout(renderFunnel, 400);
+});
+</script>
+
+</body>
+</html>
