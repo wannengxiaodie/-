@@ -152,14 +152,42 @@ body { overflow-x: hidden; }
 .lang-toggle .sep { color: var(--ink-faint); }
 
 /* Bilingual */
-.zh { display: none; }
-body.lang-zh .zh { display: inline; }
-body.lang-zh .en { display: none; }
-body.lang-zh .zh.block { display: block; }
-body.lang-zh .zh.flex { display: flex; }
-svg text.zh { display: none; }
-body.lang-zh svg text.zh { display: block; }
-body.lang-zh svg text.en { display: none; }
+.zh,
+svg text.zh,
+svg tspan.zh {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+body.lang-zh .zh {
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+body.lang-zh .zh.block {
+  display: block !important;
+}
+
+body.lang-zh .zh.flex {
+  display: flex !important;
+}
+
+body.lang-zh svg text.zh,
+body.lang-zh svg tspan.zh {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+body.lang-zh .en,
+body.lang-zh svg text.en,
+body.lang-zh svg tspan.en {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
 
 /* Progress Dots */
 .dots {
